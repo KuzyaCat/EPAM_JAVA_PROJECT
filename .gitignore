@@ -1,0 +1,6 @@
+# Hospital Project
+Hospital/.idea/
+Hospital/out/
+Hospital/target/
+Hospital/*.iml
+Hospital/*.xml
