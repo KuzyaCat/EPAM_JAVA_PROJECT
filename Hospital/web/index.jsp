@@ -11,6 +11,9 @@
     <title>$Title$</title>
   </head>
   <body>
-  $END$
+  <form method="POST" action="controller">
+    <input type="number" name="num"/>
+    <input type="submit">
+  </form>
   </body>
 </html>
