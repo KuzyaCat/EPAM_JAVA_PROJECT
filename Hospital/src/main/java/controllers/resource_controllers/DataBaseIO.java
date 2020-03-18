@@ -1,4 +1,4 @@
-package main.java;
+package main.java.controllers.resource_controllers;
 
 import java.io.FileWriter;
 import java.io.FileReader;

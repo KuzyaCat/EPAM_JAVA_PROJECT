@@ -1,6 +1,6 @@
-package main.java.stuff;
+package main.java.users.stuff;
 
-import main.java.User;
+import main.java.users.User;
 
 public class Nurse extends User {
     Nurse(String name, String surname, int age, String login, String password){

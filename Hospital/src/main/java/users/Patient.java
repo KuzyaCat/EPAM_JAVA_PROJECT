@@ -1,4 +1,7 @@
-package main.java;
+package main.java.users;
+
+import main.java.components.Appointment;
+import main.java.components.Treatment;
 
 public class Patient extends User {
     private Appointment[] appointments;

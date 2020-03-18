@@ -1,6 +1,6 @@
-package main.java.stuff;
+package main.java.users.stuff;
 
-import main.java.User;
+import main.java.users.User;
 
 public class Doctor extends User {
     String department;

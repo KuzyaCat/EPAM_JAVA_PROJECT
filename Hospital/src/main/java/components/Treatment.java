@@ -1,4 +1,4 @@
-package main.java;
+package main.java.components;
 
 public class Treatment {
     private String[] procedures;

@@ -1,7 +1,7 @@
-package main.java;
+package main.java.components;
 
-import main.java.leadership.DepartmentHead;
-import main.java.stuff.Doctor;
+import main.java.users.leadership.DepartmentHead;
+import main.java.users.stuff.Doctor;
 
 public class Department {
     private Doctor[] doctors;

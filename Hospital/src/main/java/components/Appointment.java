@@ -1,6 +1,6 @@
-package main.java;
+package main.java.components;
 
-import main.java.stuff.Doctor;
+import main.java.users.stuff.Doctor;
 
 import java.util.Date;
 

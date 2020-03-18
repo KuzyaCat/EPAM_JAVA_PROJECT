@@ -1,6 +1,6 @@
 package main.java;
 
-import main.java.DataBaseIO;
+import main.java.controllers.resource_controllers.DataBaseIO;
 
 public class Main {
     public static void main(String[] args) {

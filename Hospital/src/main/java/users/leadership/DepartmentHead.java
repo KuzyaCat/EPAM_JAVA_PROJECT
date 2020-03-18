@@ -1,6 +1,6 @@
-package main.java.leadership;
+package main.java.users.leadership;
 
-import main.java.stuff.Doctor;
+import main.java.users.stuff.Doctor;
 
 public class DepartmentHead extends Doctor {
     DepartmentHead(String name, String surname, int age, String login, String password, String department, boolean isHeadOfDepartment){

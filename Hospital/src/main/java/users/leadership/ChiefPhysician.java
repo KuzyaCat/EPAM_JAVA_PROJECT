@@ -1,6 +1,6 @@
-package main.java.leadership;
+package main.java.users.leadership;
 
-import main.java.User;
+import main.java.users.User;
 
 public class ChiefPhysician extends User {
     ChiefPhysician(String name, String surname, int age, String login, String password){
