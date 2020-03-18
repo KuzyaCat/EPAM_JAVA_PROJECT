@@ -8,7 +8,7 @@ public class Appointment {
     private Doctor doctor;
     private main.java.components.Department department;
     private Date appDate;
-    Appointment(Doctor doctor, main.java.components.Department department, Date appDate){
+    public Appointment(Doctor doctor, main.java.components.Department department, Date appDate){
         this.appDate = appDate;
         this.department = department;
         this.doctor = doctor;
