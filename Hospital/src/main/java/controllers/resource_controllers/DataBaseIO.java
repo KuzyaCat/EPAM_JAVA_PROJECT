@@ -1,5 +1,8 @@
 package main.java.controllers.resource_controllers;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.io.FileWriter;
 import java.io.FileReader;
 import java.io.IOException;
@@ -29,6 +32,8 @@ import java.io.IOException;
 
 
 public class DataBaseIO {
+    static Logger logger = LogManager.getLogger();
+
     private String patientsFilePath;
     private String doctorsFilePath;
     private String nursesFilePath;
@@ -156,8 +161,7 @@ public class DataBaseIO {
             String[] allPatients = this.readArrayByUserGroup('p');
 
             if(insertIndex >= allPatients.length || insertIndex < 0) {
-                System.out.println("Error: incorrect patient (insert) index");
-                //тут может быть ваш логгер
+                logger.error("Incorrect patient (insert) index");
             }
             else {
                 this.clearPatientDB();
@@ -186,8 +190,7 @@ public class DataBaseIO {
             String[] allPatients = this.readArrayByUserGroup('p');
 
             if(removedIndex >= allPatients.length || removedIndex < 0) {
-                System.out.println("Error: incorrect patient (removed) index");
-                //тут может быть ваш логгер
+                logger.error("Incorrect patient (removed) index");
             }
             else {
                 this.clearPatientDB();
@@ -241,8 +244,7 @@ public class DataBaseIO {
             String[] allDoctors = this.readArrayByUserGroup('d');
 
             if(insertIndex >= allDoctors.length || insertIndex < 0) {
-                System.out.println("Error: incorrect doctor (insert) index");
-                //тут может быть ваш логгер
+                logger.error("Incorrect doctor (insert) index");
             }
             else {
                 this.clearDoctorsDB();
@@ -271,8 +273,7 @@ public class DataBaseIO {
             String[] allDoctors = this.readArrayByUserGroup('d');
 
             if(removedIndex >= allDoctors.length || removedIndex < 0) {
-                System.out.println("Error: incorrect doctor (removed) index");
-                //тут может быть ваш логгер
+                logger.error("Incorrect doctor (removed) index");
             }
             else {
                 this.clearDoctorsDB();
@@ -326,8 +327,7 @@ public class DataBaseIO {
             String[] allNurses = this.readArrayByUserGroup('n');
 
             if(insertIndex >= allNurses.length || insertIndex < 0) {
-                System.out.println("Error: incorrect nurse (insert) index");
-                //тут может быть ваш логгер
+                logger.error("Incorrect nurse (insert) index");
             }
             else {
                 this.clearNursesDB();
@@ -356,8 +356,7 @@ public class DataBaseIO {
             String[] allNurses = this.readArrayByUserGroup('n');
 
             if(removedIndex >= allNurses.length || removedIndex < 0) {
-                System.out.println("Error: incorrect nurse (removed) index");
-                //тут может быть ваш логгер
+                logger.error("Incorrect nurse (removed) index");
             }
             else {
                 this.clearNursesDB();
