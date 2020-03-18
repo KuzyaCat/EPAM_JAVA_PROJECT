@@ -7,13 +7,14 @@ public class User {
     private String login;
     private String password;
 
-    User(String name, String surname, int age, String login, String password){
+    public User(String name, String surname, int age, String login, String password){
         this.name = name;
         this.surname = surname;
         this.age = age;
         this.login = login;
         this.password = password;
     }
+
 
     public String getName() {
         return name;
