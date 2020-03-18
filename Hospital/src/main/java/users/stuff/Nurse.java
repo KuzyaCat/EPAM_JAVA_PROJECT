@@ -19,10 +19,12 @@ public class Nurse extends User {
         System.out.println("Лечение назначено");
     }
 
+    @Override
     public String toString() {
         return super.toString();
     }
 
+    @Override
     public Nurse parseString(String str) {
         return new Nurse(super.parseString(str));
     }

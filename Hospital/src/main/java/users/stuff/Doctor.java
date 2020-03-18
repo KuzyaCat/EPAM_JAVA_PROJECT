@@ -31,6 +31,7 @@ public class Doctor extends User {
         return "[" + super.toString() + "]" + " " + this.department + " " + this.isHeadOfDepartment;
     }
 
+    @Override
     public Doctor parseString(String str) {
         int openingBrIndex = 0;
         int closingBrIndex = str.indexOf(']');
@@ -48,13 +49,7 @@ public class Doctor extends User {
         String department = cutStringArr[0];
         String isHeadOfDepartment = cutStringArr[1];
 
-        boolean isHead;
-        if(isHeadOfDepartment == "true") {
-            isHead = true;
-        }
-        else {
-            isHead = false;
-        }
+        boolean isHead = (isHeadOfDepartment.equals("true"));
 
         return new Doctor(user, department, isHead);
     }

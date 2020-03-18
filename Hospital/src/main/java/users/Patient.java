@@ -26,6 +26,10 @@ public class Patient extends User {
         this.recovered = recovered;
     }
 
+    public Patient() {
+        this(new User(), new Appointment[0], new Treatment[0], new String[0], false);
+    }
+
     public Appointment[] getAppointments() {
         return appointments;
     }
@@ -101,6 +105,7 @@ public class Patient extends User {
         return res;
     }
 
+    @Override
     public Patient parseString(String str) {
         int firstOpeningBrIndex = 0;
         int firstClosingBrIndex = str.indexOf("]");
@@ -146,7 +151,7 @@ public class Patient extends User {
         }
 
         String recoveredStr = str.substring(secondClosingCurlyBrIndex + 2);
-        boolean recovered = (recoveredStr == "true");
+        boolean recovered = (recoveredStr.equals("true"));
 
         return new Patient(user, appointments, treatments, diagnoses, recovered);
     }

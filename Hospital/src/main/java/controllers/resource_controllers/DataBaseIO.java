@@ -96,9 +96,9 @@ public class DataBaseIO {
 
 
     public String[] readArrayByUserGroup(char userGroupCh) throws Exception {
-        final int MAX_PATIENTS_AMOUNT = 1000;
-        String[] initPatients = new String[MAX_PATIENTS_AMOUNT];
-        String[] patients = new String[0];
+        final int MAX_USERS_AMOUNT = 1000;
+        String[] initUsers = new String[MAX_USERS_AMOUNT];
+        String[] users = new String[0];
         String tempStr = "";
         int c;
         int length = 0;
@@ -122,27 +122,29 @@ public class DataBaseIO {
         try {
             while ((c = istream.read()) != -1) {
                 char currentSymbol = (char)c;
-                if (c == 10 || c == 13) {
-                    initPatients[length] = tempStr;
+                if ((c == 10 || c == 13) && !tempStr.equals("")) {
+                    initUsers[length] = tempStr;
                     tempStr = "";
                     length ++;
                 }
                 else {
-                    tempStr += currentSymbol;
+                    if(!(c == 10 || c == 13)) {
+                        tempStr += currentSymbol;
+                    }
                 }
             }
-            initPatients[length] = tempStr;
+            initUsers[length] = tempStr;
             length ++;
 
-            patients = new String[length];
+            users = new String[length];
             for(int i = 0; i < length; i ++) {
-                patients[i] = initPatients[i];
+                users[i] = initUsers[i];
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        return patients;
+        return users;
     }
 
 

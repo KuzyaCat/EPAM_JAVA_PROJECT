@@ -42,12 +42,10 @@ public class Appointment {
 
     public Appointment parseString(String str) {
         int openingBrIndex = 0;
-        int closingBrIndex = str.indexOf(']');
+        int prevClosingBrIndex = str.indexOf("]");
+        int closingBrIndex = str.indexOf("]", prevClosingBrIndex + 1);
 
-        String doctorString = "";
-        for(int i = openingBrIndex + 1; i < closingBrIndex; i ++) {
-            doctorString += str.charAt(i);
-        }
+        String doctorString = str.substring(openingBrIndex + 1, closingBrIndex);
 
         Doctor doctor = (new Doctor()).parseString(doctorString);
 
