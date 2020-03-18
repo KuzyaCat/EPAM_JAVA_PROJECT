@@ -2,6 +2,7 @@ package main.java.users;
 
 import main.java.components.Appointment;
 import main.java.components.Treatment;
+import main.java.users.User;
 
 public class Patient extends User {
     private Appointment[] appointments;
