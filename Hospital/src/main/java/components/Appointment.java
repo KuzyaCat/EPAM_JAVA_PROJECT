@@ -6,9 +6,9 @@ import java.util.Date;
 
 public class Appointment {
     private Doctor doctor;
-    private Department department;
+    private main.java.components.Department department;
     private Date appDate;
-    Appointment(Doctor doctor, Department department, Date appDate){
+    Appointment(Doctor doctor, main.java.components.Department department, Date appDate){
         this.appDate = appDate;
         this.department = department;
         this.doctor = doctor;
@@ -22,7 +22,7 @@ public class Appointment {
         return appDate;
     }
 
-    public Department getDepartment() {
+    public main.java.components.Department getDepartment() {
         return department;
     }
 
