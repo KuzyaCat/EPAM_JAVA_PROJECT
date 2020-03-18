@@ -15,6 +15,10 @@ public class GregorianDate {
         this.dayOfMonth = dayOfMonth;
     }
 
+    public GregorianDate() {
+        this(1970, 1, 1);
+    }
+
     public Date getDate() {
         Calendar calendar = new GregorianCalendar(this.year, this.month , this.dayOfMonth);
         return calendar.getTime();
@@ -23,5 +27,15 @@ public class GregorianDate {
     @Override
     public String toString() {
         return year + "_" + month + "_" + dayOfMonth;
+    }
+
+    public GregorianDate parseString(String str) {
+        String[] strArr = str.split("_");
+
+        int year = Integer.parseInt(strArr[0]);
+        int month = Integer.parseInt(strArr[1]);
+        int dayOfMonth = Integer.parseInt(strArr[2]);
+
+        return new GregorianDate(year, month, dayOfMonth);
     }
 }

@@ -15,6 +15,10 @@ public class User {
         this.password = password;
     }
 
+    public User() {
+        this("", "", 0, "", "");
+    }
+
 
     public String getName() {
         return name;
@@ -36,9 +40,25 @@ public class User {
         return surname;
     }
 
+    public void setLogin(String login) {
+        this.login = login;
+    }
+
     public void setPassword(String password) {
         this.password = password;
     }
+
+    @Override
+    public String toString() {
+        return this.name + " " + this.surname + " " + this.age + " " + this.login + " " + this.password;
+    }
+
+    public User parseString(String str) {
+        String[] strArr = str.split(" ");
+        int age = Integer.parseInt(strArr[2]);
+        return new User(strArr[0], strArr[1], age, strArr[3], strArr[4]);
+    }
+
     public void logOut(){
         System.out.println("Пользователь вышел из приложения");
     }

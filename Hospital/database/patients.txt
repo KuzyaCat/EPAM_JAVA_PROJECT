@@ -1,6 +1,3 @@
-pat 0
-pat 1
-pat 2
-pat 3
-pat 4
-pat 5
+[Petya Smirnov 24 petya@mail.ru 12345678] {[[Nilolai Grachev 51 ng51_doctor 19691994] neuro_department 2020_3_22] [[Vasiliy Ivanov 39 vi39_dct 122334] cardio_department 2020_3_20]} |[{hypnotic_med soothing} {} {acupuncture}] [{volokardin magnesium} {heart_valve_operation} {swimming_pool}]| {fatigue heart_valve_issue} false
+[Mihail Sobolev 48 misha_top@mail.ru 1242888] {[[Nilolai Grachev 51 ng51_doctor 19691994] neuro_department 2020_3_30] [[Gennadiy Gorin 52 gg52_doc password] dental_department 2020_4_2]} |[{valerian} {} {sleeping_10_hours_a_day}] [{calcium toothpaste} {tooth_removal} {brushing_teeth_2_times_a_day}]| {insomnia caries} false
+[Takoy Syakoy 12 nagibator777@mail.ru 1111111] {} |[{steam_sales} {} {cs_go}]| {} true
