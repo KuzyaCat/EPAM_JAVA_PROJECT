@@ -42,6 +42,10 @@ public class Patient extends User {
         return treatments;
     }
 
+    public void setAppointments(Appointment[] appointments) {
+        this.appointments = appointments;
+    }
+
     public void setDiagnoses(String[] diagnoses) {
         this.diagnoses = diagnoses;
     }

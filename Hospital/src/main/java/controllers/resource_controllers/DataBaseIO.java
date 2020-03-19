@@ -49,22 +49,11 @@ public class DataBaseIO {
     public DataBaseIO() {
         String rootDir = System.getProperty("user.dir");
 
-        this.patientsFilePath = rootDir + "\\database\\patients.txt";
-        this.doctorsFilePath = rootDir + "\\database\\doctors.txt";
-        this.nursesFilePath = rootDir + "\\database\\nurses.txt";
+        this.patientsFilePath = rootDir + "/database/patients.txt";
+        this.doctorsFilePath = rootDir + "/database/doctors.txt";
+        this.nursesFilePath = rootDir + "/database/nurses.txt";
 
-        try{
-            this.patientsOStream = new FileWriter(this.patientsFilePath, true);
-            this.doctorsOStream = new FileWriter(this.doctorsFilePath, true);
-            this.nursesOStream = new FileWriter(this.nursesFilePath, true);
-
-            this.patientsIStream = new FileReader(this.patientsFilePath);
-            this.doctorsIStream = new FileReader(this.doctorsFilePath);
-            this.nursesIStream = new FileReader(this.nursesFilePath);
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-        }
+        this.openStreams();
     }
 
 
@@ -104,6 +93,7 @@ public class DataBaseIO {
         int length = 0;
 
         FileReader istream;
+        this.restart();
 
         switch(userGroupCh) {
             case 'p':
@@ -151,7 +141,7 @@ public class DataBaseIO {
 
     public void appendPatient(String str) {
         try {
-            this.patientsOStream.write("\n" + str);
+            this.patientsOStream.write(str);
             this.patientsOStream.flush();
         } catch (IOException e) {
             e.printStackTrace();
@@ -162,7 +152,10 @@ public class DataBaseIO {
         try {
             String[] allPatients = this.readArrayByUserGroup('p');
 
-            if(insertIndex >= allPatients.length || insertIndex < 0) {
+            if(insertIndex == allPatients.length) {
+                this.appendPatient("\n" + str);
+            }
+            else if(insertIndex > allPatients.length || insertIndex < 0) {
                 logger.error("Incorrect patient (insert) index");
             }
             else {
@@ -170,14 +163,24 @@ public class DataBaseIO {
 
                 for(int i = 0; i < allPatients.length; i ++) {
                     if(insertIndex == i) {
-                        this.appendPatient(str + '\n');
+                        if(insertIndex == 0) {
+                            this.appendPatient(str);
+                        }
+                        else {
+                            this.appendPatient("\n" + str);
+                        }
                     }
 
-                    if(i != allPatients.length - 1) {
-                        this.appendPatient(allPatients[i] + '\n');
+                    if(i == 0) {
+                        if(insertIndex == 0) {
+                            this.appendPatient("\n" + allPatients[i]);
+                        }
+                        else {
+                            this.appendPatient(allPatients[i]);
+                        }
                     }
                     else {
-                        this.appendPatient(allPatients[i]);
+                        this.appendPatient("\n" + allPatients[i]);
                     }
                 }
             }
@@ -199,16 +202,16 @@ public class DataBaseIO {
 
                 for(int i = 0; i < allPatients.length; i ++) {
                     if(removedIndex != i) {
-                        if(i + 1 == removedIndex && removedIndex == allPatients.length - 1) {
-                            this.appendPatient(allPatients[i]);
-                        }
-                        else {
-                            if(i != allPatients.length - 1) {
-                                this.appendPatient(allPatients[i] + '\n');
-                            }
-                            else {
+                        if(i != 0) {
+                            if(i == 1 && removedIndex == 0) {
                                 this.appendPatient(allPatients[i]);
                             }
+                            else {
+                                this.appendPatient("\n" + allPatients[i]);
+                            }
+                        }
+                        else {
+                            this.appendPatient(allPatients[i]);
                         }
                     }
                 }
@@ -234,7 +237,7 @@ public class DataBaseIO {
 
     public void appendDoctor(String str) {
         try {
-            this.doctorsOStream.write("\n" + str);
+            this.doctorsOStream.write(str);
             this.doctorsOStream.flush();
         } catch (IOException e) {
             e.printStackTrace();
@@ -245,7 +248,10 @@ public class DataBaseIO {
         try {
             String[] allDoctors = this.readArrayByUserGroup('d');
 
-            if(insertIndex >= allDoctors.length || insertIndex < 0) {
+            if(insertIndex == allDoctors.length) {
+                this.appendDoctor("\n" + str);
+            }
+            else if(insertIndex > allDoctors.length || insertIndex < 0) {
                 logger.error("Incorrect doctor (insert) index");
             }
             else {
@@ -253,14 +259,24 @@ public class DataBaseIO {
 
                 for(int i = 0; i < allDoctors.length; i ++) {
                     if(insertIndex == i) {
-                        this.appendDoctor(str + '\n');
+                        if(insertIndex == 0) {
+                            this.appendDoctor(str);
+                        }
+                        else {
+                            this.appendDoctor("\n" + str);
+                        }
                     }
 
-                    if(i != allDoctors.length - 1) {
-                        this.appendDoctor(allDoctors[i] + '\n');
+                    if(i == 0) {
+                        if(insertIndex == 0) {
+                            this.appendDoctor("\n" + allDoctors[i]);
+                        }
+                        else {
+                            this.appendDoctor(allDoctors[i]);
+                        }
                     }
                     else {
-                        this.appendDoctor(allDoctors[i]);
+                        this.appendDoctor("\n" + allDoctors[i]);
                     }
                 }
             }
@@ -282,16 +298,16 @@ public class DataBaseIO {
 
                 for(int i = 0; i < allDoctors.length; i ++) {
                     if(removedIndex != i) {
-                        if(i + 1 == removedIndex && removedIndex == allDoctors.length - 1) {
-                            this.appendDoctor(allDoctors[i]);
-                        }
-                        else {
-                            if(i != allDoctors.length - 1) {
-                                this.appendDoctor(allDoctors[i] + '\n');
-                            }
-                            else {
+                        if(i != 0) {
+                            if(i == 1 && removedIndex == 0) {
                                 this.appendDoctor(allDoctors[i]);
                             }
+                            else {
+                                this.appendDoctor("\n" + allDoctors[i]);
+                            }
+                        }
+                        else {
+                            this.appendDoctor(allDoctors[i]);
                         }
                     }
                 }
@@ -317,7 +333,7 @@ public class DataBaseIO {
 
     public void appendNurse(String str) {
         try {
-            this.nursesOStream.write("\n" + str);
+            this.nursesOStream.write(str);
             this.nursesOStream.flush();
         } catch (IOException e) {
             e.printStackTrace();
@@ -328,7 +344,10 @@ public class DataBaseIO {
         try {
             String[] allNurses = this.readArrayByUserGroup('n');
 
-            if(insertIndex >= allNurses.length || insertIndex < 0) {
+            if(insertIndex == allNurses.length) {
+                this.appendNurse("\n" + str);
+            }
+            else if(insertIndex > allNurses.length || insertIndex < 0) {
                 logger.error("Incorrect nurse (insert) index");
             }
             else {
@@ -336,14 +355,24 @@ public class DataBaseIO {
 
                 for(int i = 0; i < allNurses.length; i ++) {
                     if(insertIndex == i) {
-                        this.appendNurse(str + '\n');
+                        if(insertIndex == 0) {
+                            this.appendNurse(str);
+                        }
+                        else {
+                            this.appendNurse("\n" + str);
+                        }
                     }
 
-                    if(i != allNurses.length - 1) {
-                        this.appendNurse(allNurses[i] + '\n');
+                    if(i == 0) {
+                        if(insertIndex == 0) {
+                            this.appendNurse("\n" + allNurses[i]);
+                        }
+                        else {
+                            this.appendNurse(allNurses[i]);
+                        }
                     }
                     else {
-                        this.appendNurse(allNurses[i]);
+                        this.appendNurse("\n" + allNurses[i]);
                     }
                 }
             }
@@ -365,16 +394,16 @@ public class DataBaseIO {
 
                 for(int i = 0; i < allNurses.length; i ++) {
                     if(removedIndex != i) {
-                        if(i + 1 == removedIndex && removedIndex == allNurses.length - 1) {
-                            this.appendNurse(allNurses[i]);
-                        }
-                        else {
-                            if(i != allNurses.length - 1) {
-                                this.appendNurse(allNurses[i] + '\n');
-                            }
-                            else {
+                        if(i != 0) {
+                            if(i == 1 && removedIndex == 0) {
                                 this.appendNurse(allNurses[i]);
                             }
+                            else {
+                                this.appendNurse("\n" + allNurses[i]);
+                            }
+                        }
+                        else {
+                            this.appendNurse(allNurses[i]);
                         }
                     }
                 }
@@ -394,6 +423,29 @@ public class DataBaseIO {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+
+
+    public void openStreams() {
+        try {
+            this.patientsOStream = new FileWriter(this.patientsFilePath, true);
+            this.doctorsOStream = new FileWriter(this.doctorsFilePath, true);
+            this.nursesOStream = new FileWriter(this.nursesFilePath, true);
+
+            this.patientsIStream = new FileReader(this.patientsFilePath);
+            this.doctorsIStream = new FileReader(this.doctorsFilePath);
+            this.nursesIStream = new FileReader(this.nursesFilePath);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
+    public void restart() {
+        this.shutdown();
+        this.openStreams();
     }
 
 
