@@ -18,8 +18,8 @@ public class Main {
             e.printStackTrace();
         }*/
 
-
         DoctorDB doctorDB = new DoctorDB();
-        System.out.println(doctorDB.getDepartmentHead().toString());
+        Doctor head = doctorDB.getDoctor("Nikolai", "Grachev");
+        System.out.println(head.getPatientAppointments());
     }
 }

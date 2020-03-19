@@ -10,7 +10,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class PatientDB {
-    private Patient[] getAllPatients() {
+    public Patient[] getAllPatients() {
         DataBaseIO dbio = new DataBaseIO();
 
         try {

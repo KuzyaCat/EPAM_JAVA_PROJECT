@@ -1,6 +1,11 @@
 package main.java.users.stuff;
 
+import main.java.components.Appointment;
+import main.java.components.Treatment;
+import main.java.users.Patient;
 import main.java.users.User;
+import main.java.usersdb.DoctorDB;
+import main.java.usersdb.PatientDB;
 
 public class Doctor extends User {
     String department;
@@ -16,6 +21,38 @@ public class Doctor extends User {
         super(user.getName(), user.getSurname(), user.getAge(), user.getLogin(), user.getPassword());
         this.department = department;
         this.isHeadOfDepartment = isHeadOfDepartment;
+    }
+
+    public String showProfile() {
+        return this.getName() + " " +
+                this.getSurname() + '\n' +
+                this.getAge() + " years old\n" +
+                "Department: " + this.getDepartment() + '\n';
+    }
+
+    public void setAppointmentToPatient(Patient patient, Appointment appointment) {
+        PatientDB patientDB = new PatientDB();
+        patientDB.writeAppointment(patient, appointment);
+    }
+
+    public void setTreatmentToPatient(Patient patient, Treatment treatment) {
+        PatientDB patientDB = new PatientDB();
+        patientDB.writeTreatment(patient, treatment);
+    }
+
+    public void setDiagnoseToPatient(Patient patient, String diagnose) {
+        PatientDB patientDB = new PatientDB();
+        patientDB.writeDiagnose(patient, diagnose);
+    }
+
+    public void setRecoverToPatient(Patient patient, boolean isRecovered) {
+        PatientDB patientDB = new PatientDB();
+        patientDB.writeIsRecovered(patient, isRecovered);
+    }
+
+    public String getPatientAppointments() {
+        DoctorDB doctorDB = new DoctorDB();
+        return doctorDB.getAppointments(this);
     }
 
     public Doctor() {

@@ -1,7 +1,12 @@
 package main.java.usersdb;
 
+import main.java.components.Appointment;
 import main.java.controllers.resource_controllers.DataBaseIO;
+import main.java.users.Patient;
 import main.java.users.stuff.Doctor;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class DoctorDB {
     private Doctor[] getAllDoctors() {
@@ -24,6 +29,17 @@ public class DoctorDB {
         throw new NullPointerException("Cannot read doctors");
     }
 
+    private int getIndex(Doctor doctor) {
+        Doctor[] doctors = this.getAllDoctors();
+
+        for (int i = 0; i < doctors.length; i += 1) {
+            if (doctors[i].getName().equals(doctor.getName()) && doctors[i].getSurname().equals(doctor.getSurname())) {
+                return i;
+            }
+        }
+        throw new IllegalArgumentException("User not found");
+    }
+
     public Doctor getDoctor(String name, String surname) {
         Doctor[] doctors = this.getAllDoctors();
 
@@ -44,5 +60,27 @@ public class DoctorDB {
             }
         }
         throw new IllegalArgumentException("User not found");
+    }
+
+    public String getAppointments(Doctor doctor) {
+        PatientDB patientDB = new PatientDB();
+        Patient[] patients = patientDB.getAllPatients();
+        StringBuilder appointmentsStr = new StringBuilder();
+        System.out.println(doctor.toString());
+
+        for (int i = 0; i < patients.length; i += 1) {
+            Appointment[] iAppointments = patients[i].getAppointments();
+            for (Appointment iAppointment : iAppointments) {
+                if (iAppointment.getDoctor().getName().equals(doctor.getName()) &&
+                        iAppointment.getDoctor().getSurname().equals(doctor.getSurname())) {
+                    appointmentsStr.append(patients[i].getName()).append(" ").append(patients[i].getSurname()).append("; ");
+                }
+            }
+        }
+        if (appointmentsStr.length() == 0) {
+            return "No appointments";
+        }
+
+        return String.valueOf(appointmentsStr);
     }
 }
