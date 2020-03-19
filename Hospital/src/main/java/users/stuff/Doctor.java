@@ -26,6 +26,10 @@ public class Doctor extends User {
         return department;
     }
 
+    public boolean isHeadOfDepartment() {
+        return isHeadOfDepartment;
+    }
+
     @Override
     public String toString() {
         return "[" + super.toString() + "]" + " " + this.department + " " + this.isHeadOfDepartment;

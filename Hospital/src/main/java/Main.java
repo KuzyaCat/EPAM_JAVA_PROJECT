@@ -5,6 +5,7 @@ import main.java.controllers.resource_controllers.DataBaseIO;
 import main.java.users.Patient;
 import main.java.users.stuff.Doctor;
 import main.java.users.stuff.Nurse;
+import main.java.usersdb.DoctorDB;
 import main.java.usersdb.PatientDB;
 import main.java.controllers.resource_controllers.Authorizer;
 
@@ -18,8 +19,7 @@ public class Main {
         }*/
 
 
-        PatientDB patientDB = new PatientDB();
-        Patient patient = patientDB.getPatient("Petya", "Smirnov");
-        patientDB.writeIsRecovered(patient, true);
+        DoctorDB doctorDB = new DoctorDB();
+        System.out.println(doctorDB.getDepartmentHead().toString());
     }
 }
