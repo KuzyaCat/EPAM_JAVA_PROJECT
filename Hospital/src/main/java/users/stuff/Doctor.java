@@ -30,11 +30,6 @@ public class Doctor extends User {
                 "Department: " + this.getDepartment() + '\n';
     }
 
-    public void setAppointmentToPatient(Patient patient, Appointment appointment) {
-        PatientDB patientDB = new PatientDB();
-        patientDB.writeAppointment(patient, appointment);
-    }
-
     public void setTreatmentToPatient(Patient patient, Treatment treatment) {
         PatientDB patientDB = new PatientDB();
         patientDB.writeTreatment(patient, treatment);

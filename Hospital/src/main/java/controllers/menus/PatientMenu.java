@@ -71,7 +71,7 @@ public class PatientMenu {
         } while (variant != 6);
     }
 
-    public void appointMenu() {
+    private void appointMenu() {
         Scanner in = new Scanner(System.in);
         System.out.println("Write doctor name");
         String name = in.nextLine();
