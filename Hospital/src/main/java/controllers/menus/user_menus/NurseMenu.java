@@ -1,4 +1,4 @@
-package main.java.controllers.menus;
+package main.java.controllers.menus.user_menus;
 
 import main.java.components.Treatment;
 import main.java.users.stuff.Nurse;
