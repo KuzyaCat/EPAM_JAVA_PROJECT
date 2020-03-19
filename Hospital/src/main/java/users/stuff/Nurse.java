@@ -1,6 +1,9 @@
 package main.java.users.stuff;
 
+import main.java.components.Treatment;
+import main.java.users.Patient;
 import main.java.users.User;
+import main.java.usersdb.PatientDB;
 
 public class Nurse extends User {
     public Nurse(String name, String surname, int age, String login, String password){
@@ -15,8 +18,15 @@ public class Nurse extends User {
         super("", "", 0, "", "");
     }
 
-    public void doTreatment(){
-        System.out.println("Лечение назначено");
+    public void setTreatmentToPatient(Patient patient, Treatment treatment) {
+        PatientDB patientDB = new PatientDB();
+        patientDB.writeTreatment(patient, treatment);
+    }
+
+    public String showProfile() {
+        return this.getName() + " " +
+                this.getSurname() + '\n' +
+                this.getAge() + " years old\n";
     }
 
     @Override

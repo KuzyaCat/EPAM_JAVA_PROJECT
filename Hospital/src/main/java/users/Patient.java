@@ -4,6 +4,8 @@ import main.java.components.Appointment;
 import main.java.components.Treatment;
 import main.java.users.User;
 
+import java.util.Arrays;
+
 public class Patient extends User {
     private Appointment[] appointments;
     private Treatment[] treatments;
@@ -56,6 +58,15 @@ public class Patient extends User {
 
     public void setTreatments(Treatment[] treatments) {
         this.treatments = treatments;
+    }
+
+    public String showProfile() {
+        return this.getName() + " " +
+                this.getSurname() + '\n' +
+                this.getAge() + " years old\n" +
+                "Appointments: " + Arrays.toString(this.appointments) + '\n' +
+                "Treatments: " + Arrays.toString(this.treatments) + '\n' +
+                "Diagnoses: " + Arrays.toString(this.diagnoses) + '\n';
     }
 
     @Override
