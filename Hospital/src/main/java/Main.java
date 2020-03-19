@@ -2,6 +2,7 @@ package main.java;
 
 import main.java.components.Appointment;
 import main.java.controllers.menus.DoctorMenu;
+import main.java.controllers.menus.NurseMenu;
 import main.java.controllers.menus.PatientMenu;
 import main.java.controllers.resource_controllers.DataBaseIO;
 import main.java.users.Patient;
@@ -9,6 +10,7 @@ import main.java.users.leadership.ChiefPhysician;
 import main.java.users.stuff.Doctor;
 import main.java.users.stuff.Nurse;
 import main.java.usersdb.DoctorDB;
+import main.java.usersdb.NurseDB;
 import main.java.usersdb.PatientDB;
 import main.java.controllers.resource_controllers.Authorizer;
 
@@ -25,8 +27,12 @@ public class Main {
         PatientMenu menu = new PatientMenu(patientDB.getPatient("Mihail", "Sobolev"));
         menu.initMenu();*/
 
-        DoctorDB doctorDB = new DoctorDB();
+        /*DoctorDB doctorDB = new DoctorDB();
         DoctorMenu menu = new DoctorMenu(doctorDB.getDoctor("Gennadiy", "Gorin"));
+        menu.initMenu();*/
+
+        NurseDB nurseDB = new NurseDB();
+        NurseMenu menu = new NurseMenu(nurseDB.getNurse("Nina", "Nikitishna"));
         menu.initMenu();
     }
 }
