@@ -5,7 +5,7 @@ import main.java.users.stuff.Doctor;
 import main.java.users.stuff.Nurse;
 
 public class NurseDB {
-    private Nurse[] getAllNurses() {
+    public Nurse[] getAllNurses() {
         DataBaseIO dbio = new DataBaseIO();
 
         try {

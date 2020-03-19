@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DoctorDB {
-    private Doctor[] getAllDoctors() {
+    public Doctor[] getAllDoctors() {
         DataBaseIO dbio = new DataBaseIO();
 
         try {
