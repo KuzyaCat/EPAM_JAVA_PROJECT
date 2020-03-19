@@ -1,6 +1,7 @@
 package main.java;
 
 import main.java.components.Appointment;
+import main.java.controllers.menus.PatientMenu;
 import main.java.controllers.resource_controllers.DataBaseIO;
 import main.java.users.Patient;
 import main.java.users.leadership.ChiefPhysician;
@@ -19,9 +20,8 @@ public class Main {
             e.printStackTrace();
         }*/
 
-        DoctorDB doctorDB = new DoctorDB();
-        Doctor newHead = doctorDB.getDoctor("Nikolai", "Grachev");
-        ChiefPhysician chiefPhysician = new ChiefPhysician("Greg", "House", 50, "drhouse", "drhouse");
-        chiefPhysician.appointDepHead(newHead);
+        PatientDB patientDB = new PatientDB();
+        PatientMenu menu = new PatientMenu(patientDB.getPatient("Mihail", "Sobolev"));
+        menu.initMenu();
     }
 }
