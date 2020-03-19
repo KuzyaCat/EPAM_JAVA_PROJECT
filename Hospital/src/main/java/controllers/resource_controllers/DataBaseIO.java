@@ -151,7 +151,7 @@ public class DataBaseIO {
 
     public void appendPatient(String str) {
         try {
-            this.patientsOStream.write(str);
+            this.patientsOStream.write("\n" + str);
             this.patientsOStream.flush();
         } catch (IOException e) {
             e.printStackTrace();
@@ -234,7 +234,7 @@ public class DataBaseIO {
 
     public void appendDoctor(String str) {
         try {
-            this.doctorsOStream.write(str);
+            this.doctorsOStream.write("\n" + str);
             this.doctorsOStream.flush();
         } catch (IOException e) {
             e.printStackTrace();
@@ -317,7 +317,7 @@ public class DataBaseIO {
 
     public void appendNurse(String str) {
         try {
-            this.nursesOStream.write(str);
+            this.nursesOStream.write("\n" + str);
             this.nursesOStream.flush();
         } catch (IOException e) {
             e.printStackTrace();

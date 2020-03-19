@@ -59,6 +59,24 @@ public class User {
         return new User(strArr[0], strArr[1], age, strArr[3], strArr[4]);
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if(o == this) {
+            return true;
+        }
+
+        if(!(o instanceof User)) {
+            return false;
+        }
+
+        User user = (User) o;
+        return (this.name == user.name &&
+                this.surname == user.surname &&
+                this.age == user.age &&
+                this.login == user.login &&
+                this.password == user.password);
+    }
+
     public void logOut(){
         System.out.println("Пользователь вышел из приложения");
     }
