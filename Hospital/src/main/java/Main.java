@@ -3,6 +3,7 @@ package main.java;
 import main.java.components.Appointment;
 import main.java.controllers.resource_controllers.DataBaseIO;
 import main.java.users.Patient;
+import main.java.users.leadership.ChiefPhysician;
 import main.java.users.stuff.Doctor;
 import main.java.users.stuff.Nurse;
 import main.java.usersdb.DoctorDB;
@@ -19,7 +20,8 @@ public class Main {
         }*/
 
         DoctorDB doctorDB = new DoctorDB();
-        Doctor head = doctorDB.getDoctor("Nikolai", "Grachev");
-        System.out.println(head.getPatientAppointments());
+        Doctor newHead = doctorDB.getDoctor("Nikolai", "Grachev");
+        ChiefPhysician chiefPhysician = new ChiefPhysician("Greg", "House", 50, "drhouse", "drhouse");
+        chiefPhysician.appointDepHead(newHead);
     }
 }

@@ -63,6 +63,10 @@ public class Doctor extends User {
         return department;
     }
 
+    public void setHeadOfDepartment(boolean headOfDepartment) {
+        isHeadOfDepartment = headOfDepartment;
+    }
+
     public boolean isHeadOfDepartment() {
         return isHeadOfDepartment;
     }

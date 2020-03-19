@@ -62,6 +62,21 @@ public class DoctorDB {
         throw new IllegalArgumentException("User not found");
     }
 
+    public void editDoctor(Doctor editedDoctor) {
+        DataBaseIO dbio = new DataBaseIO();
+        int doctorToEditIndex = this.getIndex(editedDoctor);
+        dbio.removeDoctor(doctorToEditIndex);
+        dbio.insertDoctor(editedDoctor.toString(), doctorToEditIndex);
+    }
+
+    public void writeIsDepartmentHead(Doctor doctor) {
+        Doctor head = this.getDepartmentHead();
+        head.setHeadOfDepartment(false);
+        editDoctor(head);
+        doctor.setHeadOfDepartment(true);
+        editDoctor(doctor);
+    }
+
     public String getAppointments(Doctor doctor) {
         PatientDB patientDB = new PatientDB();
         Patient[] patients = patientDB.getAllPatients();
