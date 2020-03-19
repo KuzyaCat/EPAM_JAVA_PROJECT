@@ -19,7 +19,9 @@ public class GregorianDate {
         this(1970, 1, 1);
     }
 
-    public Date getDate() {
+    public Date getDate()throws Exception {
+        if(this.year < 0 || (this.month < 0 || this.month > 12) || (this.dayOfMonth > 31 || this.dayOfMonth < 0))
+            throw new Exception("Некорректно введена дата");
         Calendar calendar = new GregorianCalendar(this.year, this.month , this.dayOfMonth);
         return calendar.getTime();
     }
