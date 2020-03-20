@@ -128,6 +128,6 @@ public class Authorizer {
         boolean recovered = true;
 
         Patient newPatient = new Patient(newUser, appointments, treatments, diagnoses, recovered);
-        this.dbio.appendPatient(newPatient.toString());
+        this.dbio.appendPatient("\n" + newPatient.toString());
     }
 }

@@ -82,7 +82,7 @@ public class PatientMenu {
         System.out.println("Write a year of the appointment");
         int year = in.nextInt();
         System.out.println("Write a month of the appointment");
-        int month = in.nextInt() + 1;
+        int month = in.nextInt();
         System.out.println("Write a day of the appointment");
         int day = in.nextInt();
         Appointment appointment = new Appointment(doctor, doctor.getDepartment(), new GregorianDate(year, month, day));

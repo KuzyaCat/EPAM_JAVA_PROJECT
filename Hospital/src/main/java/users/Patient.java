@@ -44,6 +44,8 @@ public class Patient extends User {
         return treatments;
     }
 
+    public boolean isRecovered() { return recovered; }
+
     public void setAppointments(Appointment[] appointments) {
         this.appointments = appointments;
     }

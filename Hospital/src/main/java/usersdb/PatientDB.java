@@ -61,33 +61,48 @@ public class PatientDB {
 
     public void writeAppointment(Patient patient, Appointment appointment) {
         Appointment[] appointments = patient.getAppointments();
+        Appointment[] newAppointments = new Appointment[appointments.length + 1];
 
-        List<Appointment> appointmentsList = new ArrayList<>();
-        Collections.addAll(appointmentsList, appointments);
-        appointmentsList.add(appointment);
-        appointments = appointmentsList.toArray(appointments);
-        patient.setAppointments(appointments);
+        int i = 0;
+        for(Appointment app: appointments) {
+            newAppointments[i] = app;
+            i++;
+        }
+        newAppointments[i] = appointment;
+
+        patient.setAppointments(newAppointments);
+        if(patient.isRecovered()) {
+            patient.setRecovered(false);
+        }
         this.editPatient(patient);
     }
 
     public void writeTreatment(Patient patient, Treatment treatment) {
         Treatment[] treatments = patient.getTreatments();
+        Treatment[] newTreatments = new Treatment[treatments.length + 1];
 
-        List<Treatment> treatmentsList = new ArrayList<>();
-        Collections.addAll(treatmentsList, treatments);
-        treatmentsList.add(treatment);
-        treatments = treatmentsList.toArray(treatments);
+        int i = 0;
+        for(Treatment tr: treatments) {
+            newTreatments[i] = tr;
+            i++;
+        }
+        newTreatments[i] = treatment;
+
         patient.setTreatments(treatments);
         this.editPatient(patient);
     }
 
     public void writeDiagnose(Patient patient, String diagnose) {
         String[] diagnoses = patient.getDiagnoses();
+        String[] newDiagnoses = new String[diagnoses.length + 1];
 
-        List<String> diagnosesList = new ArrayList<>();
-        Collections.addAll(diagnosesList, diagnoses);
-        diagnosesList.add(diagnose);
-        diagnoses = diagnosesList.toArray(diagnoses);
+        int i = 0;
+        for(String diag: diagnoses) {
+            newDiagnoses[i] = diag;
+            i++;
+        }
+        newDiagnoses[i] = diagnose;
+
         patient.setDiagnoses(diagnoses);
         this.editPatient(patient);
     }

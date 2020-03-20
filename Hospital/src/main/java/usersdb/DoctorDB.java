@@ -4,6 +4,7 @@ import main.java.components.Appointment;
 import main.java.controllers.resource_controllers.DataBaseIO;
 import main.java.users.Patient;
 import main.java.users.stuff.Doctor;
+import main.java.usersdb.PatientDB;
 
 import java.util.ArrayList;
 import java.util.List;
