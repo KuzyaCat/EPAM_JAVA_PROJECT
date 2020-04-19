@@ -74,6 +74,13 @@
          <artifactId>cobertura-maven-plugin</artifactId>
          <version>2.7</version>
         </dependency>
+        <dependency>
+          <groupId>com.sun</groupId>
+          <artifactId>tools</artifactId>
+          <version>1.6</version>
+          <scope>system</scope>
+          <systemPath>C:\Program Files\Java\jdk1.6.0_29\lib\tools.jar</systemPath>
+        </dependency>
     </dependencies>
 
     
