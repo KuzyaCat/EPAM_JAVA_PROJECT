@@ -75,11 +75,16 @@
          <version>2.7</version>
         </dependency>
         <dependency>
-          <groupId>com.sun</groupId>
-          <artifactId>tools</artifactId>
-          <version>1.6</version>
-          <scope>system</scope>
-          <systemPath>C:\Program Files\Java\jdk1.6.0_29\lib\tools.jar</systemPath>
+         <groupId>com.github.markusbernhardt</groupId>
+         <artifactId>robotframework-selenium2library-java</artifactId>
+         <version>1.4.0.7</version>
+         <scope>test</scope>
+         <exclusions>
+           <exclusion>
+            <artifactId>tools</artifactId>
+            <groupId>com.sun</groupId>
+           </exclusion>
+         </exclusions>  
         </dependency>
     </dependencies>
 
