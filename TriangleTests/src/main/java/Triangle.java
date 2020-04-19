@@ -1,16 +1,36 @@
 class Triangle {
-    private float firstSide;
-    private float secondSide;
-    private float thirdSide;
 
-    public void Triangle(float firstSide, float secondSide, float thirdSide) {
+    private double firstSide;
+    private double secondSide;
+    private double thirdSide;
+
+    public void Triangle(double firstSide, double secondSide, double thirdSide) {
         this.firstSide = firstSide;
         this.secondSide = secondSide;
         this.thirdSide = thirdSide;
     }
 
-    public boolean isTriangle(float a,float b, float c){
-        return (a + b) > c && (a + c) > b && (b + c) > a;
+    public boolean isValidSides(double a, double b, double c) throws TriangleException{
 
+        if (a == 0 || b == 0 || c == 0){
+            throw new TriangleException("Треугольник не может быть создан. Есть нулевая сторона");
+        }
+        else if(a < 0 || b < 0 || c < 0){
+            throw new TriangleException("Треугольника с отрицательными сторонами не существует");
+        }
+        return ((a + b) > c && (a + c) > b && (b + c) > a);
     }
+
+    public String typeOfTriangle(double a, double b, double c) throws TriangleException{
+        Triangle triangle = new Triangle();
+        if(triangle.isValidSides(a,b,c)) {
+            if (a == b && b == c) return "EQUILATERAL";
+            if (a == b || b == c || a == c) return "ISOSCELES";
+            if( (a*a + b*b == c*c) || (a*a + c*c == b*b) || (c*c + b*b == a*a)) return "RIGHT";
+            return "SCALENE";
+        }
+        else
+            throw new TriangleException("Это даже не треугольник.....");
+    }
+
 }

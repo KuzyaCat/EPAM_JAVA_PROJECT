@@ -1,5 +1,6 @@
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 public class TriangleTest {
@@ -10,90 +11,103 @@ public class TriangleTest {
         triangle = new Triangle();
     }
 
-    @Test
-    public void existingOfEquilateralTriangle(){
-        Assert.assertTrue(triangle.isTriangle(1,1,1));
-        Assert.assertTrue(triangle.isTriangle(2,2,2));
-        Assert.assertTrue(triangle.isTriangle(52315231,52315231,52315231));
-        Assert.assertTrue(triangle.isTriangle(1111231252,1111231252,1111231252));
-    }
-    @Test
-    public void existingOfScaleneTriangle(){
-        Assert.assertTrue(triangle.isTriangle(3,4,5));
-        Assert.assertTrue(triangle.isTriangle(7,9,10));
-        Assert.assertTrue(triangle.isTriangle(16,17,18));
-        Assert.assertTrue(triangle.isTriangle(21,26,35));
-    }
-    @Test
-    public void existingOfIsoscelesTriangle(){
-        Assert.assertTrue(triangle.isTriangle(5,5,2));
-        Assert.assertTrue(triangle.isTriangle(1235,1235,212));
-        Assert.assertTrue(triangle.isTriangle(55143545,55143545,12));
-    }
-    @Test
-    public void checkNegativeSides(){
-        Assert.assertTrue(triangle.isTriangle(3, 4, 5));
-        Assert.assertTrue(triangle.isTriangle(6, 8, 10));
-        Assert.assertTrue(triangle.isTriangle(7, 8, 9));
-        Assert.assertTrue(triangle.isTriangle(-7, -18, 19));
-        Assert.assertTrue(triangle.isTriangle(-7, -11, -12));
-        Assert.assertTrue(triangle.isTriangle(7, -13, -15));
-        Assert.assertTrue(triangle.isTriangle(7, 15, -21));
-        Assert.assertTrue(triangle.isTriangle(7, -13, 8));
+    @DataProvider
+    private Object[][] sidesAreZero() {
+        return new Object[][] { { 0, 1, 1 },
+                { 1, 1, 1}, {0,1,0}, {1,1,0}, {0,0,1}, {1,0,0}, {1,0,1}, {0,0,0} };
     }
 
-    @Test
-    public void nullSide(){
-        Assert.assertFalse(triangle.isTriangle(1,1,0));
-        Assert.assertFalse(triangle.isTriangle(0,1,1));
-        Assert.assertFalse(triangle.isTriangle(1,0,1));
-        Assert.assertFalse(triangle.isTriangle(0,0,1));
-        Assert.assertFalse(triangle.isTriangle(1,0,0));
+    @DataProvider
+    private Object[][] negativeSides(){
+        return new Object[][] { {-1,2,2}, {1,1,1}, {-1, -2, 5}, {1,-4,7}, {-6,-3,-2} };
     }
 
-    @Test
-    public void noIllegalSides() {
-        Assert.assertFalse(triangle.isTriangle(0,0,0));
-    }
-    @Test
-    public void floatNumbers(){
-        Assert.assertTrue(triangle.isTriangle(1.24f, 2.48f, 3.14f));
-        Assert.assertTrue(triangle.isTriangle(2.48f, 4.96f, 6.28f));
-        Assert.assertTrue(triangle.isTriangle(3f, 4.78f, 5.24f));
-        Assert.assertTrue(triangle.isTriangle(1.24f, 2, 3.14f));
-        Assert.assertTrue(triangle.isTriangle(1.24f, 2.48f, 3));
-        Assert.assertTrue(triangle.isTriangle(1.24f, 2.48f, 3));
+    @DataProvider
+    private Object[][] doubleNumbers(){
+        return new Object[][] { {1.24,2.48,3.14}, {2.48,4.96,6.28}, {3, 4.78, 5.24}, {1.24, 2, 3.14}, {1.24, 2.48, 3}, {-1.24, 2.48, 3}};
     }
 
-    @Test
-    public void fractionNumbers(){
-        Assert.assertTrue(triangle.isTriangle(1/3f, 2/3f,3/4f ));
-        Assert.assertTrue(triangle.isTriangle(3/3f, 3/3f,4/4f ));
-        Assert.assertTrue(triangle.isTriangle(5/3f, 7/3f,6/4f ));
-        Assert.assertTrue(triangle.isTriangle(4, 12/3f,16/4f ));
-        Assert.assertTrue(triangle.isTriangle(8/3f, 3,4 ));
-        Assert.assertTrue(triangle.isTriangle(4, 12/3f,16/4f ));
+    @DataProvider
+    private Object[][] fractionNumbers(){
+        return new Object[][] { {1/3, 2/3, 3/4}, {3/3, 3/3, 4/4}, {5/3, 7/3, 6/4}, {8/3, 3, 4}, {4, 12/3, 16/4}, {-4, 12/3, 16/4} };
     }
 
-    @Test
-    public void bigSides(){
-        Assert.assertTrue(triangle.isTriangle(1111111111111111111111111f,1111111111111111111111111f,1111111111111111111111111f));
-        Assert.assertTrue(triangle.isTriangle(152135231521351345314f,152135231521351345314f,234523454354412F));
-        Assert.assertTrue(triangle.isTriangle(5653543623424524532342453245245F,5653543623424524532342453245245F,5653543623424524532342453245245F));
+    @DataProvider
+    private Object[][] bigSides(){
+        return new Object[][] { {1111111111111111111111111d,1111111111111111111111111d, 1111111111111111111111111d},
+                {152135231521351345314d,152135231521351345314d,234523454354412d}, {5653543623424524532342453245245d,5653543623424524532342453245245d,5653543623424524532342453245245d} };
     }
 
-    @Test
-    public void smallSides(){
-        Assert.assertTrue(triangle.isTriangle(0.0001f, 0.0001f, 0.0001f));
-        Assert.assertTrue(triangle.isTriangle(0.0000003f, 0.0000001f, 0.0000003f));
-        Assert.assertTrue(triangle.isTriangle(0.0000000003f, 0.0000000004f, 0.0000000005f));
+    @DataProvider
+    private Object[][] smallSides(){
+        return new Object[][] { {0.0001d, 0.0001d, 0.0001d}, {0.0000003d, 0.0000001d, 0.0000003d}, {0.0000000003d, 0.0000000004d, 0.0000000005d} };
     }
 
-    @Test
-    public void nullException() throws TriangleException {
-        triangle = null;
-        if (triangle == null) {
-            throw new TriangleException("Triangle is empty!");
-        }
+    @DataProvider
+    private Object[][] existingOfEquilateralTriangle(){
+        return new Object[][] { {0,1,1}, {2,2,2}, {12321,12321,12321 }};
     }
+
+    @DataProvider
+    private Object[][] existingOfIsoscelesTriangle(){
+        return new Object[][] { {5,5,2}, {1235,1235, 212}, {15,2,10}, {16,16,10} };
+    }
+
+    @DataProvider
+    private Object[][] existingOfScaleneTriangle(){
+        return new Object[][] { {3,4,5}, {7,9,10}, {16,17,18}, {21,26,35} };
+    }
+    @DataProvider
+    private Object[][] existingOfRightTriangle(){
+        return new Object[][] { {3,4,5}, {6,8,10}, {16,12,20} };
+    }
+
+    @Test(dataProvider = "sidesAreZero", expectedExceptions = { TriangleException.class })
+    public void nullSide(double a, double b, double c) throws TriangleException {
+        triangle.isValidSides(a,b,c);
+    }
+
+    @Test(dataProvider = "negativeSides", expectedExceptions = { TriangleException.class })
+    public void negativeSides(double a, double b, double c) throws TriangleException {
+        triangle.isValidSides(a,b,c);
+    }
+
+    @Test(dataProvider = "doubleNumbers")
+    public void doubleSides(double a, double b, double c) throws TriangleException {
+        triangle.isValidSides(a,b,c);
+    }
+
+    @Test(dataProvider = "fractionNumbers")
+    public void fractionSides(double a, double b, double c) throws TriangleException{
+        triangle.isValidSides(a,b,c);
+    }
+
+    @Test(dataProvider = "bigSides")
+    public void bigSides(double a, double b, double c) throws TriangleException{
+        triangle.isValidSides(a,b,c);
+    }
+
+    @Test(dataProvider = "smallSides")
+    public void smallSides(double a, double b, double c) throws TriangleException{
+        triangle.isValidSides(a,b,c);
+    }
+
+    @Test(dataProvider = "existingOfEquilateralTriangle")
+    public void equilateralTriangle(double a, double b, double c) throws TriangleException{
+        Assert.assertEquals(triangle.typeOfTriangle(a, b, c), "EQUILATERAL");
+    }
+    @Test(dataProvider = "existingOfIsoscelesTriangle")
+    public void isoscelesTriangle(double a, double b, double c) throws TriangleException{
+        Assert.assertEquals(triangle.typeOfTriangle(a,b,c), "ISOSCELES");
+    }
+
+    @Test(dataProvider = "existingOfScaleneTriangle")
+    public void scaleneTriangle(double a, double b, double c) throws TriangleException{
+        Assert.assertEquals(triangle.typeOfTriangle(a,b,c), "SCALENE");
+    }
+    @Test(dataProvider = "existingOfRightTriangle")
+    public void rightTriangle(double a, double b, double c) throws TriangleException{
+        Assert.assertEquals(triangle.typeOfTriangle(a,b,c), "RIGHT");
+    }
+
 }
