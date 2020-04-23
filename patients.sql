@@ -16,10 +16,10 @@ CREATE TABLE PATIENT
 );
 
 INSERT INTO PATIENT
-VALUES (1, 'Anatoliy', 'Tsoy', 55, 1);
+VALUES (1, 'Anatoliy', 'Tsoy', 55,'tsoyzhiv','kukushka', 1,true);
 
 INSERT INTO PATIENT
-VALUES (2, 'Sergey', 'Trofimov', 44, 2);
+VALUES (2, 'Sergey', 'Trofimov', 44,'konyachok','shashlichok', 2, false);
 
 
 CREATE TABLE NURSE 
@@ -38,10 +38,10 @@ CREATE TABLE NURSE
 );
 
 INSERT into Nurse
-values(1,'Mariya', 'Sharapova', 1);
+values(1,'Mariya', 'Sharapova','sugarpova','byumysweets', 1);
 
 INSERT into Nurse
-values(2,'Lyubov', 'Sharipova', 2);
+values(2,'Lyubov', 'Sharipova','lushar','qqqq', 2);
 
 CREATE TABLE DOCTOR 
 (
@@ -59,9 +59,9 @@ CREATE TABLE DOCTOR
 );
 
 Insert into DOCTOR
-values(1,'Boris', 'Levin', 1);
+values(1,'Boris', 'Levin','borlev','12345',1);
 Insert into DOCTOR
-values(2,'Semen', 'Lobanov', 2);
+values(2,'Semen', 'Lobanov','semlob', '54321',2);
 
 CREATE TABLE DIAGNOSE 
 (
