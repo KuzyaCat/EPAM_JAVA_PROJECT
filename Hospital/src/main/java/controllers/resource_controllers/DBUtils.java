@@ -69,7 +69,7 @@ public class DBUtils {
 
     public Doctor getDoctorsById(int doctorId) throws StreamIsClosedException {
         try {
-            String doctorsQuery = "SELECT * FROM DOCTORS WHERE ID_DOCTOR = " + doctorId;
+            String doctorsQuery = "SELECT * FROM DOCTOR WHERE ID_DOCTOR = " + doctorId;
             ResultSet resultSet = this.dbConnector.getQueryResultAsResultSet(doctorsQuery);
             resultSet.next();
 
@@ -95,9 +95,9 @@ public class DBUtils {
             String treatmentsQuery = "SELECT * FROM TREATMENT WHERE ID_PATIENT = " + id;
             ResultSet resultSet = this.dbConnector.getQueryResultAsResultSet(treatmentsQuery);
             while (resultSet.next()) {
-                String medicines = resultSet.getString("MEDICINES");
-                String operations = resultSet.getString("OPERATIONS");
-                String procedures = resultSet.getString("PROCEDURES");
+                String medicines = resultSet.getString("MEDICINE");
+                String operations = resultSet.getString("OPERATION");
+                String procedures = resultSet.getString("T_PROCEDURE");
 
                 treatments.add(new Treatment(medicines, operations, procedures));
             }

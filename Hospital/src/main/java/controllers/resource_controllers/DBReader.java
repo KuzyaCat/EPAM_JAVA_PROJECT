@@ -30,7 +30,7 @@ public class DBReader {
         DBUtils dbUtils = new DBUtils(this.dbConnector);
 
         ArrayList<Patient> allPatients = new ArrayList<Patient>();
-        String query = "SELECT * FROM Patients";
+        String query = "SELECT * FROM PATIENT";
         ResultSet resultSet = this.dbConnector.getQueryResultAsResultSet(query);
         while (resultSet.next()) {
             int id = resultSet.getInt("ID_PATIENT");

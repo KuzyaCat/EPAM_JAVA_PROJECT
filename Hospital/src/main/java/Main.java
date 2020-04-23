@@ -1,8 +1,16 @@
 package main.java;
 
+import controllers.resource_controllers.DBReader;
+import dbconnection.DBConnector;
+import dbconnection.exceptions.StreamIsClosedException;
+import dbconnection.exceptions.WrongQueryException;
 import main.java.controllers.menus.MainMenu;
 import main.java.controllers.menus.user_menus.NurseMenu;
 import main.java.usersdb.NurseDB;
+import main.java.users.Patient;
+
+import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class Main {
     public static void main(String[] args) {
@@ -18,6 +26,21 @@ public class Main {
         NurseMenu menu = new NurseMenu(nurseDB.getNurse("Nina", "Nikitishna"));
         menu.initMenu();*/
 
-        MainMenu mainMenu = new MainMenu();
+        //MainMenu mainMenu = new MainMenu();
+
+        DBConnector dbConnector = new DBConnector();
+        DBReader dbReader = new DBReader(dbConnector);
+        try {
+            ArrayList<Patient> allPatients = dbReader.getAllPatients();
+            for(Patient p: allPatients) {
+                System.out.println(p.toString());
+            }
+        } catch (WrongQueryException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (StreamIsClosedException e) {
+            e.printStackTrace();
+        }
     }
 }

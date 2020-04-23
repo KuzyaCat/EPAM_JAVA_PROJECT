@@ -7,9 +7,9 @@ import org.apache.logging.log4j.Logger;
 import java.sql.*;
 
 public class DBConnector {
-    private String url = "database";
-    private String user = "user";
-    private String password = "";
+    private String url = "localhost:3306";
+    private String user = "root";
+    private String password = "mysql123";
     private Connection connection;
 
     static Logger logger = LogManager.getLogger();
