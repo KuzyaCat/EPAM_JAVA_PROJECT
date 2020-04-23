@@ -89,10 +89,6 @@ public class DBUtils {
         throw new StreamIsClosedException();
     }
 
-    public Treatment parseIntoTreatment(String medicinesStr, String operationsStr, String proceduresStr) {
-        return (new Treatment()).parseString("{" + medicinesStr + "} {" + operationsStr + "} {" + proceduresStr + "}");
-    }
-
     public ArrayList<Treatment> getTreatmentsByPatientId(int id) throws StreamIsClosedException {
         try {
             ArrayList<Treatment> treatments = new ArrayList<Treatment>();
@@ -103,7 +99,7 @@ public class DBUtils {
                 String operations = resultSet.getString("OPERATIONS");
                 String procedures = resultSet.getString("PROCEDURES");
 
-                treatments.add(this.parseIntoTreatment(medicines, operations, procedures));
+                treatments.add(new Treatment(medicines, operations, procedures));
             }
 
             return treatments;

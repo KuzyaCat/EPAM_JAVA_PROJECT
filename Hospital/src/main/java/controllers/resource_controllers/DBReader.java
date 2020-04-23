@@ -13,7 +13,6 @@ import main.java.components.Treatment;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.StreamCorruptedException;
 import java.sql.*;
 import java.util.ArrayList;
 
