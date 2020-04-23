@@ -36,31 +36,16 @@ public class NurseMenu {
 
         PatientDB patientDB = new PatientDB();
 
-        System.out.println("How many medicines?");
-        String[] medicinesStr = new String[in.nextInt()];
-        in.nextLine();
-        for (int i = 0; i < medicinesStr.length; i += 1) {
-            System.out.println("Write the medicine number " + (i + 1));
-            medicinesStr[i] = in.nextLine();
-        }
+        System.out.println("Medicine: ");
+        String medicine = in.nextLine();
 
-        System.out.println("How many operations?");
-        String[] operationsStr = new String[in.nextInt()];
-        in.nextLine();
-        for (int i = 0; i < operationsStr.length; i += 1) {
-            System.out.println("Write the operation number " + (i + 1));
-            operationsStr[i] = in.nextLine();
-        }
+        System.out.println("Operation: ");
+        String operation = in.nextLine();
 
-        System.out.println("How many procedure?");
-        String[] proceduresStr = new String[in.nextInt()];
-        in.nextLine();
-        for (int i = 0; i < proceduresStr.length; i += 1) {
-            System.out.println("Write the procedure number " + (i + 1));
-            proceduresStr[i] = in.nextLine();
-        }
+        System.out.println("Procedure: ");
+        String procedure = in.nextLine();
 
-        Treatment treatment = new Treatment(medicinesStr, operationsStr, proceduresStr);
+        Treatment treatment = new Treatment(medicine, operation, procedure);
 
         this.nurse.setTreatmentToPatient(patientDB.getPatient(name, surname), treatment);
         System.out.println("Done");

@@ -33,4 +33,12 @@ public class DBConnector {
         }
         throw new WrongQueryException();
     }
+
+    public void closeStream() {
+        try {
+            this.connection.close();
+        } catch (SQLException e) {
+            logger.error(e.getMessage());
+        }
+    }
 }

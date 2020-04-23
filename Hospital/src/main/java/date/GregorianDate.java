@@ -15,6 +15,12 @@ public class GregorianDate {
         this.dayOfMonth = dayOfMonth;
     }
 
+    public GregorianDate(Date date) {
+        this.year = date.getYear();
+        this.month = date.getMonth();
+        this.dayOfMonth = date.getDay();
+    }
+
     public GregorianDate() {
         this(1970, 1, 1);
     }

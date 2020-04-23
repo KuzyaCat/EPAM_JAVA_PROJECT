@@ -61,7 +61,7 @@ public class PatientDB {
 
     public void writeAppointment(Patient patient, Appointment appointment) {
         Appointment[] appointments = patient.getAppointments();
-        List<Appointment> appointmentsList = new ArrayList<>();
+        List<Appointment> appointmentsList = new ArrayList<Appointment>();
         Collections.addAll(appointmentsList, appointments);
         appointmentsList.add(appointment);
         appointments = appointmentsList.toArray(appointments);
@@ -71,7 +71,7 @@ public class PatientDB {
 
     public void writeTreatment(Patient patient, Treatment treatment) {
         Treatment[] treatments = patient.getTreatments();
-        List<Treatment> treatmentsList = new ArrayList<>();
+        List<Treatment> treatmentsList = new ArrayList<Treatment>();
         Collections.addAll(treatmentsList, treatments);
         treatmentsList.add(treatment);
         treatments = treatmentsList.toArray(treatments);;
@@ -82,7 +82,7 @@ public class PatientDB {
 
     public void writeDiagnose(Patient patient, String diagnose) {
         String[] diagnoses = patient.getDiagnoses();
-        List<String> diagnosesList = new ArrayList<>();
+        List<String> diagnosesList = new ArrayList<String>();
         Collections.addAll(diagnosesList, diagnoses);
         diagnosesList.add(diagnose);
         diagnoses = diagnosesList.toArray(diagnoses);

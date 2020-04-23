@@ -4,6 +4,7 @@ import main.java.components.Appointment;
 import main.java.components.Treatment;
 import main.java.users.User;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Patient extends User {
@@ -17,6 +18,14 @@ public class Patient extends User {
         this.appointments = appointments;
         this.treatments = treatments;
         this.diagnoses = diagnoses;
+        this.recovered = recovered;
+    }
+
+    public Patient(String name, String surname, int age, String login, String password, ArrayList<Appointment> appointments, ArrayList<Treatment> treatments, ArrayList<String> diagnoses, boolean recovered){
+        super(name, surname, age, login, password);
+        this.appointments = appointments.toArray(new Appointment[0]);
+        this.treatments = treatments.toArray(new Treatment[0]);
+        this.diagnoses = diagnoses.toArray(new String[0]);
         this.recovered = recovered;
     }
 
