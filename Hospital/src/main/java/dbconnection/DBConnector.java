@@ -6,7 +6,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.sql.*;
 
-public class DataBaseIO {
+public class DBConnector {
     private String url = "database";
     private String user = "user";
     private String password = "";
