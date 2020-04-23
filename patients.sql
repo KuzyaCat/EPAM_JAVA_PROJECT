@@ -1,106 +1,143 @@
-﻿-- Exported from QuickDBD: https://www.quickdatabasediagrams.com/
--- Link to schema: https://app.quickdatabasediagrams.com/#/d/Sotdxt
--- NOTE! If you have used non-SQL datatypes in your design, you will have to change these here.
-
-
-CREATE TABLE `Patient` (
-    `ID_Patient` int  NOT NULL ,
-    `First_name` string  NOT NULL ,
-    `Second_name` string  NOT NULL ,
-    `Age` int  NOT NULL ,
-    `Doctor` string  NOT NULL ,
-    PRIMARY KEY (
-        `ID_Patient`
-    )
+CREATE TABLE PATIENT 
+(
+  ID_PATIENT INT NOT NULL 
+, FIRST_NAME VARCHAR(20) NOT NULL 
+, SECOND_NAME VARCHAR2(20) NOT NULL 
+, AGE INT NOT NULL 
+, DOCTOR_ID INT NOT NULL 
+, CONSTRAINT PATIENT_PK PRIMARY KEY 
+  (
+    ID_PATIENT 
+  )
+  ENABLE 
 );
 
-CREATE TABLE `Nurse` (
-    `ID_Nurse` int  NOT NULL ,
-    `First_name` string  NOT NULL ,
-    `Second_name` string  NOT NULL ,
-    `Patients_ID` int  NOT NULL ,
-    PRIMARY KEY (
-        `ID_Nurse`
-    )
+INSERT INTO PATIENT
+VALUES (1, 'Anatoliy', 'Tsoy', 55, 1);
+
+INSERT INTO PATIENT
+VALUES (2, 'Sergey', 'Trofimov', 44, 2);
+
+
+CREATE TABLE NURSE 
+(
+  ID_NURSE INT NOT NULL 
+, FIRST_NAME VARCHAR2(20) NOT NULL 
+, SECOND_NAME VARCHAR2(20) NOT NULL 
+, PATIENT_ID INT 
+, CONSTRAINT NURSE_PK PRIMARY KEY 
+  (
+    ID_NURSE 
+  )
+  ENABLE 
 );
 
-CREATE TABLE `Doctor` (
-    `ID_Doctor` int  NOT NULL ,
-    `First_name` string  NOT NULL ,
-    `Second_name` string  NOT NULL ,
-    `Patients_ID` int  NOT NULL ,
-    PRIMARY KEY (
-        `ID_Doctor`
-    )
+INSERT into Nurse
+values(1,'Mariya', 'Sharapova', 1);
+
+INSERT into Nurse
+values(2,'Lyubov', 'Sharipova', 2);
+
+CREATE TABLE DOCTOR 
+(
+  ID_DOCTOR INT NOT NULL 
+, FIRST_NAME VARCHAR2(20) NOT NULL 
+, SECOND_NAME VARCHAR2(20) NOT NULL 
+, PATIENT_ID INT NOT NULL 
+, CONSTRAINT DOCTOR_PK PRIMARY KEY 
+  (
+    ID_DOCTOR 
+  )
+  ENABLE 
 );
 
-CREATE TABLE `Diagnose` (
-    `ID_Diagnose` int  NOT NULL ,
-    `ID_Doctor` int  NOT NULL ,
-    `ID_Patient` int  NOT NULL ,
-    `Name_of_diagnose` string  NOT NULL ,
-    PRIMARY KEY (
-        `ID_Diagnose`
-    )
+Insert into DOCTOR
+values(1,'Boris', 'Levin', 1);
+Insert into DOCTOR
+values(2,'Semen', 'Lobanov', 2);
+
+CREATE TABLE DIAGNOSE 
+(
+  ID_DIAGNOSE INT NOT NULL 
+, DOCTOR_ID INT NOT NULL 
+, PATIENT_ID INT NOT NULL 
+, NAME_OF_DIAGNOSE VARCHAR2(20) NOT NULL 
+, CONSTRAINT DIAGNOSE_PK PRIMARY KEY 
+  (
+    ID_DIAGNOSE 
+  )
+  ENABLE 
 );
 
-CREATE TABLE `Treatment` (
-    `ID_Treatment` int  NOT NULL ,
-    `ID_Doctor` int  NOT NULL ,
-    `ID_Nurse` int  NOT NULL ,
-    `ID_Patient` int  NOT NULL ,
-    `Name_of_treatment` string  NOT NULL ,
-    PRIMARY KEY (
-        `ID_Treatment`
-    )
+insert into diagnose
+values(1,1,1,'ospa');
+
+insert into diagnose
+values(2,2,2,'vetryanka');
+
+CREATE TABLE TREATMENT 
+(
+  ID_TREATMENT INT NOT NULL 
+, ID_DOCTOR INT NOT NULL 
+, ID_NURSE INT 
+, ID_PATIENT INT NOT NULL 
+, NAME_OF_TREATMENT VARCHAR2(20) NOT NULL 
+, CONSTRAINT TREATMENT_PK PRIMARY KEY 
+  (
+    ID_TREATMENT 
+  )
+  ENABLE 
 );
+insert into treatment
+values(1,1,1,1,'DOTA');
 
-CREATE TABLE `Guest` (
-    `ID_Guest` int  NOT NULL ,
-    `First_name_of_guest` string  NOT NULL ,
-    `Second_name_of_guest` string  NOT NULL ,
-    PRIMARY KEY (
-        `ID_Guest`
-    )
+insert into treatment
+values(2,2,2,2,'CS');
+
+CREATE TABLE APPOINTMENT 
+(
+  ID_APPOINTMENT INT NOT NULL 
+, ID_DOCTOR INT NOT NULL 
+, ID_PATIENT INT NOT NULL 
+, ID_DIAGNOSE INT NOT NULL 
+, APOINTMENT_DATE DATE NOT NULL 
+, CONSTRAINT APPOINTMENT_PK PRIMARY KEY 
+  (
+    ID_APPOINTMENT 
+  )
+  ENABLE 
 );
+insert into appointment
+values(1,1,1,1,'11/12/2019');
+insert into appointment
+values(2,2,2,2,'13/01/2020');
 
-CREATE TABLE `Appointment` (
-    `ID_Appointment` int  NOT NULL ,
-    `ID_Doctor` int  NOT NULL ,
-    `ID_Patient` int  NOT NULL ,
-    `ID_Diagnose` int  NOT NULL ,
-    `Appointment_date` date NOT NULL
-    PRIMARY KEY (
-        `ID_Guest`
-    )
-);
+ALTER TABLE NURSE ADD CONSTRAINT fk_NURSE_PATIENT_ID FOREIGN KEY(PATIENT_ID)
+REFERENCES PATIENT (ID_PATIENT);
 
-ALTER TABLE `Nurse` ADD CONSTRAINT `fk_Nurse_Patients_ID` FOREIGN KEY(`Patients_ID`)
-REFERENCES `Patient` (`ID_Patient`);
+ALTER TABLE DOCTOR ADD CONSTRAINT fk_DOCTOR_PATIENT_ID FOREIGN KEY(PATIENT_ID)
+REFERENCES PATIENT (ID_PATIENT);
 
-ALTER TABLE `Doctor` ADD CONSTRAINT `fk_Doctor_Patients_ID` FOREIGN KEY(`Patients_ID`)
-REFERENCES `Patient` (`ID_Patient`);
+ALTER TABLE DIAGNOSE ADD CONSTRAINT fk_DIAGNOSE_DOCTOR_ID FOREIGN KEY(DOCTOR_ID)
+REFERENCES DOCTOR (ID_DOCTOR);
 
-ALTER TABLE `Diagnose` ADD CONSTRAINT `fk_Diagnose_ID_Doctor` FOREIGN KEY(`ID_Doctor`)
-REFERENCES `Doctor` (`ID_Doctor`);
+ALTER TABLE DIAGNOSE ADD CONSTRAINT fk_Diagnose_PATIENT_ID FOREIGN KEY(PATIENT_ID)
+REFERENCES PATIENT (ID_PATIENT);
 
-ALTER TABLE `Diagnose` ADD CONSTRAINT `fk_Diagnose_ID_Patient` FOREIGN KEY(`ID_Patient`)
-REFERENCES `Patient` (`ID_Patient`);
+ALTER TABLE TREATMENT ADD CONSTRAINT fk_Treatment_ID_DOCTOR FOREIGN KEY(ID_DOCTOR)
+REFERENCES DOCTOR (ID_DOCTOR);
 
-ALTER TABLE `Treatment` ADD CONSTRAINT `fk_Treatment_ID_Doctor` FOREIGN KEY(`ID_Doctor`)
-REFERENCES `Doctor` (`ID_Doctor`);
+ALTER TABLE TREATMENT ADD CONSTRAINT fk_Treatment_ID_NURSE FOREIGN KEY(ID_NURSE)
+REFERENCES NURSE (ID_NURSE);
 
-ALTER TABLE `Treatment` ADD CONSTRAINT `fk_Treatment_ID_Nurse` FOREIGN KEY(`ID_Nurse`)
-REFERENCES `Nurse` (`ID_Nurse`);
+ALTER TABLE TREATMENT ADD CONSTRAINT fk_Treatment_ID_Patient FOREIGN KEY(ID_PATIENT)
+REFERENCES PATIENT (ID_PATIENT);
 
-ALTER TABLE `Treatment` ADD CONSTRAINT `fk_Treatment_ID_Patient` FOREIGN KEY(`ID_Patient`)
-REFERENCES `Patient` (`ID_Patient`);
+ALTER TABLE Appointment ADD CONSTRAINT fk_Appointment_ID_PATIENT FOREIGN KEY(ID_PATIENT)
+REFERENCES Patient (ID_Patient);
 
-ALTER TABLE `Appointment` ADD CONSTRAINT `fk_Appointment_ID_Patient` FOREIGN KEY(`ID_Patient`)
-REFERENCES `Patient` (`ID_Patient`);
+ALTER TABLE Appointment ADD CONSTRAINT fk_Appointment_ID_Doctor FOREIGN KEY(ID_Doctor)
+REFERENCES Doctor (ID_Doctor);
 
-ALTER TABLE `Appointment` ADD CONSTRAINT `fk_Appointment_ID_Doctor` FOREIGN KEY(`ID_Doctor`)
-REFERENCES `Doctor` (`ID_Doctor`);
-
-ALTER TABLE `Appointment` ADD CONSTRAINT `fk_Appointment_ID_Diagnose` FOREIGN KEY(`ID_Diagnose`)
-REFERENCES `Diagnose` (`ID_Diagnose`);
+ALTER TABLE Appointment ADD CONSTRAINT fk_Appointment_ID_Diagnose FOREIGN KEY(ID_Diagnose)
+REFERENCES Diagnose (ID_Diagnose);
