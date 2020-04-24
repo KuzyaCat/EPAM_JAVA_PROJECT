@@ -45,15 +45,14 @@ public class DBConnector {
         throw new WrongQueryException();
     }
 
-    public void executeUpdateOrDeleteQuery(String query) throws WrongQueryException {
+    public void executeUpdateOrDeleteQuery(String query) {
         Statement statement = null;
         try {
             statement = this.connection.createStatement();
             statement.executeUpdate(query);
         } catch (SQLException e) {
-            logger.error("Cannot execute query");
+            logger.error(e.getMessage());
         }
-        throw new WrongQueryException();
     }
 
     public boolean isConnected() {

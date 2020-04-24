@@ -116,4 +116,32 @@ public class DBUtils {
         }
         throw new StreamIsClosedException();
     }
+
+    public int getPatientIdByLogin(String login) throws StreamIsClosedException {
+        try {
+            String query = "SELECT ID_PATIENT FROM PATIENT WHERE LOGIN = '" + login + "'";
+            ResultSet resultSet = this.dbConnector.getQueryResultAsResultSet(query);
+            resultSet.next();
+
+            return resultSet.getInt("ID_PATIENT");
+        }
+        catch (Exception e) {
+            logger.error(e.getMessage());
+        }
+        throw new StreamIsClosedException();
+    }
+
+    public int getTreatmentIdByAppointmentId(int appointmentId) throws StreamIsClosedException {
+        try {
+            String query = "SELECT ID_TREATMENT FROM TREATMENT WHERE ID_APPOINTMENT = " + appointmentId;
+            ResultSet resultSet = this.dbConnector.getQueryResultAsResultSet(query);
+            resultSet.next();
+
+            return resultSet.getInt("ID_TREATMENT");
+        }
+        catch (Exception e) {
+            logger.error(e.getMessage());
+        }
+        throw new StreamIsClosedException();
+    }
 }

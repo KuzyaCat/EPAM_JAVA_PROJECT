@@ -1,6 +1,7 @@
 package main.java;
 
 import controllers.resource_controllers.DBReader;
+import controllers.resource_controllers.DBUpdater;
 import dbconnection.DBConnector;
 import dbconnection.exceptions.StreamIsClosedException;
 import dbconnection.exceptions.WrongQueryException;
@@ -32,11 +33,10 @@ public class Main {
 
         DBConnector dbConnector = new DBConnector();
         DBReader dbReader = new DBReader(dbConnector);
+        DBUpdater dbUpdater = new DBUpdater(dbConnector);
         try {
             ArrayList<Patient> allPatients = dbReader.getAllPatients();
-            for(Patient p: allPatients) {
-                System.out.println(p.toString());
-            }
+            dbUpdater.deletePatient(allPatients.get(0));
         } catch (WrongQueryException e) {
             e.printStackTrace();
         } catch (SQLException e) {
