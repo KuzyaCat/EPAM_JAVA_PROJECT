@@ -8,6 +8,8 @@ import main.java.controllers.menus.MainMenu;
 import main.java.controllers.menus.user_menus.NurseMenu;
 import main.java.usersdb.NurseDB;
 import main.java.users.Patient;
+import main.java.users.stuff.Doctor;
+import main.java.users.stuff.Nurse;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -31,15 +33,13 @@ public class Main {
         DBConnector dbConnector = new DBConnector();
         DBReader dbReader = new DBReader(dbConnector);
         try {
-            ArrayList<Patient> allPatients = dbReader.getAllPatients();
-            for(Patient p: allPatients) {
-                System.out.println(p.toString());
+            ArrayList<Nurse> allNurses = dbReader.getAllNurses();
+            for(Nurse n: allNurses) {
+                System.out.println(n.toString());
             }
         } catch (WrongQueryException e) {
             e.printStackTrace();
         } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (StreamIsClosedException e) {
             e.printStackTrace();
         }
     }

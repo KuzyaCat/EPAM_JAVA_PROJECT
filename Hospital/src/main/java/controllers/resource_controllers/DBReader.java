@@ -52,4 +52,48 @@ public class DBReader {
         this.dbConnector.closeStream();
         return allPatients;
     }
+
+    public ArrayList<Doctor> getAllDoctors() throws WrongQueryException, SQLException {
+        this.dbConnector.connectToDataBase();
+        DBUtils dbUtils = new DBUtils(this.dbConnector);
+
+        ArrayList<Doctor> allDoctors = new ArrayList<Doctor>();
+        String query = "SELECT * FROM DOCTOR";
+        ResultSet resultSet = this.dbConnector.getQueryResultAsResultSet(query);
+        while (resultSet.next()) {
+            String name = resultSet.getString("FIRST_NAME");
+            String surname = resultSet.getString("SECOND_NAME");
+            int age = resultSet.getInt("AGE");
+            String login = resultSet.getString("LOGIN");
+            String password = resultSet.getString("PASSWORD");
+            String department = resultSet.getString("DEPARTMENT");
+            boolean isHeadOfDepartment = resultSet.getBoolean("IS_HEAD_OF_DEPARTMENT");
+
+            allDoctors.add(new Doctor(name, surname, age, login, password, department, isHeadOfDepartment));
+        }
+
+        this.dbConnector.closeStream();
+        return allDoctors;
+    }
+
+    public ArrayList<Nurse> getAllNurses() throws WrongQueryException, SQLException {
+        this.dbConnector.connectToDataBase();
+        DBUtils dbUtils = new DBUtils(this.dbConnector);
+
+        ArrayList<Nurse> allNurses = new ArrayList<Nurse>();
+        String query = "SELECT * FROM NURSE";
+        ResultSet resultSet = this.dbConnector.getQueryResultAsResultSet(query);
+        while (resultSet.next()) {
+            String name = resultSet.getString("FIRST_NAME");
+            String surname = resultSet.getString("SECOND_NAME");
+            int age = resultSet.getInt("AGE");
+            String login = resultSet.getString("LOGIN");
+            String password = resultSet.getString("PASSWORD");
+
+            allNurses.add(new Nurse(name, surname, age, login, password));
+        }
+
+        this.dbConnector.closeStream();
+        return allNurses;
+    }
 }
