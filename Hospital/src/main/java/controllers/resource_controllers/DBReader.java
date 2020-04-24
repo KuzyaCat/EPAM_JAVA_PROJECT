@@ -41,8 +41,8 @@ public class DBReader {
             String password = resultSet.getString("PASSWORD");
 
             ArrayList<Appointment> appointments = dbUtils.getAppointmentsByPatientId(id);
-            ArrayList<Treatment> treatments = dbUtils.getTreatmentsByPatientId(id);
-            ArrayList<String> diagnoses = dbUtils.getDiagnosesByPatientId(id);
+            ArrayList<Treatment> treatments = dbUtils.getTreatmentsByPatientsId(id);
+            ArrayList<String> diagnoses = dbUtils.getDiagnosesByPatientsId(id);
 
             boolean recovered = resultSet.getBoolean("RECOVERED");
 

@@ -33,13 +33,15 @@ public class Main {
         DBConnector dbConnector = new DBConnector();
         DBReader dbReader = new DBReader(dbConnector);
         try {
-            ArrayList<Nurse> allNurses = dbReader.getAllNurses();
-            for(Nurse n: allNurses) {
-                System.out.println(n.toString());
+            ArrayList<Patient> allPatients = dbReader.getAllPatients();
+            for(Patient p: allPatients) {
+                System.out.println(p.toString());
             }
         } catch (WrongQueryException e) {
             e.printStackTrace();
         } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (StreamIsClosedException e) {
             e.printStackTrace();
         }
     }

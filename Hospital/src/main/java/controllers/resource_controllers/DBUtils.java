@@ -25,13 +25,41 @@ public class DBUtils {
         this.dbConnector = dbConnector;
     }
 
-    public ArrayList<String> getDiagnosesByPatientId(int id) throws StreamIsClosedException {
+    public ArrayList<Treatment> getTreatmentsByPatientsId(int patientId) throws StreamIsClosedException {
         try {
-            ArrayList<String> diagnoses = new ArrayList<String>();
-            String query = "SELECT * FROM DIAGNOSE WHERE PATIENT_ID = " + id;
+            ArrayList<Treatment> treatments = new ArrayList<Treatment>();
+            String query = "SELECT ID_APPOINTMENT FROM APPOINTMENT WHERE ID_PATIENT = " + patientId;
             ResultSet resultSet = this.dbConnector.getQueryResultAsResultSet(query);
             while (resultSet.next()) {
-                diagnoses.add(resultSet.getString("NAME_OF_DIAGNOSE"));
+                String treatmentQuery = "SELECT T_PROCEDURE, MEDICINE, OPERATION FROM TREATMENT WHERE ID_APPOINTMENT = " +
+                        resultSet.getInt("ID_APPOINTMENT");
+                ResultSet treatmentResultSet = this.dbConnector.getQueryResultAsResultSet(treatmentQuery);
+                treatmentResultSet.next();
+                treatments.add(new Treatment(
+                        treatmentResultSet.getString("MEDICINE"),
+                        treatmentResultSet.getString("OPERATION"),
+                        treatmentResultSet.getString("T_PROCEDURE")));
+            }
+
+            return treatments;
+        }
+        catch (Exception e) {
+            logger.error(e.getMessage());
+        }
+        throw new StreamIsClosedException();
+    }
+
+    public ArrayList<String> getDiagnosesByPatientsId(int patientId) throws StreamIsClosedException {
+        try {
+            ArrayList<String> diagnoses = new ArrayList<String>();
+            String query = "SELECT ID_APPOINTMENT FROM APPOINTMENT WHERE ID_PATIENT = " + patientId;
+            ResultSet resultSet = this.dbConnector.getQueryResultAsResultSet(query);
+            while (resultSet.next()) {
+                String treatmentQuery = "SELECT DIAGNOSE FROM TREATMENT WHERE ID_APPOINTMENT = " +
+                        resultSet.getInt("ID_APPOINTMENT");
+                ResultSet treatmentResultSet = this.dbConnector.getQueryResultAsResultSet(treatmentQuery);
+                treatmentResultSet.next();
+                diagnoses.add(treatmentResultSet.getString("DIAGNOSE"));
             }
 
             return diagnoses;
@@ -49,7 +77,7 @@ public class DBUtils {
             ResultSet resultSet = this.dbConnector.getQueryResultAsResultSet(appointmentsQuery);
             while (resultSet.next()) {
                 int appointmentDoctorId = resultSet.getInt("ID_DOCTOR");
-                Doctor appointmentDoctor = this.getDoctorsById(appointmentDoctorId);
+                Doctor appointmentDoctor = this.getDoctorById(appointmentDoctorId);
 
                 String appointmentDepartment = appointmentDoctor.getDepartment();
 
@@ -67,7 +95,7 @@ public class DBUtils {
         throw new StreamIsClosedException();
     }
 
-    public Doctor getDoctorsById(int doctorId) throws StreamIsClosedException {
+    public Doctor getDoctorById(int doctorId) throws StreamIsClosedException {
         try {
             String doctorsQuery = "SELECT * FROM DOCTOR WHERE ID_DOCTOR = " + doctorId;
             ResultSet resultSet = this.dbConnector.getQueryResultAsResultSet(doctorsQuery);
@@ -85,27 +113,6 @@ public class DBUtils {
         }
         catch (Exception e) {
             logger.error(e.getMessage());
-        }
-        throw new StreamIsClosedException();
-    }
-
-    public ArrayList<Treatment> getTreatmentsByPatientId(int id) throws StreamIsClosedException {
-        try {
-            ArrayList<Treatment> treatments = new ArrayList<Treatment>();
-            String treatmentsQuery = "SELECT * FROM TREATMENT WHERE ID_PATIENT = " + id;
-            ResultSet resultSet = this.dbConnector.getQueryResultAsResultSet(treatmentsQuery);
-            while (resultSet.next()) {
-                String medicines = resultSet.getString("MEDICINE");
-                String operations = resultSet.getString("OPERATION");
-                String procedures = resultSet.getString("T_PROCEDURE");
-
-                treatments.add(new Treatment(medicines, operations, procedures));
-            }
-
-            return treatments;
-        }
-        catch (Exception e) {
-            logger.error("Stream is closed");
         }
         throw new StreamIsClosedException();
     }

@@ -30,7 +30,7 @@ public class DBConnector {
         try {
             this.connection = DriverManager.getConnection(this.url, this.user, this.password);
         } catch (SQLException e) {
-            logger.error("Cannot connect to database");
+            logger.error(e.getMessage());
         }
     }
 
@@ -40,7 +40,7 @@ public class DBConnector {
             statement = this.connection.createStatement();
             return statement.executeQuery(query);
         } catch (SQLException e) {
-            logger.error("Cannot execute query");
+            logger.error(e.getMessage());
         }
         throw new WrongQueryException();
     }
