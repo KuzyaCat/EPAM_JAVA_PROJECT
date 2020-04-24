@@ -14,14 +14,23 @@ public class DBConnector {
 
     static Logger logger = LogManager.getLogger();
 
-    public void connectToDataBase() {
+    public DBConnector() {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             this.connection = DriverManager.getConnection(this.url, this.user, this.password);
+            this.connection.close();
+        } catch (ClassNotFoundException e) {
+            logger.error(e.getMessage());
+        } catch (SQLException e) {
+            logger.error(e.getMessage());
+        }
+    }
+
+    public void connectToDataBase() {
+        try {
+            this.connection = DriverManager.getConnection(this.url, this.user, this.password);
         } catch (SQLException e) {
             logger.error("Cannot connect to database");
-        } catch (ClassNotFoundException e) {
-            logger.error("Cannot find class");
         }
     }
 
@@ -29,12 +38,31 @@ public class DBConnector {
         Statement statement = null;
         try {
             statement = this.connection.createStatement();
-            ResultSet queryResult = statement.executeQuery(query);
-            return queryResult;
+            return statement.executeQuery(query);
         } catch (SQLException e) {
             logger.error("Cannot execute query");
         }
         throw new WrongQueryException();
+    }
+
+    public void executeUpdateOrDeleteQuery(String query) throws WrongQueryException {
+        Statement statement = null;
+        try {
+            statement = this.connection.createStatement();
+            statement.executeUpdate(query);
+        } catch (SQLException e) {
+            logger.error("Cannot execute query");
+        }
+        throw new WrongQueryException();
+    }
+
+    public boolean isConnected() {
+        try {
+            return !this.connection.isClosed();
+        } catch (SQLException e) {
+            logger.error(e.getMessage());
+            return false;
+        }
     }
 
     public void closeStream() {
