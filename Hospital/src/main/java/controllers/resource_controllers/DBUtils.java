@@ -28,7 +28,7 @@ public class DBUtils {
     public ArrayList<String> getDiagnosesByPatientId(int id) throws StreamIsClosedException {
         try {
             ArrayList<String> diagnoses = new ArrayList<String>();
-            String query = "SELECT * FROM DIAGNOSE WHERE ID_PATIENT = " + id;
+            String query = "SELECT * FROM DIAGNOSE WHERE PATIENT_ID = " + id;
             ResultSet resultSet = this.dbConnector.getQueryResultAsResultSet(query);
             while (resultSet.next()) {
                 diagnoses.add(resultSet.getString("NAME_OF_DIAGNOSE"));
@@ -37,7 +37,7 @@ public class DBUtils {
             return diagnoses;
         }
         catch (Exception e) {
-            logger.error("Stream is closed");
+            logger.error(e.getMessage());
         }
         throw new StreamIsClosedException();
     }
@@ -62,7 +62,7 @@ public class DBUtils {
             return appointments;
         }
         catch (Exception e) {
-            logger.error("Stream is closed");
+            logger.error(e.getMessage());
         }
         throw new StreamIsClosedException();
     }
@@ -84,7 +84,7 @@ public class DBUtils {
             return new Doctor(name, surname, age, login, password, department, isHeadOfDepartment);
         }
         catch (Exception e) {
-            logger.error("Stream is closed");
+            logger.error(e.getMessage());
         }
         throw new StreamIsClosedException();
     }

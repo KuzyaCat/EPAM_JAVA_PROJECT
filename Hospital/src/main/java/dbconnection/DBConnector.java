@@ -7,7 +7,7 @@ import org.apache.logging.log4j.Logger;
 import java.sql.*;
 
 public class DBConnector {
-    private String url = "localhost:3306";
+    private String url = "jdbc:mysql://localhost:3306/hospital";
     private String user = "root";
     private String password = "mysql123";
     private Connection connection;
@@ -16,9 +16,12 @@ public class DBConnector {
 
     public void connectToDataBase() {
         try {
+            Class.forName("com.mysql.jdbc.Driver");
             this.connection = DriverManager.getConnection(this.url, this.user, this.password);
         } catch (SQLException e) {
             logger.error("Cannot connect to database");
+        } catch (ClassNotFoundException e) {
+            logger.error("Cannot find class");
         }
     }
 

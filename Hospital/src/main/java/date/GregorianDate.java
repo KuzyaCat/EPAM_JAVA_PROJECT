@@ -16,9 +16,10 @@ public class GregorianDate {
     }
 
     public GregorianDate(Date date) {
-        this.year = date.getYear();
-        this.month = date.getMonth();
-        this.dayOfMonth = date.getDay();
+        String[] dateArr = date.toString().split("-");
+        this.year = Integer.parseInt(dateArr[0]);
+        this.month = Integer.parseInt(dateArr[1]);
+        this.dayOfMonth = Integer.parseInt(dateArr[2]);
     }
 
     public GregorianDate() {
