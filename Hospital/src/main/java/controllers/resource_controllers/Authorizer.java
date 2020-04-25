@@ -1,5 +1,8 @@
 package main.java.controllers.resource_controllers;
 
+import controllers.resource_controllers.DBReader;
+import controllers.resource_controllers.DBUpdater;
+import dbconnection.DBConnector;
 import main.java.users.User;
 import main.java.users.Patient;
 import main.java.users.stuff.Doctor;
@@ -8,57 +11,32 @@ import main.java.users.stuff.Nurse;
 import main.java.components.Appointment;
 import main.java.components.Treatment;
 
-import main.java.controllers.resource_controllers.DataBaseIO;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Authorizer {
-    private DataBaseIO dbio;
-    private Patient[] patients;
-    private Doctor[] doctors;
-    private Nurse[] nurses;
+    private DBConnector dbConnector;
+    private DBReader dbReader;
+    private DBUpdater dbUpdater;
+    private ArrayList<Patient> patients;
+    private ArrayList<Doctor> doctors;
+    private ArrayList<Nurse> nurses;
     private Scanner scanner;
 
-    public Authorizer(DataBaseIO existingDbio, Patient[] patients, Doctor[] doctors, Nurse[] nurses) {
-        this.dbio = existingDbio;
-        this.patients = patients;
-        this.doctors = doctors;
-        this.nurses = nurses;
-        this.scanner = new Scanner(System.in);
-    }
+    public Authorizer(DBConnector existingDBConnector) {
+        this.dbConnector = existingDBConnector;
+        this.dbReader = new DBReader(this.dbConnector);
+        this.dbUpdater = new DBUpdater(this.dbConnector);
 
-    public Authorizer(DataBaseIO existingDbio) {
-        this.dbio = existingDbio;
-
-        try {
-            String[] patientsStr = dbio.readArrayByUserGroup('p');
-            this.patients = new Patient[patientsStr.length];
-
-            for(int i = 0; i < patientsStr.length; i ++) {
-                this.patients[i] = (new Patient()).parseString(patientsStr[i]);
-            }
-
-            String[] doctorsStr = dbio.readArrayByUserGroup('d');
-            this.doctors = new Doctor[doctorsStr.length];
-
-            for(int i = 0; i < doctorsStr.length; i ++) {
-                this.doctors[i] = (new Doctor()).parseString(doctorsStr[i]);
-            }
-
-            String[] nursesStr = dbio.readArrayByUserGroup('n');
-            this.nurses = new Nurse[nursesStr.length];
-
-            for(int i = 0; i < nursesStr.length; i ++) {
-                this.nurses[i] = (new Nurse()).parseString(nursesStr[i]);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        this.patients = this.dbReader.getAllPatients();
+        this.doctors = this.dbReader.getAllDoctors();
+        this.nurses = this.dbReader.getAllNurses();
 
         this.scanner = new Scanner(System.in);
     }
 
     public Authorizer() {
-        this(new DataBaseIO());
+        this(new DBConnector());
     }
 
     public User findUserByLoginAndPassword(String login, String password) {
@@ -124,10 +102,9 @@ public class Authorizer {
         User newUser = new User(name, surname, age, login, password);
         Appointment[] appointments = new Appointment[0];
         Treatment[] treatments = new Treatment[0];
-        String[] diagnoses = new String[0];
         boolean recovered = true;
 
-        Patient newPatient = new Patient(newUser, appointments, treatments, diagnoses, recovered);
-        this.dbio.appendPatient("\n" + newPatient.toString());
+        Patient newPatient = new Patient(newUser, appointments, treatments, recovered);
+        this.dbUpdater.addPatient(newPatient);
     }
 }

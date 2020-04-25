@@ -1,7 +1,5 @@
 package main.java.usersdb;
 
-import main.java.controllers.resource_controllers.DataBaseIO;
-import main.java.users.stuff.Doctor;
 import main.java.users.stuff.Nurse;
 
 public class NurseDB {

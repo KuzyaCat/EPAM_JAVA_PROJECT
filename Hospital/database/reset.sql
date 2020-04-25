@@ -64,7 +64,7 @@ CREATE TABLE DOCTOR
 );
 
 Insert into DOCTOR
-values(1,'Boris', 'Levin', 22, 'borlev','12345', 'neurology', false);
+values(1,'Boris', 'Levin', 22, 'borlev','12345', 'traumatology', false);
 Insert into DOCTOR
 values(2,'Semen', 'Lobanov', 31, 'semlob', '54321', 'traumatology', false);
 
