@@ -25,10 +25,9 @@ public class DoctorMenu {
                 "1. My profile\n" +
                 "2. My patients\n" +
                 "3. Add a treatment to the patient\n" +
-                "4. Add a diagnose to the patient\n" +
-                "5. Change recover status of the patient\n" +
-                "6. My department\n" +
-                "7. Exit"
+                "4. Change recover status of the patient\n" +
+                "5. My department\n" +
+                "6. Exit"
         );
     }
 

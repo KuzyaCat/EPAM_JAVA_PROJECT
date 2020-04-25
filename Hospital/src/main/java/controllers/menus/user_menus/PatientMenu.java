@@ -8,6 +8,7 @@ import main.java.users.stuff.Doctor;
 import main.java.usersdb.DoctorDB;
 import main.java.usersdb.PatientDB;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
 
@@ -30,8 +31,7 @@ public class PatientMenu {
                 "2. Make an appointment\n" +
                 "3. My appointments\n" +
                 "4. My treatments\n" +
-                "5. My diagnoses\n" +
-                "6. Exit"
+                "5. Exit"
         );
     }
 
@@ -48,27 +48,21 @@ public class PatientMenu {
                     this.appointMenu();
                     break;
                 case 3:
-                    Appointment[] appointments = this.patient.getAppointments();
+                    ArrayList<Appointment> appointments = this.patient.getAppointments();
                     System.out.println("My appointments:");
-                    System.out.println("Overall: " + appointments.length);
-                    System.out.println(Arrays.toString(appointments));
+                    System.out.println("Overall: " + appointments.size());
+                    System.out.println(Arrays.toString(appointments.toArray()));
                     break;
                 case 4:
-                    Treatment[] treatments = this.patient.getTreatments();
+                    ArrayList<Treatment> treatments = this.patient.getTreatments();
                     System.out.println("My treatments:");
-                    System.out.println("Overall: " + treatments.length);
-                    System.out.println(Arrays.toString(treatments));
-                    break;
-                case 5:
-                    String[] diagnoses = this.patient.getDiagnoses();
-                    System.out.println("My diagnoses:");
-                    System.out.println("Overall: " + diagnoses.length);
-                    System.out.println(Arrays.toString(diagnoses));
+                    System.out.println("Overall: " + treatments.size());
+                    System.out.println(Arrays.toString(treatments.toArray()));
                     break;
                 default:
                     break;
             }
-        } while (variant != 6);
+        } while (variant != 5);
     }
 
     private void appointMenu() {
