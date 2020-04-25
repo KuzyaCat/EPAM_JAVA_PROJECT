@@ -41,7 +41,8 @@ public class DBUtils {
                 treatments.add(new Treatment(
                         treatmentResultSet.getString("MEDICINE"),
                         treatmentResultSet.getString("OPERATION"),
-                        treatmentResultSet.getString("T_PROCEDURE")));
+                        treatmentResultSet.getString("T_PROCEDURE"),
+                        treatmentResultSet.getString("DIAGNOSE")));
             }
 
             return treatments;
@@ -52,7 +53,7 @@ public class DBUtils {
         throw new StreamIsClosedException();
     }
 
-    public ArrayList<String> getDiagnosesByPatientId(int patientId) throws StreamIsClosedException {
+    /*public ArrayList<String> getDiagnosesByPatientId(int patientId) throws StreamIsClosedException {
         try {
             ArrayList<String> diagnoses = new ArrayList<String>();
             String query = "SELECT ID_APPOINTMENT FROM APPOINTMENT WHERE ID_PATIENT = " + patientId;
@@ -71,7 +72,7 @@ public class DBUtils {
             logger.error(e.getMessage());
         }
         throw new StreamIsClosedException();
-    }
+    }*/
 
     public ArrayList<Appointment> getAppointmentsByPatientId(int id) throws StreamIsClosedException {
         try {
@@ -250,11 +251,10 @@ public class DBUtils {
 
             ArrayList<Appointment> appointments = this.getAppointmentsByPatientId(patientId);
             ArrayList<Treatment> treatments = this.getTreatmentsByPatientId(patientId);
-            ArrayList<String> diagnoses = this.getDiagnosesByPatientId(patientId);
 
             boolean recovered = resultSet.getBoolean("RECOVERED");
 
-            return new Patient(name, surname, age, login, password, appointments, treatments, diagnoses, recovered);
+            return new Patient(name, surname, age, login, password, appointments, treatments, recovered);
         }
         catch (Exception e) {
             logger.error(e.getMessage());

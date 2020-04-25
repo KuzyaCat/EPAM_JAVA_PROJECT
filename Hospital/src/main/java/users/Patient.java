@@ -10,43 +10,35 @@ import java.util.Arrays;
 public class Patient extends User {
     private Appointment[] appointments;
     private Treatment[] treatments;
-    private String[] diagnoses;
     private boolean recovered;
 
-    public Patient(String name, String surname, int age, String login, String password, Appointment[] appointments, Treatment[] treatments, String[]diagnoses, boolean recovered){
+    public Patient(String name, String surname, int age, String login, String password, Appointment[] appointments, Treatment[] treatments, boolean recovered){
         super(name, surname, age, login, password);
         this.appointments = appointments;
         this.treatments = treatments;
-        this.diagnoses = diagnoses;
         this.recovered = recovered;
     }
 
-    public Patient(String name, String surname, int age, String login, String password, ArrayList<Appointment> appointments, ArrayList<Treatment> treatments, ArrayList<String> diagnoses, boolean recovered){
+    public Patient(String name, String surname, int age, String login, String password, ArrayList<Appointment> appointments, ArrayList<Treatment> treatments, boolean recovered){
         super(name, surname, age, login, password);
         this.appointments = appointments.toArray(new Appointment[0]);
         this.treatments = treatments.toArray(new Treatment[0]);
-        this.diagnoses = diagnoses.toArray(new String[0]);
         this.recovered = recovered;
     }
 
-    public Patient(User user, Appointment[] appointments, Treatment[] treatments, String[]diagnoses, boolean recovered) {
+    public Patient(User user, Appointment[] appointments, Treatment[] treatments, boolean recovered) {
         super(user.getName(), user.getSurname(), user.getAge(), user.getLogin(), user.getPassword());
         this.appointments = appointments;
         this.treatments = treatments;
-        this.diagnoses = diagnoses;
         this.recovered = recovered;
     }
 
     public Patient() {
-        this(new User(), new Appointment[0], new Treatment[0], new String[0], false);
+        this(new User(), new Appointment[0], new Treatment[0], false);
     }
 
     public Appointment[] getAppointments() {
         return appointments;
-    }
-
-    public String[] getDiagnoses() {
-        return diagnoses;
     }
 
     public Treatment[] getTreatments() {
@@ -57,10 +49,6 @@ public class Patient extends User {
 
     public void setAppointments(Appointment[] appointments) {
         this.appointments = appointments;
-    }
-
-    public void setDiagnoses(String[] diagnoses) {
-        this.diagnoses = diagnoses;
     }
 
     public void setRecovered(boolean recovered) {
@@ -76,8 +64,7 @@ public class Patient extends User {
                 this.getSurname() + '\n' +
                 this.getAge() + " years old\n" +
                 "Appointments: " + Arrays.toString(this.appointments) + '\n' +
-                "Treatments: " + Arrays.toString(this.treatments) + '\n' +
-                "Diagnoses: " + Arrays.toString(this.diagnoses) + '\n';
+                "Treatments: " + Arrays.toString(this.treatments) + '\n';
     }
 
     @Override
@@ -106,18 +93,7 @@ public class Patient extends User {
             }
         }
 
-        res += "|" + " " + "{";
-
-        for(int i = 0 ; i < this.diagnoses.length; i ++) {
-            if(i != 0) {
-                res += " " + this.diagnoses[i];
-            }
-            else {
-                res += this.diagnoses[i];
-            }
-        }
-
-        res += "}" + " ";
+        res += "|" + " ";
 
         String recStr;
         if(this.recovered) {
@@ -131,7 +107,7 @@ public class Patient extends User {
         return res;
     }
 
-    @Override
+    /*@Override
     public Patient parseString(String str) {
         int firstOpeningBrIndex = 0;
         int firstClosingBrIndex = str.indexOf("]");
@@ -180,5 +156,5 @@ public class Patient extends User {
         boolean recovered = (recoveredStr.equals("true"));
 
         return new Patient(user, appointments, treatments, diagnoses, recovered);
-    }
+    }*/
 }

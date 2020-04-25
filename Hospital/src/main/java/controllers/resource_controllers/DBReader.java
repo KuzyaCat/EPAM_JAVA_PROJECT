@@ -41,12 +41,11 @@ public class DBReader {
             String password = resultSet.getString("PASSWORD");
 
             ArrayList<Appointment> appointments = dbUtils.getAppointmentsByPatientId(id);
-            ArrayList<Treatment> treatments = dbUtils.getTreatmentsByPatientsId(id);
-            ArrayList<String> diagnoses = dbUtils.getDiagnosesByPatientsId(id);
+            ArrayList<Treatment> treatments = dbUtils.getTreatmentsByPatientId(id);
 
             boolean recovered = resultSet.getBoolean("RECOVERED");
 
-            allPatients.add(new Patient(name, surname, age, login, password, appointments, treatments, diagnoses, recovered));
+            allPatients.add(new Patient(name, surname, age, login, password, appointments, treatments, recovered));
         }
 
         this.dbConnector.closeStream();

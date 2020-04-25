@@ -4,15 +4,17 @@ public class Treatment {
     private String procedures;
     private String medicines;
     private String operations;
+    private String diagnoses;
 
-    public Treatment(String medicines, String operations, String procedures){
+    public Treatment(String medicines, String operations, String procedures, String diagnoses){
         this.medicines = medicines;
         this.operations = operations;
         this.procedures = procedures;
+        this.diagnoses = diagnoses
     }
 
     public Treatment() {
-        this("", "", "");
+        this("", "", "", "");
     }
 
     public String getMedicines() {
@@ -27,6 +29,10 @@ public class Treatment {
         return procedures;
     }
 
+    public String getDiagnoses() {
+        return diagnoses;
+    }
+
     public void setMedicines(String medicines) {
         this.medicines = medicines;
     }
@@ -39,13 +45,17 @@ public class Treatment {
         this.procedures = procedures;
     }
 
+    public void setDiagnoses(String diagnoses) {
+        this.diagnoses = diagnoses;
+    }
+
     @Override
     public String toString() {
-        return this.medicines + " " + this.operations + " " + this.procedures;
+        return this.medicines + " " + this.operations + " " + this.procedures + " " + this.diagnoses;
     }
 
     public Treatment parseString(String str) {
         String[] fields = str.split(" ");
-        return new Treatment(fields[0], fields[1], fields[2]);
+        return new Treatment(fields[0], fields[1], fields[2], fields[3]);
     }
 }
