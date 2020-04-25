@@ -1,8 +1,6 @@
 package controllers.resource_controllers;
 
 import dbconnection.DBConnector;
-import dbconnection.exceptions.StreamIsClosedException;
-import dbconnection.exceptions.WrongQueryException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -28,9 +26,10 @@ public class DBUtils {
         this.dbConnector = dbConnector;
     }
 
-    public ArrayList<Treatment> getTreatmentsByPatientId(int patientId) throws StreamIsClosedException {
+    public ArrayList<Treatment> getTreatmentsByPatientId(int patientId) {
+        ArrayList<Treatment> treatments = new ArrayList<Treatment>();
+
         try {
-            ArrayList<Treatment> treatments = new ArrayList<Treatment>();
             String query = "SELECT ID_APPOINTMENT FROM APPOINTMENT WHERE ID_PATIENT = " + patientId;
             ResultSet resultSet = this.dbConnector.getQueryResultAsResultSet(query);
             while (resultSet.next()) {
@@ -50,7 +49,8 @@ public class DBUtils {
         catch (Exception e) {
             logger.error(e.getMessage());
         }
-        throw new StreamIsClosedException();
+
+        return treatments;
     }
 
     /*public ArrayList<String> getDiagnosesByPatientId(int patientId) throws StreamIsClosedException {
@@ -74,9 +74,10 @@ public class DBUtils {
         throw new StreamIsClosedException();
     }*/
 
-    public ArrayList<Appointment> getAppointmentsByPatientId(int id) throws StreamIsClosedException {
+    public ArrayList<Appointment> getAppointmentsByPatientId(int id) {
+        ArrayList<Appointment> appointments = new ArrayList<Appointment>();
+
         try {
-            ArrayList<Appointment> appointments = new ArrayList<Appointment>();
             String appointmentsQuery = "SELECT * FROM APPOINTMENT WHERE ID_PATIENT = " + id;
             ResultSet resultSet = this.dbConnector.getQueryResultAsResultSet(appointmentsQuery);
             while (resultSet.next()) {
@@ -88,10 +89,11 @@ public class DBUtils {
         catch (Exception e) {
             logger.error(e.getMessage());
         }
-        throw new StreamIsClosedException();
+
+        return appointments;
     }
 
-    public Appointment getAppointmentById(int appointmentId) throws StreamIsClosedException {
+    public Appointment getAppointmentById(int appointmentId) {
         try {
             String appointmentsQuery = "SELECT * FROM APPOINTMENT WHERE ID_APPOINTMENT = " + appointmentId;
             ResultSet resultSet = this.dbConnector.getQueryResultAsResultSet(appointmentsQuery);
@@ -109,10 +111,11 @@ public class DBUtils {
         catch (Exception e) {
             logger.error(e.getMessage());
         }
-        throw new StreamIsClosedException();
+
+        return null;
     }
 
-    public Doctor getDoctorById(int doctorId) throws StreamIsClosedException {
+    public Doctor getDoctorById(int doctorId) {
         try {
             String doctorsQuery = "SELECT * FROM DOCTOR WHERE ID_DOCTOR = " + doctorId;
             ResultSet resultSet = this.dbConnector.getQueryResultAsResultSet(doctorsQuery);
@@ -131,10 +134,11 @@ public class DBUtils {
         catch (Exception e) {
             logger.error(e.getMessage());
         }
-        throw new StreamIsClosedException();
+
+        return null;
     }
 
-    public int getPatientIdByLogin(String login) throws StreamIsClosedException {
+    public int getPatientIdByLogin(String login) {
         try {
             String query = "SELECT ID_PATIENT FROM PATIENT WHERE LOGIN = '" + login + "'";
             ResultSet resultSet = this.dbConnector.getQueryResultAsResultSet(query);
@@ -145,10 +149,11 @@ public class DBUtils {
         catch (Exception e) {
             logger.error(e.getMessage());
         }
-        throw new StreamIsClosedException();
+
+        return -1;
     }
 
-    public int getTreatmentIdByAppointmentId(int appointmentId) throws StreamIsClosedException {
+    public int getTreatmentIdByAppointmentId(int appointmentId) {
         try {
             String query = "SELECT ID_TREATMENT FROM TREATMENT WHERE ID_APPOINTMENT = " + appointmentId;
             ResultSet resultSet = this.dbConnector.getQueryResultAsResultSet(query);
@@ -159,7 +164,8 @@ public class DBUtils {
         catch (Exception e) {
             logger.error(e.getMessage());
         }
-        throw new StreamIsClosedException();
+
+        return -1;
     }
 
     public ArrayList<Doctor> getDoctorsByPatient(Patient patient) {
@@ -179,10 +185,6 @@ public class DBUtils {
                 }
             }
 
-        } catch (WrongQueryException e) {
-            logger.error(e.getMessage());
-        } catch (StreamIsClosedException e) {
-            logger.error(e.getMessage());
         } catch (SQLException e) {
             logger.error(e.getMessage());
         }
@@ -196,10 +198,6 @@ public class DBUtils {
             ResultSet oneDoctorSet = this.dbConnector.getQueryResultAsResultSet(doctorQuery);
             oneDoctorSet.next();
             return this.getDoctorById(oneDoctorSet.getInt("ID_DOCTOR"));
-        } catch (WrongQueryException e) {
-            logger.error(e.getMessage());
-        } catch (StreamIsClosedException e) {
-            logger.error(e.getMessage());
         } catch (SQLException e) {
             logger.error(e.getMessage());
         }
@@ -213,8 +211,6 @@ public class DBUtils {
             ResultSet onePatientSet = this.dbConnector.getQueryResultAsResultSet(patientQuery);
             onePatientSet.next();
             return onePatientSet.getInt("ID_DOCTOR");
-        } catch (WrongQueryException e) {
-            logger.error(e.getMessage());
         } catch (SQLException e) {
             logger.error(e.getMessage());
         }
@@ -228,8 +224,6 @@ public class DBUtils {
             ResultSet oneDoctorSet = this.dbConnector.getQueryResultAsResultSet(doctorQuery);
             oneDoctorSet.next();
             return oneDoctorSet.getInt("ID_DOCTOR");
-        } catch (WrongQueryException e) {
-            logger.error(e.getMessage());
         } catch (SQLException e) {
             logger.error(e.getMessage());
         }
@@ -237,7 +231,7 @@ public class DBUtils {
         return -1;
     }
 
-    public Patient getPatientById(int patientId) throws StreamIsClosedException {
+    public Patient getPatientById(int patientId) {
         try {
             String patientsQuery = "SELECT * FROM PATIENT WHERE ID_PATIENT = " + patientId;
             ResultSet resultSet = this.dbConnector.getQueryResultAsResultSet(patientsQuery);
@@ -259,7 +253,8 @@ public class DBUtils {
         catch (Exception e) {
             logger.error(e.getMessage());
         }
-        throw new StreamIsClosedException();
+
+        return null;
     }
 
     public ArrayList<Patient> getPatientsByDoctor(Doctor doctor){
@@ -279,10 +274,6 @@ public class DBUtils {
                 }
             }
 
-        } catch (WrongQueryException e) {
-            logger.error(e.getMessage());
-        } catch (StreamIsClosedException e) {
-            logger.error(e.getMessage());
         } catch (SQLException e) {
             logger.error(e.getMessage());
         }
@@ -300,8 +291,6 @@ public class DBUtils {
                 counter++;
             }
             return counter;
-        } catch (WrongQueryException e) {
-            logger.error(e.getMessage());
         } catch (SQLException e) {
             logger.error(e.getMessage());
         }
@@ -320,9 +309,8 @@ public class DBUtils {
             }
         } catch (SQLException e) {
             logger.error(e.getMessage());
-        } catch (WrongQueryException e) {
-            logger.error(e.getMessage());
         }
+
         return false;
     }
 
@@ -342,10 +330,6 @@ public class DBUtils {
                 }
             }
 
-        } catch (WrongQueryException e) {
-            logger.error(e.getMessage());
-        } catch (StreamIsClosedException e) {
-            logger.error(e.getMessage());
         } catch (SQLException e) {
             logger.error(e.getMessage());
         }

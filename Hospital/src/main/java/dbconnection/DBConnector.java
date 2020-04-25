@@ -1,6 +1,5 @@
 package dbconnection;
 
-import dbconnection.exceptions.WrongQueryException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -34,15 +33,9 @@ public class DBConnector {
         }
     }
 
-    public ResultSet getQueryResultAsResultSet(String query) throws WrongQueryException {
-        Statement statement = null;
-        try {
-            statement = this.connection.createStatement();
-            return statement.executeQuery(query);
-        } catch (SQLException e) {
-            logger.error(e.getMessage());
-        }
-        throw new WrongQueryException();
+    public ResultSet getQueryResultAsResultSet(String query) throws SQLException {
+        Statement statement = this.connection.createStatement();
+        return statement.executeQuery(query);
     }
 
     public void executeInsertOrUpdateOrDeleteQuery(String query) {

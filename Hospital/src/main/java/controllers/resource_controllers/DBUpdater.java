@@ -1,8 +1,6 @@
 package controllers.resource_controllers;
 
 import dbconnection.DBConnector;
-import dbconnection.exceptions.StreamIsClosedException;
-import dbconnection.exceptions.WrongQueryException;
 
 import main.java.users.Patient;
 import main.java.users.stuff.Doctor;
@@ -76,10 +74,6 @@ public class DBUpdater {
             }
             this.deletePatientRow(removedPatientId);
 
-        } catch (WrongQueryException e) {
-            logger.error(e.getMessage());
-        } catch (StreamIsClosedException e) {
-            logger.error(e.getMessage());
         } catch (SQLException e) {
             logger.error(e.getMessage());
         }
