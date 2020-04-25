@@ -12,6 +12,7 @@ import main.java.usersdb.DoctorDB;
 import main.java.usersdb.NurseDB;
 import main.java.usersdb.PatientDB;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class MainMenu {
@@ -67,7 +68,7 @@ public class MainMenu {
 
         if (authorizedUser instanceof Patient) {
             PatientDB patientDB = new PatientDB();
-            Patient[] patients = patientDB.getAllPatients();
+            ArrayList<Patient> patients = patientDB.getAllPatients();
             Patient patient = null;
 
             for (Patient value : patients) {
@@ -80,7 +81,7 @@ public class MainMenu {
             menu.initMenu();
         } else if (authorizedUser instanceof Doctor) {
             DoctorDB doctorDB = new DoctorDB();
-            Doctor[] doctors = doctorDB.getAllDoctors();
+            ArrayList<Doctor> doctors = doctorDB.getAllDoctors();
             Doctor doctor = null;
 
             for (Doctor value : doctors) {
@@ -93,7 +94,7 @@ public class MainMenu {
             menu.initMenu();
         } else if (authorizedUser instanceof Nurse) {
             NurseDB nurseDB = new NurseDB();
-            Nurse[] nurses = nurseDB.getAllNurses();
+            ArrayList<Nurse> nurses = nurseDB.getAllNurses();
             Nurse nurse = null;
 
             for (Nurse value : nurses) {
