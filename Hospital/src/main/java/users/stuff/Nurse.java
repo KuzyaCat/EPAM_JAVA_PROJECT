@@ -1,6 +1,7 @@
 package main.java.users.stuff;
 
 import main.java.components.Treatment;
+import main.java.components.Appointment;
 import main.java.users.Patient;
 import main.java.users.User;
 import main.java.usersdb.PatientDB;
@@ -18,9 +19,9 @@ public class Nurse extends User {
         super("", "", 0, "", "");
     }
 
-    public void setTreatmentToPatient(Patient patient, Treatment treatment) {
+    public void setTreatmentToPatient(Patient patient, Appointment appointment, Treatment treatment) {
         PatientDB patientDB = new PatientDB();
-        patientDB.writeTreatment(patient, treatment);
+        patientDB.writeTreatment(patient, appointment, treatment);
     }
 
     public String showProfile() {

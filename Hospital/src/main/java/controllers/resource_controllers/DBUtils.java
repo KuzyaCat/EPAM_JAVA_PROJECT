@@ -210,6 +210,20 @@ public class DBUtils {
         return null;
     }
 
+    public int getNurseIdByNameAndSurname(String name, String surname) {
+        try {
+            String nurseQuery = "SELECT ID_NURSE FROM NURSE WHERE FIRST_NAME = '" + name + "', SECOND_NAME = '" + surname + "'";
+            ResultSet oneNurseSet = this.dbConnector.getQueryResultAsResultSet(nurseQuery);
+            oneNurseSet.next();
+
+            return oneNurseSet.getInt("ID_NURSE");
+        } catch (SQLException e) {
+            logger.error(e.getMessage());
+        }
+
+        return -1;
+    }
+
     public Nurse getNurseByNameAndSurname(String name, String surname) {
         try {
             String nurseQuery = "SELECT * FROM NURSE WHERE FIRST_NAME = '" + name + "', SECOND_NAME = '" + surname + "'";
@@ -335,6 +349,20 @@ public class DBUtils {
         }
 
         return false;
+    }
+
+    public int getPatientIdByAppointmentId(int appointmentId) {
+        String query = "SELECT ID_PATIENT FROM APPOINTMENT WHERE ID_APPOINTMENT = " + appointmentId;
+        try {
+            ResultSet resultSet = this.dbConnector.getQueryResultAsResultSet(query);
+            resultSet.next();
+
+            return resultSet.getInt("ID_PATIENT");
+        } catch (SQLException e) {
+            logger.error(e.getMessage());
+        }
+
+        return -1;
     }
 
     public HashMap<Appointment, Integer> getHashMapWithPlannedAppointmentsByDoctorToAppointmentIds(Doctor doctor) {

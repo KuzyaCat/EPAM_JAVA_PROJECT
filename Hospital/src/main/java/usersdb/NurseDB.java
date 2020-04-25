@@ -18,11 +18,15 @@ public class NurseDB {
         this.dbUpdater = new DBUpdater(this.dbConnector);
     }
 
-    public ArrayList<Nurse> getAllNurses() {
-        return this.dbReader.getAllNurses();
+    public DBReader getDbReader() {
+        return dbReader;
     }
 
-    public Nurse getNurse(String name, String surname) {
-        return this.dbReader.getDbUtils().getNurseByNameAndSurname(name, surname);
+    public DBUpdater getDbUpdater() {
+        return dbUpdater;
+    }
+
+    public ArrayList<Nurse> getAllNurses() {
+        return this.dbReader.getAllNurses();
     }
 }

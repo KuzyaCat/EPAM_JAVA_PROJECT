@@ -111,6 +111,11 @@ public class DBReader {
         return this.dbUtils.getDoctorIdByNameAndSurname(doctor.getName(), doctor.getSurname());
     }
 
+    public Patient getPatientByAppointmentId(int appointmentId) {
+        int patientId = this.dbUtils.getPatientIdByAppointmentId(appointmentId);
+        return this.dbUtils.getPatientById(patientId);
+    }
+
     public int getAppointmentIdByPatientIdAndAppointment(int patientId, Appointment appointment) {
         int doctorId = this.getDoctorId(appointment.getDoctor());
         String dateStr = "'" + appointment.getAppDate().toString().replace("_", "-") + "'";

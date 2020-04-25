@@ -152,6 +152,20 @@ public class DBUpdater {
         this.dbConnector.executeInsertOrUpdateOrDeleteQuery(updateDoctorQuery);
     }
 
+    public void addRowToNurseTaskLog(int appointmentId, int nurseId) {
+        int nurseTaskLogId = this.dbUtils.getLengthOfTable("NURSE_TASK_LOG") + 1;
+
+        String insertNurseTaskLogRowQuery = "INSERT INTO NURSE_TASK_LOG VALUES(" + nurseTaskLogId +
+                ", " + nurseId +
+                ", " + appointmentId + ")";
+        this.dbConnector.executeInsertOrUpdateOrDeleteQuery(insertNurseTaskLogRowQuery);
+    }
+
+    public void deleteRowFromNurseTaskLog(int appointmentId, int nurseId) {
+        String deleteNurseTaskLogQuery = "DELETE FROM NURSE_TASK_LOG WHERE ID_NURSE = " + nurseId + " AND ID_APPOINTMENT = " + appointmentId;
+        this.dbConnector.executeInsertOrUpdateOrDeleteQuery(deleteNurseTaskLogQuery);
+    }
+
     public void changeRecoveredStatusByPatientNameAndSurname(String name, String surname, boolean isRecovered) {
         try {
             int patientId = this.dbUtils.getPatientIdByNameAndSurname(name, surname);

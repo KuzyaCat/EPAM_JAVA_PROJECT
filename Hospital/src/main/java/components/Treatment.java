@@ -10,7 +10,7 @@ public class Treatment {
         this.medicines = medicines;
         this.operations = operations;
         this.procedures = procedures;
-        this.diagnoses = diagnoses
+        this.diagnoses = diagnoses;
     }
 
     public Treatment() {

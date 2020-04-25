@@ -5,8 +5,10 @@ import controllers.resource_controllers.DBUpdater;
 import dbconnection.DBConnector;
 import main.java.users.Patient;
 import main.java.users.stuff.Doctor;
+import main.java.components.Appointment;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class DoctorDB {
     private DBConnector dbConnector;
@@ -18,6 +20,11 @@ public class DoctorDB {
         this.dbReader = new DBReader(this.dbConnector);
         this.dbUpdater = new DBUpdater(this.dbConnector);
     }
+
+    public DBReader getDbReader() {
+        return dbReader;
+    }
+
     public ArrayList<Doctor> getAllDoctors() {
         return this.dbReader.getAllDoctors();
     }
