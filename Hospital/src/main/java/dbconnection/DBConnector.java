@@ -45,7 +45,7 @@ public class DBConnector {
         throw new WrongQueryException();
     }
 
-    public void executeUpdateOrDeleteQuery(String query) {
+    public void executeInsertOrUpdateOrDeleteQuery(String query) {
         Statement statement = null;
         try {
             statement = this.connection.createStatement();
