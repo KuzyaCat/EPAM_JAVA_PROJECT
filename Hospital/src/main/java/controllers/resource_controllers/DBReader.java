@@ -103,11 +103,6 @@ public class DBReader {
         return allNurses;
     }
 
-    public Patient getPatientByNameAndSurname(String name, String surname) {
-        int patientId = this.dbUtils.getPatientIdByNameAndSurname(name, surname);
-        return this.dbUtils.getPatientById(patientId);
-    }
-
     public int getPatientId(Patient patient) {
         return this.dbUtils.getPatientIdByLogin(patient.getLogin());
     }

@@ -25,7 +25,7 @@ public class PatientDB {
     }
 
     public Patient getPatient(String name, String surname) {
-        return this.dbReader.getPatientByNameAndSurname(name, surname);
+        return this.dbReader.getDbUtils().getPatientByNameAndSurname(name, surname);
     }
 
     public void editPatient(Patient editedPatient) {

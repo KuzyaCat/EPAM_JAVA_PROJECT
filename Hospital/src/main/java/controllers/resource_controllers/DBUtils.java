@@ -192,12 +192,35 @@ public class DBUtils {
         return doctors;
     }
 
+    public Patient getPatientByNameAndSurname(String name, String surname) {
+        int patientId = this.getPatientIdByNameAndSurname(name, surname);
+        return this.getPatientById(patientId);
+    }
+
     public Doctor getDoctorByNameAndSurname(String name, String surname) {
         try {
             String doctorQuery = "SELECT ID_DOCTOR FROM DOCTOR WHERE FIRST_NAME = '" + name + "', SECOND_NAME = '" + surname + "'";
             ResultSet oneDoctorSet = this.dbConnector.getQueryResultAsResultSet(doctorQuery);
             oneDoctorSet.next();
             return this.getDoctorById(oneDoctorSet.getInt("ID_DOCTOR"));
+        } catch (SQLException e) {
+            logger.error(e.getMessage());
+        }
+
+        return null;
+    }
+
+    public Nurse getNurseByNameAndSurname(String name, String surname) {
+        try {
+            String nurseQuery = "SELECT * FROM NURSE WHERE FIRST_NAME = '" + name + "', SECOND_NAME = '" + surname + "'";
+            ResultSet oneNurseSet = this.dbConnector.getQueryResultAsResultSet(nurseQuery);
+            oneNurseSet.next();
+
+            int age = oneNurseSet.getInt("AGE");
+            String login = oneNurseSet.getString("LOGIN");
+            String password = oneNurseSet.getString("PASSWORD");
+
+            return new Nurse(name, surname, age, login, password);
         } catch (SQLException e) {
             logger.error(e.getMessage());
         }

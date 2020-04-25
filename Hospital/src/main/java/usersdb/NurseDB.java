@@ -1,36 +1,28 @@
 package main.java.usersdb;
 
+import controllers.resource_controllers.DBReader;
+import controllers.resource_controllers.DBUpdater;
+import dbconnection.DBConnector;
 import main.java.users.stuff.Nurse;
 
+import java.util.ArrayList;
+
 public class NurseDB {
-    public Nurse[] getAllNurses() {
-        DataBaseIO dbio = new DataBaseIO();
+    private DBConnector dbConnector;
+    private DBReader dbReader;
+    private DBUpdater dbUpdater;
 
-        try {
-            String[] nursesStr = dbio.readArrayByUserGroup('n');
-            Nurse[] nurses = new Nurse[nursesStr.length];
+    public NurseDB() {
+        this.dbConnector = new DBConnector();
+        this.dbReader = new DBReader(this.dbConnector);
+        this.dbUpdater = new DBUpdater(this.dbConnector);
+    }
 
-            for(int i = 0; i < nursesStr.length; i += 1) {
-                nurses[i] = (new Nurse()).parseString(nursesStr[i]);
-            }
-
-            return nurses;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        dbio.shutdown();
-
-        throw new NullPointerException("Cannot read nurses");
+    public ArrayList<Nurse> getAllNurses() {
+        return this.dbReader.getAllNurses();
     }
 
     public Nurse getNurse(String name, String surname) {
-        Nurse[] nurses = this.getAllNurses();
-
-        for (Nurse nurse : nurses) {
-            if (nurse.getName().equals(name) && nurse.getSurname().equals(surname)) {
-                return nurse;
-            }
-        }
-        throw new IllegalArgumentException("User not found");
+        return this.dbReader.getDbUtils().getNurseByNameAndSurname(name, surname);
     }
 }
