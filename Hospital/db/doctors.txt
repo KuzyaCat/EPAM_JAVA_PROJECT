@@ -1,3 +1,0 @@
-[Nikolay Grachev 51 ng_51_doctor 19691994] neuro_department false
-[Vasiliy Ivanov 39 vi39_dct 122334] cardio_department false
-[Gennadiy Gorin 52 gg52_doc password] dental_department true
