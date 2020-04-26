@@ -169,10 +169,9 @@ public class DoctorMenu {
                 "5. Search recovered patients\n" +
                 "6. Search patients by diagnose\n" +
                 "7. Search patients by procedure\n" +
-                "8. Search patients by diagnose\n" +
-                "9. Search patients by medicine\n" +
-                "10. Search patients by operation\n" +
-                "11. Exit"
+                "8. Search patients by medicine\n" +
+                "9. Search patients by operation\n" +
+                "10. Exit"
         );
     }
 
@@ -202,12 +201,10 @@ public class DoctorMenu {
                     break;
                 case 9:
                     break;
-                case 10:
-                    break;
                 default:
                     break;
             }
-        } while (variant != 11);
+        } while (variant != 10);
     }
 
     public void initMenu() {
