@@ -1,8 +1,11 @@
 package main.java.controllers.menus.user_menus;
 
+import controllers.resource_controllers.DBUtils;
 import main.java.components.Treatment;
 import main.java.users.stuff.Nurse;
-import main.java.usersdb.PatientDB;
+import main.java.users.Patient;
+import main.java.components.Appointment;
+import main.java.usersdb.NurseDB;
 
 import java.util.Scanner;
 
@@ -22,19 +25,14 @@ public class NurseMenu {
         System.out.println("Choose:");
         System.out.println(
                 "1. My profile\n" +
-                "2. Make a treatment to the patient\n" +
+                "2. Go to appointed treatments\n" +
                 "3. Exit"
         );
     }
 
-    private void addTreatmentMenu() {
+    private void addTreatmentMenu(Patient patient, Appointment appointment, int appointmentId) {
         Scanner in = new Scanner(System.in);
-        System.out.println("Write patient name");
-        String name = in.nextLine();
-        System.out.println("Write patient surname");
-        String surname = in.nextLine();
-
-        PatientDB patientDB = new PatientDB();
+        NurseDB nurseDB = new NurseDB();
 
         System.out.println("Medicine: ");
         String medicine = in.nextLine();
@@ -45,9 +43,15 @@ public class NurseMenu {
         System.out.println("Procedure: ");
         String procedure = in.nextLine();
 
-        Treatment treatment = new Treatment(medicine, operation, procedure);
+        System.out.println("Diagnose: ");
+        String diagnose = in.nextLine();
 
-        this.nurse.setTreatmentToPatient(patientDB.getPatient(name, surname), treatment);
+        Treatment treatment = new Treatment(medicine, operation, procedure, diagnose);
+
+        this.nurse.setTreatmentToPatient(patient, appointment, treatment);
+        int nurseId = nurseDB.getDbReader().getDbUtils().getNurseIdByNameAndSurname(this.nurse.getName(), this.nurse.getSurname());
+        nurseDB.getDbUpdater().deleteRowFromNurseTaskLog(appointmentId, nurseId);
+
         System.out.println("Done");
     }
 
@@ -61,7 +65,15 @@ public class NurseMenu {
                     System.out.println(this.nurse.showProfile());
                     break;
                 case 2:
-                    this.addTreatmentMenu();
+                    NurseDB nurseDB = new NurseDB();
+                    DBUtils dbUtils = nurseDB.getDbReader().getDbUtils();
+                    int nurseId = dbUtils.getNurseIdByNameAndSurname(this.nurse.getName(), this.nurse.getSurname());
+
+                    int appointmentId = dbUtils.getAppointmentIdByNurseId(nurseId);
+                    Appointment appointment = dbUtils.getAppointmentById(appointmentId);
+                    Patient patient = dbUtils.getPatientById(dbUtils.getPatientIdByAppointmentId(appointmentId));
+
+                    this.addTreatmentMenu(patient, appointment, appointmentId);
                     break;
                 default:
                     break;

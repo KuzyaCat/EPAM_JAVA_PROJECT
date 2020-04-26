@@ -20,8 +20,7 @@ public class Nurse extends User {
     }
 
     public void setTreatmentToPatient(Patient patient, Appointment appointment, Treatment treatment) {
-        PatientDB patientDB = new PatientDB();
-        patientDB.writeTreatment(patient, appointment, treatment);
+        (new PatientDB()).writeTreatment(patient, appointment, treatment);
     }
 
     public String showProfile() {

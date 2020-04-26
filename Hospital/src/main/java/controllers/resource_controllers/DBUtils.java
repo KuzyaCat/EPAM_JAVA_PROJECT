@@ -365,6 +365,20 @@ public class DBUtils {
         return -1;
     }
 
+    public int getAppointmentIdByNurseId(int nurseId) {
+        String query = "SELECT ID_APPOINTMENT FROM NURSE_TASK_LOG WHERE ID_NURSE = " + nurseId;
+        try {
+            ResultSet resultSet = this.dbConnector.getQueryResultAsResultSet(query);
+            resultSet.next();
+
+            return resultSet.getInt("ID_APPOINTMENT");
+        } catch (SQLException e) {
+            logger.error(e.getMessage());
+        }
+
+        return -1;
+    }
+
     public HashMap<Appointment, Integer> getHashMapWithPlannedAppointmentsByDoctorToAppointmentIds(Doctor doctor) {
         HashMap<Appointment, Integer> plannedAppointmentsToAppointmentIds = new HashMap<Appointment, Integer>();
         try {
