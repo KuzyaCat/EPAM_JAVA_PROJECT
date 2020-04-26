@@ -22,6 +22,18 @@ public class GregorianDate {
         this.dayOfMonth = Integer.parseInt(dateArr[2]);
     }
 
+    public int getDayOfMonth() {
+        return dayOfMonth;
+    }
+
+    public int getMonth() {
+        return month;
+    }
+
+    public int getYear() {
+        return year;
+    }
+
     public GregorianDate() {
         this(1970, 1, 1);
     }
