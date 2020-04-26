@@ -82,7 +82,7 @@ public class Authorizer {
         throw new Exception("You are out of attempts");
     }
 
-    public void signUp() {
+    public Patient signUp() {
         System.out.println("Name: ");
         String name = this.scanner.nextLine();
 
@@ -103,5 +103,7 @@ public class Authorizer {
 
         Patient newPatient = new Patient(newUser, new ArrayList<Appointment>(), new ArrayList<Treatment>(), true);
         this.dbUpdater.addPatient(newPatient);
+
+        return newPatient;
     }
 }

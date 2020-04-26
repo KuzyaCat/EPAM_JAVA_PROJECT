@@ -27,12 +27,7 @@ public class MainMenu {
             variant = this.getVariant();
             switch(variant) {
                 case 1:
-                    Authorizer auth = new Authorizer();
-                    try {
-                        auth.signUp();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+                    this.initMenuForSignUp();
                     break;
                 case 2:
                     this.initMenuForAuthorizedUser();
@@ -55,6 +50,14 @@ public class MainMenu {
     private int getVariant() {
         Scanner in = new Scanner(System.in);
         return in.nextInt();
+    }
+
+    private void initMenuForSignUp() {
+        Authorizer auth = new Authorizer();
+        Patient newPatient = auth.signUp();
+
+        PatientMenu menu = new PatientMenu(newPatient);
+        menu.initMenu();
     }
 
     private void initMenuForAuthorizedUser() {
