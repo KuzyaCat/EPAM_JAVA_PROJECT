@@ -1,8 +1,8 @@
 package main.java.usersdb;
 
-import controllers.resource_controllers.DBReader;
-import controllers.resource_controllers.DBUpdater;
-import dbconnection.DBConnector;
+import main.java.controllers.resource_controllers.DBReader;
+import main.java.controllers.resource_controllers.DBUpdater;
+import main.java.dbconnection.DBConnector;
 import main.java.components.Appointment;
 import main.java.components.Treatment;
 import main.java.users.Patient;
