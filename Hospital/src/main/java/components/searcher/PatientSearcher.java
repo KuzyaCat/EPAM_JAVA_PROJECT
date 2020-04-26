@@ -20,8 +20,8 @@ public class PatientSearcher {
         Stream<Patient> patientStream = this.patientList.stream();
 
         Comparator<Patient> compareByName = Comparator
-                .comparing(Patient::getName)
-                .thenComparing(Patient::getSurname);
+                .comparing(Patient::getSurname)
+                .thenComparing(Patient::getName);
 
         return patientStream
                 .filter(Patient::isRecovered)
@@ -33,8 +33,8 @@ public class PatientSearcher {
         Stream<Patient> patientStream = this.patientList.stream();
 
         Comparator<Patient> compareByName = Comparator
-                .comparing(Patient::getName)
-                .thenComparing(Patient::getSurname);
+                .comparing(Patient::getSurname)
+                .thenComparing(Patient::getName);
 
         return patientStream
                 .filter(p -> !p.isRecovered())
@@ -46,8 +46,8 @@ public class PatientSearcher {
         Stream<Patient> patientStream = this.patientList.stream();
 
         Comparator<Patient> compareByName = Comparator
-                .comparing(Patient::getName)
-                .thenComparing(Patient::getSurname);
+                .comparing(Patient::getSurname)
+                .thenComparing(Patient::getName);
 
         return patientStream
                 .filter(p -> {
@@ -69,8 +69,8 @@ public class PatientSearcher {
         Stream<Patient> patientStream = this.patientList.stream();
 
         Comparator<Patient> compareByName = Comparator
-                .comparing(Patient::getName)
-                .thenComparing(Patient::getSurname);
+                .comparing(Patient::getSurname)
+                .thenComparing(Patient::getName);
 
         return patientStream
                 .filter(p -> {
@@ -92,8 +92,8 @@ public class PatientSearcher {
         Stream<Patient> patientStream = this.patientList.stream();
 
         Comparator<Patient> compareByName = Comparator
-                .comparing(Patient::getName)
-                .thenComparing(Patient::getSurname);
+                .comparing(Patient::getSurname)
+                .thenComparing(Patient::getName);
 
         return patientStream
                 .filter(p -> {
@@ -113,8 +113,8 @@ public class PatientSearcher {
         Stream<Patient> patientStream = this.patientList.stream();
 
         Comparator<Patient> compareByName = Comparator
-                .comparing(Patient::getName)
-                .thenComparing(Patient::getSurname);
+                .comparing(Patient::getSurname)
+                .thenComparing(Patient::getName);
 
         return patientStream
                 .filter(p -> {
@@ -136,8 +136,8 @@ public class PatientSearcher {
         Stream<Patient> patientStream = this.patientList.stream();
 
         Comparator<Patient> compareByName = Comparator
-                .comparing(Patient::getName)
-                .thenComparing(Patient::getSurname);
+                .comparing(Patient::getSurname)
+                .thenComparing(Patient::getName);
 
         return patientStream
                 .filter(p -> {
@@ -157,8 +157,8 @@ public class PatientSearcher {
         Stream<Patient> patientStream = this.patientList.stream();
 
         Comparator<Patient> compareByName = Comparator
-                .comparing(Patient::getName)
-                .thenComparing(Patient::getSurname);
+                .comparing(Patient::getSurname)
+                .thenComparing(Patient::getName);
 
         return patientStream
                 .filter(p -> p.getName().equals(firstName))
@@ -170,8 +170,8 @@ public class PatientSearcher {
         Stream<Patient> patientStream = this.patientList.stream();
 
         Comparator<Patient> compareByName = Comparator
-                .comparing(Patient::getName)
-                .thenComparing(Patient::getSurname);
+                .comparing(Patient::getSurname)
+                .thenComparing(Patient::getName);
 
         return patientStream
                 .filter(p -> p.getSurname().equals(surname))
@@ -183,8 +183,8 @@ public class PatientSearcher {
         Stream<Patient> patientStream = this.patientList.stream();
 
         Comparator<Patient> compareByName = Comparator
-                .comparing(Patient::getName)
-                .thenComparing(Patient::getSurname);
+                .comparing(Patient::getSurname)
+                .thenComparing(Patient::getName);
 
         return patientStream
                 .filter(p -> p.getSurname().equals(surname) && p.getName().equals(firstName))

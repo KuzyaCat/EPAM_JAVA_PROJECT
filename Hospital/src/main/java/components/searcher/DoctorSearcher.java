@@ -19,8 +19,8 @@ public class DoctorSearcher {
         Stream<Doctor> doctorStream = this.doctorList.stream();
 
         Comparator<Doctor> compareByName = Comparator
-                .comparing(Doctor::getName)
-                .thenComparing(Doctor::getSurname);
+                .comparing(Doctor::getSurname)
+                .thenComparing(Doctor::getName);
 
         return doctorStream
                 .filter(d -> d.getDepartment().equals(department))
@@ -41,8 +41,8 @@ public class DoctorSearcher {
         Stream<Doctor> doctorStream = this.doctorList.stream();
 
         Comparator<Doctor> compareByName = Comparator
-                .comparing(Doctor::getName)
-                .thenComparing(Doctor::getSurname);
+                .comparing(Doctor::getSurname)
+                .thenComparing(Doctor::getName);
 
         return doctorStream
                 .filter(d -> d.getName().equals(firstName))
@@ -54,8 +54,8 @@ public class DoctorSearcher {
         Stream<Doctor> doctorStream = this.doctorList.stream();
 
         Comparator<Doctor> compareByName = Comparator
-                .comparing(Doctor::getName)
-                .thenComparing(Doctor::getSurname);
+                .comparing(Doctor::getSurname)
+                .thenComparing(Doctor::getName);
 
         return doctorStream
                 .filter(d -> d.getName().equals(surname))
@@ -67,8 +67,8 @@ public class DoctorSearcher {
         Stream<Doctor> doctorStream = this.doctorList.stream();
 
         Comparator<Doctor> compareByName = Comparator
-                .comparing(Doctor::getName)
-                .thenComparing(Doctor::getSurname);
+                .comparing(Doctor::getSurname)
+                .thenComparing(Doctor::getName);
 
         return doctorStream
                 .filter(d -> d.getSurname().equals(surname) && d.getName().equals(firstName))
