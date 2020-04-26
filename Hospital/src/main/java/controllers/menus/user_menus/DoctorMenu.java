@@ -167,20 +167,19 @@ public class DoctorMenu {
         System.out.println(
                 "1. Search patients by first name\n" +
                 "2. Search patients by surname\n" +
-                "3. Search patients by age\n" +
+                "3. Search patients by full name\n" +
                 "4. Search recovered patients\n" +
                 "5. Search ill patients\n" +
                 "6. Search patients by diagnose\n" +
                 "7. Search patients by procedure\n" +
                 "8. Search patients by medicine\n" +
                 "9. Search patients by operation\n" +
-                "10. Exit"
+                "10. Search patients by age\n" +
+                "11. Exit"
         );
     }
 
     private void initSearchPatientsMenu() {
-        this.printSearchPatientsMenu();
-
         DBReader dbReader = new DBReader(new DBConnector());
         List<Patient> allPatients = dbReader.getAllPatients();
         PatientSearcher myPatientSearcher = new PatientSearcher(allPatients);
@@ -192,7 +191,7 @@ public class DoctorMenu {
 
         int variant = 0;
         do {
-            this.showVariants();
+            this.printSearchPatientsMenu();
             variant = this.getVariant();
             switch(variant) {
                 case 1:
@@ -256,10 +255,17 @@ public class DoctorMenu {
                     System.out.println("Found " + resultList.size() + " patients");
                     resultList.forEach(p -> System.out.println(p.toString()));
                     break;
+                case 10:
+                    System.out.println("Enter age:");
+                    int age = in.nextInt();
+                    resultList = patientSearcher.findPatientsByAge(age);
+                    System.out.println("Found " + resultList.size() + " patients");
+                    resultList.forEach(p -> System.out.println(p.toString()));
+                    break;
                 default:
                     break;
             }
-        } while (variant != 10);
+        } while (variant != 11);
     }
 
     public void initMenu() {

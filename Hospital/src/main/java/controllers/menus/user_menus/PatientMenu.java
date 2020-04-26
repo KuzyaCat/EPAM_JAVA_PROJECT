@@ -2,7 +2,10 @@ package main.java.controllers.menus.user_menus;
 
 import main.java.components.Appointment;
 import main.java.components.Treatment;
+import main.java.components.searcher.DoctorSearcher;
+import main.java.controllers.resource_controllers.DBReader;
 import main.java.date.GregorianDate;
+import main.java.dbconnection.DBConnector;
 import main.java.users.Patient;
 import main.java.users.stuff.Doctor;
 import main.java.usersdb.DoctorDB;
@@ -10,6 +13,7 @@ import main.java.usersdb.PatientDB;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Scanner;
 
 public class PatientMenu {
@@ -31,8 +35,89 @@ public class PatientMenu {
                 "2. Make an appointment\n" +
                 "3. My appointments\n" +
                 "4. My treatments\n" +
-                "5. Exit"
+                "5. Search doctors\n" +
+                "6. Search appointments\n" +
+                "7. Exit"
         );
+    }
+
+    private void printSearchDoctorsMenu() {
+        System.out.println("Choose:");
+        System.out.println(
+                "1. Search doctors by first name\n" +
+                "2. Search doctors by surname\n" +
+                "3. Search doctors by full name\n" +
+                "4. Search doctors by age\n" +
+                "5. Search head of department\n" +
+                "6. Search doctors by department\n" +
+                "7. Exit"
+        );
+    }
+
+    public void initSearchDoctorsMenu() {
+        int variant = 0;
+        do {
+            DBReader dbReader = new DBReader(new DBConnector());
+            List<Doctor> allDoctors = dbReader.getAllDoctors();
+            DoctorSearcher doctorSearcher = new DoctorSearcher(allDoctors);
+
+            printSearchDoctorsMenu();
+            variant = this.getVariant();
+            Scanner in = new Scanner(System.in);
+            List<Doctor> resultList = new ArrayList<>();
+
+            switch(variant) {
+                case 1:
+                    System.out.println("Enter first name:");
+                    String firstName = in.nextLine();
+                    resultList = doctorSearcher.findDoctorsByFirstName(firstName);
+                    System.out.println("Found " + resultList.size() + " doctors");
+                    resultList.forEach(p -> System.out.println(p.toString()));
+                    break;
+                case 2:
+                    System.out.println("Enter surname:");
+                    String surname = in.nextLine();
+                    resultList = doctorSearcher.findDoctorsBySurname(surname);
+                    System.out.println("Found " + resultList.size() + " doctors");
+                    resultList.forEach(p -> System.out.println(p.toString()));
+                    break;
+                case 3:
+                    System.out.println("Enter first name:");
+                    String first = in.nextLine();
+                    System.out.println("Enter surname:");
+                    String sur = in.nextLine();
+                    resultList = doctorSearcher.findDoctorsByFullName(first, sur);
+                    System.out.println("Found " + resultList.size() + " doctors");
+                    resultList.forEach(p -> System.out.println(p.toString()));
+                    break;
+                case 4:
+                    System.out.println("Enter age:");
+                    int age = in.nextInt();
+                    resultList = doctorSearcher.findDoctorsByAge(age);
+                    System.out.println("Found " + resultList.size() + " doctors");
+                    resultList.forEach(p -> System.out.println(p.toString()));
+                    break;
+                case 5:
+                    System.out.println("Enter department:");
+                    String departmentOfHead = in.nextLine();
+                    Doctor headOfDepartment = doctorSearcher.findHeadOfDepartment(departmentOfHead);
+                    if (headOfDepartment != null) {
+                        System.out.println(headOfDepartment.toString());
+                    } else {
+                        System.out.println("The head of the department not found");
+                    }
+                    break;
+                case 6:
+                    System.out.println("Enter department:");
+                    String department = in.nextLine();
+                    resultList = doctorSearcher.findDoctorsByDepartment(department);
+                    System.out.println("Found " + resultList.size() + " doctors");
+                    resultList.forEach(p -> System.out.println(p.toString()));
+                    break;
+                default:
+                    break;
+            }
+        } while (variant != 7);
     }
 
     public void initMenu() {
@@ -59,10 +144,15 @@ public class PatientMenu {
                     System.out.println("Overall: " + treatments.size());
                     System.out.println(Arrays.toString(treatments.toArray()));
                     break;
+                case 5:
+                    initSearchDoctorsMenu();
+                    break;
+                case 6:
+                    break;
                 default:
                     break;
             }
-        } while (variant != 5);
+        } while (variant != 7);
     }
 
     private void appointMenu() {
