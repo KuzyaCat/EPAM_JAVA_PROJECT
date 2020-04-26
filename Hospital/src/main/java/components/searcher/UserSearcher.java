@@ -20,4 +20,28 @@ public class UserSearcher {
                 .filter(u -> u.getName().equals(firstName))
                 .collect(Collectors.toList());
     }
+
+    public List<User> findUsersBySurname(String surname) {
+        Stream<User> userStream = this.userList.stream();
+
+        return userStream
+                .filter(u -> u.getSurname().equals(surname))
+                .collect(Collectors.toList());
+    }
+
+    public List<User> findUsersByFullName(String firstName, String surname) {
+        Stream<User> userStream = this.userList.stream();
+
+        return userStream
+                .filter(u -> u.getSurname().equals(surname) && u.getName().equals(firstName))
+                .collect(Collectors.toList());
+    }
+
+    public List<User> findUsersByAge(int age) {
+        Stream<User> userStream = this.userList.stream();
+
+        return userStream
+                .filter(u -> u.getAge() == age)
+                .collect(Collectors.toList());
+    }
 }
