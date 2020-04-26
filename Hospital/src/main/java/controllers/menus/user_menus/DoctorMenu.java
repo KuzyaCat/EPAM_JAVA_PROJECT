@@ -31,7 +31,7 @@ public class DoctorMenu {
                 "3. Go to planned appointments\n" +
                 "4. Change recover status of the patient\n" +
                 "5. My department\n" +
-                "6. Actions on patients\n" +
+                "6. Search patients\n" +
                 "7. Exit"
         );
     }
@@ -159,8 +159,55 @@ public class DoctorMenu {
         System.out.println("Done");
     }
 
-    private void initActionsOnPatientsMenu() {
+    private void printSearchPatientsMenu() {
+        System.out.println("Choose:");
+        System.out.println(
+                "1. My profile\n" +
+                "2. Search patients by first name\n" +
+                "3. Search patients by surname\n" +
+                "4. Search patients by age\n" +
+                "5. Search recovered patients\n" +
+                "6. Search patients by diagnose\n" +
+                "7. Search patients by procedure\n" +
+                "8. Search patients by diagnose\n" +
+                "9. Search patients by medicine\n" +
+                "10. Search patients by operation\n" +
+                "11. Exit"
+        );
+    }
 
+    private void initSearchPatientsMenu() {
+        this.printSearchPatientsMenu();
+
+        int variant = 0;
+        do {
+            this.showVariants();
+            variant = this.getVariant();
+            switch(variant) {
+                case 1:
+                    break;
+                case 2:
+                    break;
+                case 3:
+                    break;
+                case 4:
+                    break;
+                case 5:
+                    break;
+                case 6:
+                    break;
+                case 7:
+                    break;
+                case 8:
+                    break;
+                case 9:
+                    break;
+                case 10:
+                    break;
+                default:
+                    break;
+            }
+        } while (variant != 11);
     }
 
     public void initMenu() {
@@ -185,6 +232,7 @@ public class DoctorMenu {
                     System.out.println(this.doctor.getDepartment());
                     break;
                 case 6:
+                    this.initSearchPatientsMenu();
                 default:
                     break;
             }
