@@ -13,10 +13,13 @@ class Triangle {
     public boolean isValidSides(double a, double b, double c) throws TriangleException{
 
         if (a == 0 || b == 0 || c == 0){
-            throw new TriangleException("Треугольник не может быть создан. Есть нулевая сторона");
+            throw new TriangleException("Sorry, you can't create a triangle with zero sides");
         }
         else if(a < 0 || b < 0 || c < 0){
-            throw new TriangleException("Треугольника с отрицательными сторонами не существует");
+            throw new TriangleException("You can't create a triangle with negative sides");
+        }
+        else if ( Double.isNaN(a) || Double.isNaN(b) || Double.isNaN(c)){
+            throw new TriangleException("Sorry, you can't create a triangle with NaN sides");
         }
         return ((a + b) > c && (a + c) > b && (b + c) > a);
     }
