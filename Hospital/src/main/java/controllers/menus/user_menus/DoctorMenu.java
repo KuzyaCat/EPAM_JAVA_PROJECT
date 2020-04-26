@@ -78,20 +78,25 @@ public class DoctorMenu {
             optionCounter++;
         }
 
-        System.out.println("Print the number of an appointment:");
-        int chosenAppointmentNumber = in.nextInt();
-
-        if(chosenAppointmentNumber < 1 || chosenAppointmentNumber > plannedAppointments.size()) {
-            System.out.println("Incorrect appointment number");
+        if(plannedAppointments.size() == 0) {
+            System.out.println("No planned appointments");
         }
         else {
-            Appointment chosenAppointment = plannedAppointments.get(chosenAppointmentNumber - 1);
-            int chosenAppointmentId = appointmentIds.get(chosenAppointmentNumber - 1);
+            System.out.println("Print the number of an appointment:");
+            int chosenAppointmentNumber = in.nextInt();
 
-            this.addTreatmentMenu(
-                    chosenAppointment,
-                    chosenAppointmentId,
-                    doctorDB.getDbReader().getPatientByAppointmentId(chosenAppointmentId));
+            if(chosenAppointmentNumber < 1 || chosenAppointmentNumber > plannedAppointments.size()) {
+                System.out.println("Incorrect appointment number");
+            }
+            else {
+                Appointment chosenAppointment = plannedAppointments.get(chosenAppointmentNumber - 1);
+                int chosenAppointmentId = appointmentIds.get(chosenAppointmentNumber - 1);
+
+                this.addTreatmentMenu(
+                        chosenAppointment,
+                        chosenAppointmentId,
+                        doctorDB.getDbReader().getPatientByAppointmentId(chosenAppointmentId));
+            }
         }
     }
 

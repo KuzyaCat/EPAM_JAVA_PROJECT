@@ -89,17 +89,22 @@ public class NurseMenu {
                         appointmentOption++;
                     }
 
-                    System.out.println("Print the number of an appointment:");
-                    int chosenAppointmentNumber = (new Scanner(System.in)).nextInt();
-
-                    if(chosenAppointmentNumber < 1 || chosenAppointmentNumber >= appointmentOption) {
-                        System.out.println("Incorrect appointment number");
+                    if(appointmentIds.size() == 0) {
+                        System.out.println("No planned appointments");
                     }
                     else {
-                        this.addTreatmentMenu(
-                                patients.get(chosenAppointmentNumber - 1),
-                                appointments.get(chosenAppointmentNumber - 1),
-                                appointmentIds.get(chosenAppointmentNumber - 1));
+                        System.out.println("Print the number of an appointment:");
+                        int chosenAppointmentNumber = (new Scanner(System.in)).nextInt();
+
+                        if(chosenAppointmentNumber < 1 || chosenAppointmentNumber >= appointmentOption) {
+                            System.out.println("Incorrect appointment number");
+                        }
+                        else {
+                            this.addTreatmentMenu(
+                                    patients.get(chosenAppointmentNumber - 1),
+                                    appointments.get(chosenAppointmentNumber - 1),
+                                    appointmentIds.get(chosenAppointmentNumber - 1));
+                        }
                     }
 
                     break;
