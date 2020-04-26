@@ -1,11 +1,11 @@
 package main.java.users;
 
 public class User {
-    private String name;
-    private String surname;
-    private int age;
-    private String login;
-    private String password;
+    protected String name;
+    protected String surname;
+    protected int age;
+    protected String login;
+    protected String password;
 
     public User(String name, String surname, int age, String login, String password){
         this.name = name;
