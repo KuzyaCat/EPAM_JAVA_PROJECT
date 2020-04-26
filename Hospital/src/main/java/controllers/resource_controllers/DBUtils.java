@@ -228,7 +228,7 @@ public class DBUtils {
             String patientQuery = "SELECT ID_PATIENT FROM PATIENT WHERE FIRST_NAME = '" + name + "' AND SECOND_NAME = '" + surname + "'";
             ResultSet onePatientSet = this.dbConnector.getQueryResultAsResultSet(patientQuery);
             onePatientSet.next();
-            return onePatientSet.getInt("ID_DOCTOR");
+            return onePatientSet.getInt("ID_PATIENT");
         } catch (SQLException e) {
             logger.error(e.getMessage());
         }
@@ -346,18 +346,21 @@ public class DBUtils {
         return -1;
     }
 
-    public int getAppointmentIdByNurseId(int nurseId) {
+    public ArrayList<Integer> getAppointmentIdsByNurseId(int nurseId) {
+        ArrayList<Integer> appointmentIds = new ArrayList<Integer>();
         String query = "SELECT ID_APPOINTMENT FROM NURSE_TASK_LOG WHERE ID_NURSE = " + nurseId;
         try {
             ResultSet resultSet = this.dbConnector.getQueryResultAsResultSet(query);
-            resultSet.next();
+            while(resultSet.next()) {
+                appointmentIds.add(resultSet.getInt("ID_APPOINTMENT"));
+            }
 
-            return resultSet.getInt("ID_APPOINTMENT");
+            return  appointmentIds;
         } catch (SQLException e) {
             logger.error(e.getMessage());
         }
 
-        return -1;
+        return appointmentIds;
     }
 
     public HashMap<Appointment, Integer> getHashMapWithPlannedAppointmentsByDoctorToAppointmentIds(Doctor doctor) {

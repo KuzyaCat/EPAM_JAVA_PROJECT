@@ -35,8 +35,7 @@ public class Doctor extends User {
     }
 
     public void setRecoverToPatient(Patient patient, boolean isRecovered) {
-        PatientDB patientDB = new PatientDB();
-        patientDB.writeIsRecovered(patient, isRecovered);
+        (new PatientDB()).writeIsRecovered(patient, isRecovered);
     }
 
     public String getPatientAppointments() {

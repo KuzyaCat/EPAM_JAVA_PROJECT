@@ -73,27 +73,26 @@ public class DoctorMenu {
             Patient currentAppointmentPatient = doctorDB.getDbReader().getPatientByAppointmentId(entry.getValue());
             System.out.println(optionCounter + ". " +
                     currentAppointmentPatient.getName() +
-                    " " + currentAppointmentPatient.getSurname());
+                    " " + currentAppointmentPatient.getSurname() +
+                    ", " + entry.getKey().getAppDate().toString().replace("_", "/") + ";");
             optionCounter++;
         }
 
-        int chosenAppointmentNumber = 0;
-        while(chosenAppointmentNumber < 1 || chosenAppointmentNumber > plannedAppointments.size()) {
-            System.out.println("Print the number of an appointment:");
-            chosenAppointmentNumber = in.nextInt();
+        System.out.println("Print the number of an appointment:");
+        int chosenAppointmentNumber = in.nextInt();
 
-            if(chosenAppointmentNumber < 1 || chosenAppointmentNumber > plannedAppointments.size()) {
-                System.out.println("Incorrect appointment number");
-            }
+        if(chosenAppointmentNumber < 1 || chosenAppointmentNumber > plannedAppointments.size()) {
+            System.out.println("Incorrect appointment number");
         }
+        else {
+            Appointment chosenAppointment = plannedAppointments.get(chosenAppointmentNumber - 1);
+            int chosenAppointmentId = appointmentIds.get(chosenAppointmentNumber - 1);
 
-        Appointment chosenAppointment = plannedAppointments.get(chosenAppointmentNumber - 1);
-        int chosenAppointmentId = appointmentIds.get(chosenAppointmentNumber - 1);
-
-        this.addTreatmentMenu(
-                chosenAppointment,
-                chosenAppointmentId,
-                doctorDB.getDbReader().getPatientByAppointmentId(chosenAppointmentId));
+            this.addTreatmentMenu(
+                    chosenAppointment,
+                    chosenAppointmentId,
+                    doctorDB.getDbReader().getPatientByAppointmentId(chosenAppointmentId));
+        }
     }
 
     public void addNurseAppointmentMenu(int appointmentId) {
@@ -142,7 +141,15 @@ public class DoctorMenu {
 
         PatientDB patientDB = new PatientDB();
 
-        this.doctor.setRecoverToPatient(patientDB.getPatient(name, surname), true);
+        boolean newIsRecovered = false;
+        System.out.println("Recovered status (type 'y' if recovered, else type something else):");
+        String inputStr = in.nextLine();
+        char recoveredFlag = inputStr.charAt(0);
+        if(recoveredFlag == 'y' && inputStr.length() == 1) {
+            newIsRecovered = true;
+        }
+
+        this.doctor.setRecoverToPatient(patientDB.getPatient(name, surname), newIsRecovered);
         System.out.println("Done");
     }
 

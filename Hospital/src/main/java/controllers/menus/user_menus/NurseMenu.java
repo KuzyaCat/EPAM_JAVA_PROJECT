@@ -7,6 +7,7 @@ import main.java.users.Patient;
 import main.java.components.Appointment;
 import main.java.usersdb.NurseDB;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class NurseMenu {
@@ -69,11 +70,38 @@ public class NurseMenu {
                     DBUtils dbUtils = nurseDB.getDbReader().getDbUtils();
                     int nurseId = dbUtils.getNurseIdByNameAndSurname(this.nurse.getName(), this.nurse.getSurname());
 
-                    int appointmentId = dbUtils.getAppointmentIdByNurseId(nurseId);
-                    Appointment appointment = dbUtils.getAppointmentById(appointmentId);
-                    Patient patient = dbUtils.getPatientById(dbUtils.getPatientIdByAppointmentId(appointmentId));
+                    ArrayList<Integer> appointmentIds = dbUtils.getAppointmentIdsByNurseId(nurseId);
+                    ArrayList<Appointment> appointments = new ArrayList<Appointment>();
+                    ArrayList<Patient> patients = new ArrayList<Patient>();
 
-                    this.addTreatmentMenu(patient, appointment, appointmentId);
+                    int appointmentOption = 1;
+                    for(int currentAppointmentId: appointmentIds) {
+                        Appointment currentAppointment = dbUtils.getAppointmentById(currentAppointmentId);
+                        appointments.add(currentAppointment);
+
+                        Patient currentAppointmentPatient = dbUtils.getPatientById(dbUtils.getPatientIdByAppointmentId(currentAppointmentId));
+                        patients.add(currentAppointmentPatient);
+
+                        System.out.println(appointmentOption + ". " +
+                                currentAppointmentPatient.getName() + " " +
+                                currentAppointmentPatient.getSurname() + ", " +
+                                currentAppointment.getAppDate().toString().replace("_", "/") + ";");
+                        appointmentOption++;
+                    }
+
+                    System.out.println("Print the number of an appointment:");
+                    int chosenAppointmentNumber = (new Scanner(System.in)).nextInt();
+
+                    if(chosenAppointmentNumber < 1 || chosenAppointmentNumber >= appointmentOption) {
+                        System.out.println("Incorrect appointment number");
+                    }
+                    else {
+                        this.addTreatmentMenu(
+                                patients.get(chosenAppointmentNumber - 1),
+                                appointments.get(chosenAppointmentNumber - 1),
+                                appointmentIds.get(chosenAppointmentNumber - 1));
+                    }
+
                     break;
                 default:
                     break;
