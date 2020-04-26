@@ -108,7 +108,7 @@ public class PatientSearcher {
                 .filter(p -> {
                     AtomicBoolean contains = new AtomicBoolean(false);
                     p.getAppointments().forEach(a -> {
-                        if (a.getDoctor().equals(doctor)) {
+                        if (a.getDoctor().getName().equals(doctor.getName()) && a.getDoctor().getSurname().equals(doctor.getSurname())) {
                             contains.set(true);
                         }
                     });
@@ -143,7 +143,7 @@ public class PatientSearcher {
 
     public List<Patient> findPatientsByAge(int age) {
         Stream<Patient> patientStream = this.patientList.stream();
-        
+
         return patientStream
                 .filter(p -> p.getAge() == age)
                 .collect(Collectors.toList());

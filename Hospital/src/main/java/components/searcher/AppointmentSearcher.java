@@ -9,20 +9,22 @@ import java.util.stream.Stream;
 
 public class AppointmentSearcher {
     private List<Appointment> appointmentList;
-    private Stream<Appointment> appointmentStream;
 
     public AppointmentSearcher(List<Appointment> appointmentList) {
         this.appointmentList = appointmentList;
-        this.appointmentStream = this.appointmentList.stream();
     }
 
     public List<Appointment> findAppointmentsByDate(int year, int month, int day) {
+        Stream<Appointment> appointmentStream = this.appointmentList.stream();
+
         return appointmentStream
                 .filter(a -> a.getAppDate().getYear() == year && a.getAppDate().getMonth() == month && a.getAppDate().getDayOfMonth() == day)
                 .collect(Collectors.toList());
     }
 
     public List<Appointment> findAppointmentsByDoctor(Doctor doctor) {
+        Stream<Appointment> appointmentStream = this.appointmentList.stream();
+
         return appointmentStream
                 .filter(a -> a.getDoctor().equals(doctor))
                 .collect(Collectors.toList());
