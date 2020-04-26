@@ -200,6 +200,7 @@ public class PatientMenu {
                     initSearchDoctorsMenu();
                     break;
                 case 6:
+                    initSearchAppointmentsMenu();
                     break;
                 default:
                     break;
