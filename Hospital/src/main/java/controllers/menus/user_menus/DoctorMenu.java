@@ -1,6 +1,9 @@
 package main.java.controllers.menus.user_menus;
 
 import main.java.components.Treatment;
+import main.java.components.searcher.PatientSearcher;
+import main.java.controllers.resource_controllers.DBReader;
+import main.java.dbconnection.DBConnector;
 import main.java.users.stuff.Doctor;
 import main.java.usersdb.PatientDB;
 import main.java.usersdb.DoctorDB;
@@ -162,11 +165,11 @@ public class DoctorMenu {
     private void printSearchPatientsMenu() {
         System.out.println("Choose:");
         System.out.println(
-                "1. My profile\n" +
-                "2. Search patients by first name\n" +
-                "3. Search patients by surname\n" +
-                "4. Search patients by age\n" +
-                "5. Search recovered patients\n" +
+                "1. Search patients by first name\n" +
+                "2. Search patients by surname\n" +
+                "3. Search patients by age\n" +
+                "4. Search recovered patients\n" +
+                "5. Search ill patients\n" +
                 "6. Search patients by diagnose\n" +
                 "7. Search patients by procedure\n" +
                 "8. Search patients by medicine\n" +
@@ -178,28 +181,80 @@ public class DoctorMenu {
     private void initSearchPatientsMenu() {
         this.printSearchPatientsMenu();
 
+        DBReader dbReader = new DBReader(new DBConnector());
+        List<Patient> allPatients = dbReader.getAllPatients();
+        PatientSearcher myPatientSearcher = new PatientSearcher(allPatients);
+        List<Patient> myPatients = myPatientSearcher.findPatientsByDoctor(this.doctor);
+
+        PatientSearcher patientSearcher = new PatientSearcher(myPatients);
+        Scanner in = new Scanner(System.in);
+        List<Patient> resultList = new ArrayList<>();
+
         int variant = 0;
         do {
             this.showVariants();
             variant = this.getVariant();
             switch(variant) {
                 case 1:
+                    System.out.println("Enter first name:");
+                    String firstName = in.nextLine();
+                    resultList = patientSearcher.findPatientsByFirstName(firstName);
+                    System.out.println("Found " + resultList.size() + " patients");
+                    resultList.forEach(p -> System.out.println(p.toString()));
                     break;
                 case 2:
+                    System.out.println("Enter surname:");
+                    String surname = in.nextLine();
+                    resultList = patientSearcher.findPatientsBySurname(surname);
+                    System.out.println("Found " + resultList.size() + " patients");
+                    resultList.forEach(p -> System.out.println(p.toString()));
                     break;
                 case 3:
+                    System.out.println("Enter first name:");
+                    String first = in.nextLine();
+                    System.out.println("Enter surname:");
+                    String sur = in.nextLine();
+                    resultList = patientSearcher.findPatientsByFullName(first, sur);
+                    System.out.println("Found " + resultList.size() + " patients");
+                    resultList.forEach(p -> System.out.println(p.toString()));
                     break;
                 case 4:
+                    resultList = patientSearcher.findRecoveredPatients();
+                    System.out.println("Found " + resultList.size() + " patients");
+                    resultList.forEach(p -> System.out.println(p.toString()));
                     break;
                 case 5:
+                    resultList = patientSearcher.findIllPatients();
+                    System.out.println("Found " + resultList.size() + " patients");
+                    resultList.forEach(p -> System.out.println(p.toString()));
                     break;
                 case 6:
+                    System.out.println("Enter diagnose:");
+                    String diagnose = in.nextLine();
+                    resultList = patientSearcher.findPatientsByDiagnose(diagnose);
+                    System.out.println("Found " + resultList.size() + " patients");
+                    resultList.forEach(p -> System.out.println(p.toString()));
                     break;
                 case 7:
+                    System.out.println("Enter procedure:");
+                    String procedure = in.nextLine();
+                    resultList = patientSearcher.findPatientsByProcedure(procedure);
+                    System.out.println("Found " + resultList.size() + " patients");
+                    resultList.forEach(p -> System.out.println(p.toString()));
                     break;
                 case 8:
+                    System.out.println("Enter medicine:");
+                    String medicine = in.nextLine();
+                    resultList = patientSearcher.findPatientsByMedicine(medicine);
+                    System.out.println("Found " + resultList.size() + " patients");
+                    resultList.forEach(p -> System.out.println(p.toString()));
                     break;
                 case 9:
+                    System.out.println("Enter operation:");
+                    String operation = in.nextLine();
+                    resultList = patientSearcher.findPatientsByOperation(operation);
+                    System.out.println("Found " + resultList.size() + " patients");
+                    resultList.forEach(p -> System.out.println(p.toString()));
                     break;
                 default:
                     break;

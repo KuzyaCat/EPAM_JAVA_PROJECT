@@ -2,6 +2,7 @@ package main.java.components.searcher;
 
 import main.java.users.Patient;
 import main.java.users.User;
+import main.java.users.stuff.Doctor;
 
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -17,33 +18,39 @@ public class PatientSearcher {
         this.patientStream = this.patientList.stream();
     }
 
-    public List<User> findUsersByFirstName(String firstName) {
+    public List<Patient> findPatientsByFirstName(String firstName) {
         return patientStream
                 .filter(p -> p.getName().equals(firstName))
                 .collect(Collectors.toList());
     }
 
-    public List<User> findUsersBySurname(String surname) {
+    public List<Patient> findPatientsBySurname(String surname) {
         return patientStream
                 .filter(p -> p.getSurname().equals(surname))
                 .collect(Collectors.toList());
     }
 
-    public List<User> findUsersByFullName(String firstName, String surname) {
+    public List<Patient> findPatientsByFullName(String firstName, String surname) {
         return patientStream
                 .filter(p -> p.getSurname().equals(surname) && p.getName().equals(firstName))
                 .collect(Collectors.toList());
     }
 
-    public List<User> findUsersByAge(int age) {
+    public List<Patient> findPatientsByAge(int age) {
         return patientStream
                 .filter(p -> p.getAge() == age)
                 .collect(Collectors.toList());
     }
 
-    public List<Patient> findRecoveredUsers() {
+    public List<Patient> findRecoveredPatients() {
         return patientStream
                 .filter(Patient::isRecovered)
+                .collect(Collectors.toList());
+    }
+
+    public List<Patient> findIllPatients() {
+        return patientStream
+                .filter(p -> !p.isRecovered())
                 .collect(Collectors.toList());
     }
 
@@ -86,8 +93,6 @@ public class PatientSearcher {
                     p.getTreatments().forEach(t -> {
                         if (t.getMedicines().contains(medicine)) {
                             contains.set(true);
-                        } else {
-                            contains.set(false);
                         }
                     });
                     return contains.get();
@@ -104,6 +109,20 @@ public class PatientSearcher {
                             contains.set(true);
                         } else {
                             contains.set(false);
+                        }
+                    });
+                    return contains.get();
+                })
+                .collect(Collectors.toList());
+    }
+
+    public List<Patient> findPatientsByDoctor(Doctor doctor) {
+        return patientStream
+                .filter(p -> {
+                    AtomicBoolean contains = new AtomicBoolean(false);
+                    p.getAppointments().forEach(a -> {
+                        if (a.getDoctor().equals(doctor)) {
+                            contains.set(true);
                         }
                     });
                     return contains.get();
