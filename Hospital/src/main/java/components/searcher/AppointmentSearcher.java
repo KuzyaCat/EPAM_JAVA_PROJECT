@@ -26,7 +26,7 @@ public class AppointmentSearcher {
         Stream<Appointment> appointmentStream = this.appointmentList.stream();
 
         return appointmentStream
-                .filter(a -> a.getDoctor().equals(doctor))
+                .filter(a -> a.getDoctor().getName().equals(doctor.getName()) && a.getDoctor().getSurname().equals(doctor.getSurname()))
                 .collect(Collectors.toList());
     }
 }

@@ -2,6 +2,7 @@ package main.java.controllers.menus.user_menus;
 
 import main.java.components.Appointment;
 import main.java.components.Treatment;
+import main.java.components.searcher.AppointmentSearcher;
 import main.java.components.searcher.DoctorSearcher;
 import main.java.controllers.resource_controllers.DBReader;
 import main.java.date.GregorianDate;
@@ -56,11 +57,12 @@ public class PatientMenu {
 
     public void initSearchDoctorsMenu() {
         int variant = 0;
-        do {
-            DBReader dbReader = new DBReader(new DBConnector());
-            List<Doctor> allDoctors = dbReader.getAllDoctors();
-            DoctorSearcher doctorSearcher = new DoctorSearcher(allDoctors);
 
+        DBReader dbReader = new DBReader(new DBConnector());
+        List<Doctor> allDoctors = dbReader.getAllDoctors();
+        DoctorSearcher doctorSearcher = new DoctorSearcher(allDoctors);
+
+        do {
             printSearchDoctorsMenu();
             variant = this.getVariant();
             Scanner in = new Scanner(System.in);
@@ -118,6 +120,56 @@ public class PatientMenu {
                     break;
             }
         } while (variant != 7);
+    }
+
+    private void printSearchAppointmentsMenu() {
+        System.out.println("Choose:");
+        System.out.println(
+                "1. Search appointments by doctor\n" +
+                "2. Search appointments by date\n" +
+                "3. Exit"
+        );
+    }
+
+    public void initSearchAppointmentsMenu() {
+        DBReader dbReader = new DBReader(new DBConnector());
+        List<Doctor> allDoctors = dbReader.getAllDoctors();
+        AppointmentSearcher appointmentSearcher = new AppointmentSearcher(this.patient.getAppointments());
+
+        int variant = 0;
+
+        do {
+            printSearchAppointmentsMenu();
+            variant = this.getVariant();
+            Scanner in = new Scanner(System.in);
+            List<Appointment> resultList = new ArrayList<>();
+
+            switch(variant) {
+                case 1:
+                    System.out.println("Enter doctor's first name:");
+                    String firstName = in.nextLine();
+                    System.out.println("Enter doctor's surname:");
+                    String surname = in.nextLine();
+                    Doctor doctor = new DoctorSearcher(allDoctors).findDoctorsByFullName(firstName, surname).get(0);
+                    resultList = appointmentSearcher.findAppointmentsByDoctor(doctor);
+                    System.out.println("Found " + resultList.size() + " appointments");
+                    resultList.forEach(p -> System.out.println(p.toString()));
+                    break;
+                case 2:
+                    System.out.println("Enter year:");
+                    int year = in.nextInt();
+                    System.out.println("Enter month:");
+                    int month = in.nextInt();
+                    System.out.println("Enter day:");
+                    int day = in.nextInt();
+                    resultList = appointmentSearcher.findAppointmentsByDate(year, month, day);
+                    System.out.println("Found " + resultList.size() + " appointments");
+                    resultList.forEach(a -> System.out.println(a.toString()));
+                    break;
+                default:
+                    break;
+            }
+        } while (variant != 3);
     }
 
     public void initMenu() {
