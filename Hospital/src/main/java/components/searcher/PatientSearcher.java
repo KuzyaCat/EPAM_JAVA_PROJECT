@@ -1,7 +1,6 @@
 package main.java.components.searcher;
 
 import main.java.users.Patient;
-import main.java.users.User;
 import main.java.users.stuff.Doctor;
 
 import java.util.List;
@@ -16,30 +15,6 @@ public class PatientSearcher {
     public PatientSearcher(List<Patient> patientList) {
         this.patientList = patientList;
         this.patientStream = this.patientList.stream();
-    }
-
-    public List<Patient> findPatientsByFirstName(String firstName) {
-        return patientStream
-                .filter(p -> p.getName().equals(firstName))
-                .collect(Collectors.toList());
-    }
-
-    public List<Patient> findPatientsBySurname(String surname) {
-        return patientStream
-                .filter(p -> p.getSurname().equals(surname))
-                .collect(Collectors.toList());
-    }
-
-    public List<Patient> findPatientsByFullName(String firstName, String surname) {
-        return patientStream
-                .filter(p -> p.getSurname().equals(surname) && p.getName().equals(firstName))
-                .collect(Collectors.toList());
-    }
-
-    public List<Patient> findPatientsByAge(int age) {
-        return patientStream
-                .filter(p -> p.getAge() == age)
-                .collect(Collectors.toList());
     }
 
     public List<Patient> findRecoveredPatients() {
@@ -127,6 +102,30 @@ public class PatientSearcher {
                     });
                     return contains.get();
                 })
+                .collect(Collectors.toList());
+    }
+
+    public List<Patient> findPatientsByFirstName(String firstName) {
+        return patientStream
+                .filter(p -> p.getName().equals(firstName))
+                .collect(Collectors.toList());
+    }
+
+    public List<Patient> findPatientsBySurname(String surname) {
+        return patientStream
+                .filter(p -> p.getSurname().equals(surname))
+                .collect(Collectors.toList());
+    }
+
+    public List<Patient> findPatientsByFullName(String firstName, String surname) {
+        return patientStream
+                .filter(p -> p.getSurname().equals(surname) && p.getName().equals(firstName))
+                .collect(Collectors.toList());
+    }
+
+    public List<Patient> findPatientsByAge(int age) {
+        return patientStream
+                .filter(p -> p.getAge() == age)
                 .collect(Collectors.toList());
     }
 }
