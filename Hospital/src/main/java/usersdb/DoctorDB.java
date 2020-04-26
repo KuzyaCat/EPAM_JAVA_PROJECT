@@ -8,7 +8,6 @@ import main.java.users.stuff.Doctor;
 import main.java.components.Appointment;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class DoctorDB {
     private DBConnector dbConnector;

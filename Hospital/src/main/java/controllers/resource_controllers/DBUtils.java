@@ -33,7 +33,7 @@ public class DBUtils {
             String query = "SELECT ID_APPOINTMENT FROM APPOINTMENT WHERE ID_PATIENT = " + patientId;
             ResultSet resultSet = this.dbConnector.getQueryResultAsResultSet(query);
             while (resultSet.next()) {
-                String treatmentQuery = "SELECT T_PROCEDURE, MEDICINE, OPERATION FROM TREATMENT WHERE ID_APPOINTMENT = " +
+                String treatmentQuery = "SELECT T_PROCEDURE, MEDICINE, OPERATION, DIAGNOSE FROM TREATMENT WHERE ID_APPOINTMENT = " +
                         resultSet.getInt("ID_APPOINTMENT");
                 ResultSet treatmentResultSet = this.dbConnector.getQueryResultAsResultSet(treatmentQuery);
                 treatmentResultSet.next();

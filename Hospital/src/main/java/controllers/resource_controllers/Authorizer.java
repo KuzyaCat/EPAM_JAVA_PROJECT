@@ -100,11 +100,8 @@ public class Authorizer {
         String password = this.scanner.nextLine();
 
         User newUser = new User(name, surname, age, login, password);
-        Appointment[] appointments = new Appointment[0];
-        Treatment[] treatments = new Treatment[0];
-        boolean recovered = true;
 
-        Patient newPatient = new Patient(newUser, appointments, treatments, recovered);
+        Patient newPatient = new Patient(newUser, new ArrayList<Appointment>(), new ArrayList<Treatment>(), true);
         this.dbUpdater.addPatient(newPatient);
     }
 }
