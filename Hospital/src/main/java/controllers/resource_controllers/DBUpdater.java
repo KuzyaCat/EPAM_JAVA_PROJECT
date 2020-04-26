@@ -4,7 +4,6 @@ import dbconnection.DBConnector;
 
 import main.java.users.Patient;
 import main.java.users.stuff.Doctor;
-import main.java.users.stuff.Nurse;
 import main.java.components.Appointment;
 import main.java.components.Treatment;
 import main.java.date.GregorianDate;
@@ -72,7 +71,8 @@ public class DBUpdater {
         String password = "'" + newPatient.getPassword() + "'";
         boolean recovered = newPatient.isRecovered();
 
-        String insertPatientQuery = "INSERT INTO PATIENT VALUES(" + patientId +
+        String insertPatientQuery = "INSERT INTO PATIENT (ID_PATIENT, FIRST_NAME, SECOND_NAME, AGE, LOGIN, PASSWORD, RECOVERED)" +
+                " VALUES(" + patientId +
                 ", " + name +
                 ", " + surname +
                 ", " + age +
@@ -91,7 +91,8 @@ public class DBUpdater {
         GregorianDate appointmentGregDate = newAppointment.getAppDate();
         String dateString = "'" + appointmentGregDate.toString().replace("_", "-") + "'";
 
-        String insertAppointmentQuery = "INSERT INTO APPOINTMENT VALUES(" + appointmentId +
+        String insertAppointmentQuery = "INSERT INTO APPOINTMENT (ID_APPOINTMENT, ID_DOCTOR, ID_PATIENT, APPOINTMENT_DATE)" +
+                " VALUES(" + appointmentId +
                 ", " + doctorId +
                 ", " + patientId +
                 ", " + dateString + ")";
@@ -100,8 +101,8 @@ public class DBUpdater {
 
     public void addTreatment(Treatment treatment, int appointmentId) {
         int treatmentId = this.dbUtils.getLengthOfTable("TREATMENT") + 1;
-
-        String insertTreatmentQuery = "INSERT INTO APPOINTMENT VALUES(" + treatmentId +
+        String insertTreatmentQuery = "INSERT INTO TREATMENT (ID_TREATMENT, T_PROCEDURE, MEDICINE, OPERATION, DIAGNOSE, ID_APPOINTMENT)" +
+                " VALUES(" + treatmentId +
                 ", '" + treatment.getProcedures() + "'" +
                 ", '" + treatment.getMedicines() + "'" +
                 ", '" + treatment.getOperations() + "'" +
@@ -155,7 +156,8 @@ public class DBUpdater {
     public void addRowToNurseTaskLog(int appointmentId, int nurseId) {
         int nurseTaskLogId = this.dbUtils.getLengthOfTable("NURSE_TASK_LOG") + 1;
 
-        String insertNurseTaskLogRowQuery = "INSERT INTO NURSE_TASK_LOG VALUES(" + nurseTaskLogId +
+        String insertNurseTaskLogRowQuery = "INSERT INTO NURSE_TASK_LOG (ID_NURSE_TASK_LOG, ID_NURSE, ID_APPOINTMENT)" +
+                " VALUES(" + nurseTaskLogId +
                 ", " + nurseId +
                 ", " + appointmentId + ")";
         this.dbConnector.executeInsertOrUpdateOrDeleteQuery(insertNurseTaskLogRowQuery);

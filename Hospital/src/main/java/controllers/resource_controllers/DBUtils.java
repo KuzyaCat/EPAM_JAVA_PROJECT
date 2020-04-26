@@ -36,12 +36,13 @@ public class DBUtils {
                 String treatmentQuery = "SELECT T_PROCEDURE, MEDICINE, OPERATION, DIAGNOSE FROM TREATMENT WHERE ID_APPOINTMENT = " +
                         resultSet.getInt("ID_APPOINTMENT");
                 ResultSet treatmentResultSet = this.dbConnector.getQueryResultAsResultSet(treatmentQuery);
-                treatmentResultSet.next();
-                treatments.add(new Treatment(
-                        treatmentResultSet.getString("MEDICINE"),
-                        treatmentResultSet.getString("OPERATION"),
-                        treatmentResultSet.getString("T_PROCEDURE"),
-                        treatmentResultSet.getString("DIAGNOSE")));
+                if(treatmentResultSet.next()) {
+                    treatments.add(new Treatment(
+                            treatmentResultSet.getString("MEDICINE"),
+                            treatmentResultSet.getString("OPERATION"),
+                            treatmentResultSet.getString("T_PROCEDURE"),
+                            treatmentResultSet.getString("DIAGNOSE")));
+                }
             }
 
             return treatments;
@@ -52,27 +53,6 @@ public class DBUtils {
 
         return treatments;
     }
-
-    /*public ArrayList<String> getDiagnosesByPatientId(int patientId) throws StreamIsClosedException {
-        try {
-            ArrayList<String> diagnoses = new ArrayList<String>();
-            String query = "SELECT ID_APPOINTMENT FROM APPOINTMENT WHERE ID_PATIENT = " + patientId;
-            ResultSet resultSet = this.dbConnector.getQueryResultAsResultSet(query);
-            while (resultSet.next()) {
-                String treatmentQuery = "SELECT DIAGNOSE FROM TREATMENT WHERE ID_APPOINTMENT = " +
-                        resultSet.getInt("ID_APPOINTMENT");
-                ResultSet treatmentResultSet = this.dbConnector.getQueryResultAsResultSet(treatmentQuery);
-                treatmentResultSet.next();
-                diagnoses.add(treatmentResultSet.getString("DIAGNOSE"));
-            }
-
-            return diagnoses;
-        }
-        catch (Exception e) {
-            logger.error(e.getMessage());
-        }
-        throw new StreamIsClosedException();
-    }*/
 
     public ArrayList<Appointment> getAppointmentsByPatientId(int id) {
         ArrayList<Appointment> appointments = new ArrayList<Appointment>();
@@ -199,9 +179,10 @@ public class DBUtils {
 
     public Doctor getDoctorByNameAndSurname(String name, String surname) {
         try {
-            String doctorQuery = "SELECT ID_DOCTOR FROM DOCTOR WHERE FIRST_NAME = '" + name + "', SECOND_NAME = '" + surname + "'";
+            String doctorQuery = "SELECT ID_DOCTOR FROM DOCTOR WHERE FIRST_NAME = '" + name + "' AND SECOND_NAME = '" + surname + "'";
             ResultSet oneDoctorSet = this.dbConnector.getQueryResultAsResultSet(doctorQuery);
             oneDoctorSet.next();
+
             return this.getDoctorById(oneDoctorSet.getInt("ID_DOCTOR"));
         } catch (SQLException e) {
             logger.error(e.getMessage());
@@ -212,7 +193,7 @@ public class DBUtils {
 
     public int getNurseIdByNameAndSurname(String name, String surname) {
         try {
-            String nurseQuery = "SELECT ID_NURSE FROM NURSE WHERE FIRST_NAME = '" + name + "', SECOND_NAME = '" + surname + "'";
+            String nurseQuery = "SELECT ID_NURSE FROM NURSE WHERE FIRST_NAME = '" + name + "' AND SECOND_NAME = '" + surname + "'";
             ResultSet oneNurseSet = this.dbConnector.getQueryResultAsResultSet(nurseQuery);
             oneNurseSet.next();
 
@@ -226,7 +207,7 @@ public class DBUtils {
 
     public Nurse getNurseByNameAndSurname(String name, String surname) {
         try {
-            String nurseQuery = "SELECT * FROM NURSE WHERE FIRST_NAME = '" + name + "', SECOND_NAME = '" + surname + "'";
+            String nurseQuery = "SELECT * FROM NURSE WHERE FIRST_NAME = '" + name + "' AND SECOND_NAME = '" + surname + "'";
             ResultSet oneNurseSet = this.dbConnector.getQueryResultAsResultSet(nurseQuery);
             oneNurseSet.next();
 
@@ -244,7 +225,7 @@ public class DBUtils {
 
     public int getPatientIdByNameAndSurname(String name, String surname) {
         try {
-            String patientQuery = "SELECT ID_PATIENT FROM PATIENT WHERE FIRST_NAME = '" + name + "', SECOND_NAME = '" + surname + "'";
+            String patientQuery = "SELECT ID_PATIENT FROM PATIENT WHERE FIRST_NAME = '" + name + "' AND SECOND_NAME = '" + surname + "'";
             ResultSet onePatientSet = this.dbConnector.getQueryResultAsResultSet(patientQuery);
             onePatientSet.next();
             return onePatientSet.getInt("ID_DOCTOR");
@@ -257,7 +238,7 @@ public class DBUtils {
 
     public int getDoctorIdByNameAndSurname(String name, String surname) {
         try {
-            String doctorQuery = "SELECT ID_DOCTOR FROM DOCTOR WHERE FIRST_NAME = '" + name + "', SECOND_NAME = '" + surname + "'";
+            String doctorQuery = "SELECT ID_DOCTOR FROM DOCTOR WHERE FIRST_NAME = '" + name + "' AND SECOND_NAME = '" + surname + "'";
             ResultSet oneDoctorSet = this.dbConnector.getQueryResultAsResultSet(doctorQuery);
             oneDoctorSet.next();
             return oneDoctorSet.getInt("ID_DOCTOR");

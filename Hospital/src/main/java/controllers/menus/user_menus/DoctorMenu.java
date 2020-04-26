@@ -107,6 +107,7 @@ public class DoctorMenu {
         String surname = in.nextLine();
 
         int chosenNurseId = nurseDB.getDbReader().getDbUtils().getNurseIdByNameAndSurname(name, surname);
+        System.out.println(chosenNurseId);
         nurseDB.getDbUpdater().addRowToNurseTaskLog(appointmentId, chosenNurseId);
 
         System.out.println("Nurse is appointed");
@@ -130,8 +131,6 @@ public class DoctorMenu {
                 System.out.println("Wrong input");
                 break;
         }
-
-        this.initMenu();
     }
 
     private void addRecoverMenu() {
