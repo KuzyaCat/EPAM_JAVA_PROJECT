@@ -1,6 +1,6 @@
-package controllers.resource_controllers;
+package main.java.controllers.resource_controllers;
 
-import dbconnection.DBConnector;
+import main.java.dbconnection.DBConnector;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

@@ -1,6 +1,6 @@
 package main.java.controllers.menus.user_menus;
 
-import controllers.resource_controllers.DBUtils;
+import main.java.controllers.resource_controllers.DBUtils;
 import main.java.components.Treatment;
 import main.java.users.stuff.Nurse;
 import main.java.users.Patient;

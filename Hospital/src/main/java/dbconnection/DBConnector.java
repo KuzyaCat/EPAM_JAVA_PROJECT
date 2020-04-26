@@ -1,4 +1,4 @@
-package dbconnection;
+package main.java.dbconnection;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

@@ -31,7 +31,8 @@ public class DoctorMenu {
                 "3. Go to planned appointments\n" +
                 "4. Change recover status of the patient\n" +
                 "5. My department\n" +
-                "6. Exit"
+                "6. Actions on patients\n" +
+                "7. Exit"
         );
     }
 
@@ -158,6 +159,10 @@ public class DoctorMenu {
         System.out.println("Done");
     }
 
+    private void initActionsOnPatientsMenu() {
+
+    }
+
     public void initMenu() {
         int variant = 0;
         do {
@@ -179,9 +184,10 @@ public class DoctorMenu {
                 case 5:
                     System.out.println(this.doctor.getDepartment());
                     break;
+                case 6:
                 default:
                     break;
             }
-        } while (variant != 6);
+        } while (variant != 7);
     }
 }
