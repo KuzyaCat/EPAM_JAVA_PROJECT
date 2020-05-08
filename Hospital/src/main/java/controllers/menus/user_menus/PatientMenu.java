@@ -215,16 +215,23 @@ public class PatientMenu {
         System.out.println("Write doctor surname");
         String surname = in.nextLine();
         DoctorDB doctorDB = new DoctorDB();
+
         Doctor doctor = doctorDB.getDoctor(name, surname);
-        System.out.println("Write a year of the appointment");
-        int year = in.nextInt();
-        System.out.println("Write a month of the appointment");
-        int month = in.nextInt();
-        System.out.println("Write a day of the appointment");
-        int day = in.nextInt();
-        Appointment appointment = new Appointment(doctor, doctor.getDepartment(), new GregorianDate(year, month, day));
-        PatientDB patientDB = new PatientDB();
-        patientDB.writeAppointment(this.patient, appointment);
-        System.out.println("Done");
+
+        if(doctor != null) {
+            System.out.println("Write a year of the appointment");
+            int year = in.nextInt();
+            System.out.println("Write a month of the appointment");
+            int month = in.nextInt();
+            System.out.println("Write a day of the appointment");
+            int day = in.nextInt();
+            Appointment appointment = new Appointment(doctor, doctor.getDepartment(), new GregorianDate(year, month, day));
+            PatientDB patientDB = new PatientDB();
+            patientDB.writeAppointment(this.patient, appointment);
+            System.out.println("Done");
+        }
+        else {
+            System.out.println("Can't find a doctor with these name and surname");
+        }
     }
 }

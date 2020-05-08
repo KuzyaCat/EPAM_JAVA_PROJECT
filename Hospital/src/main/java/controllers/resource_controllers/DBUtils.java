@@ -181,9 +181,10 @@ public class DBUtils {
         try {
             String doctorQuery = "SELECT ID_DOCTOR FROM DOCTOR WHERE FIRST_NAME = '" + name + "' AND SECOND_NAME = '" + surname + "'";
             ResultSet oneDoctorSet = this.dbConnector.getQueryResultAsResultSet(doctorQuery);
-            oneDoctorSet.next();
 
-            return this.getDoctorById(oneDoctorSet.getInt("ID_DOCTOR"));
+            if (oneDoctorSet.next()) {
+                return this.getDoctorById(oneDoctorSet.getInt("ID_DOCTOR"));
+            }
         } catch (SQLException e) {
             logger.error(e.getMessage());
         }

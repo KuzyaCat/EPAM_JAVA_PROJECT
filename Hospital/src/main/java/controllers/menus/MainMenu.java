@@ -11,11 +11,15 @@ import main.java.users.stuff.Nurse;
 import main.java.usersdb.DoctorDB;
 import main.java.usersdb.NurseDB;
 import main.java.usersdb.PatientDB;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class MainMenu {
+    static Logger logger = LogManager.getLogger();
+
     public MainMenu() {
         this.initMenu();
     }
@@ -66,7 +70,7 @@ public class MainMenu {
         try {
             authorizedUser = auth.logIn();
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e.getMessage());
         }
 
         if (authorizedUser instanceof Patient) {
@@ -108,8 +112,6 @@ public class MainMenu {
             }
             NurseMenu menu = new NurseMenu(nurse);
             menu.initMenu();
-        } else {
-            throw new IllegalArgumentException("User not found");
         }
     }
 }
