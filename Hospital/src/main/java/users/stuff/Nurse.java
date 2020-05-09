@@ -22,7 +22,6 @@ public class Nurse extends User {
     public void setTreatmentToPatient(Patient patient, Appointment appointment, Treatment treatment) {
         (new PatientDB()).writeTreatment(patient, appointment, treatment);
     }
-
     public String showProfile() {
         return this.getName() + " " +
                 this.getSurname() + '\n' +

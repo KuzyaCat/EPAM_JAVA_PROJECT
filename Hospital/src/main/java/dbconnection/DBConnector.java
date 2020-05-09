@@ -8,19 +8,16 @@ import java.sql.*;
 public class DBConnector {
     private String url = "jdbc:mysql://localhost:3306/hospital?useSSL=false";
     private String user = "root";
-    private String password = "mysql123";
+    private String password = "mysql";
     private Connection connection;
 
     static Logger logger = LogManager.getLogger();
 
     public DBConnector() {
         try {
-            Class.forName("com.mysql.jdbc.Driver");
             this.connection = DriverManager.getConnection(this.url, this.user, this.password);
             this.connection.close();
-        } catch (ClassNotFoundException e) {
-            logger.error(e.getMessage());
-        } catch (SQLException e) {
+        } catch ( SQLException e) {
             logger.error(e.getMessage());
         }
     }
