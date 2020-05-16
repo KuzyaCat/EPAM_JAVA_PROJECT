@@ -6,9 +6,9 @@ import org.apache.logging.log4j.Logger;
 import java.sql.*;
 
 public class DBConnector {
-    private String url = "jdbc:mysql://localhost:3306/hospital?useSSL=false";
+    private String url = "jdbc:mysql://localhost:3306/hospital?useSSL=false&serverTimezone=UTC";
     private String user = "root";
-    private String password = "mysql";
+    private String password = "mysql123";
     private Connection connection;
 
     static Logger logger = LogManager.getLogger();
