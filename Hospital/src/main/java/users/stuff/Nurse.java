@@ -3,38 +3,113 @@ package main.java.users.stuff;
 import main.java.components.Treatment;
 import main.java.components.Appointment;
 import main.java.users.Patient;
-import main.java.users.User;
 import main.java.usersdb.PatientDB;
+import org.hibernate.annotations.OptimisticLockType;
 
-public class Nurse extends User {
-    public Nurse(String name, String surname, int age, String login, String password){
-        super(name, surname, age, login, password);
+import javax.persistence.*;
+import java.io.Serializable;
+
+@Entity
+@org.hibernate.annotations.Entity(optimisticLock = OptimisticLockType.ALL)
+@Table(name = "NURSE", uniqueConstraints = {
+        @UniqueConstraint(columnNames = "LOGIN")
+})
+
+public class Nurse implements Serializable {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ID_NURSE", unique = true, nullable = false)
+    private int id;
+
+    @Column(name = "FIRST_NAME", unique = false, nullable = false, length = 100)
+    private String name;
+
+    @Column(name = "SECOND_NAME", unique = false, nullable = false, length = 100)
+    private String surname;
+
+    @Column(name = "AGE", unique = false, nullable = false)
+    private int age;
+
+    @Column(name = "LOGIN", unique = true, nullable = false, length = 100)
+    private String login;
+
+    @Column(name = "PASSWORD", unique = true, nullable = false, length = 100)
+    private String password;
+
+    public Nurse() {}
+
+    public Nurse(String name, String surname, int age, String login, String password) {
+        this.name = name;
+        this.surname = surname;
+        this.age = age;
+        this.login = login;
+        this.password = password;
     }
 
-    public Nurse(User user) {
-        super(user.getName(), user.getSurname(), user.getAge(), user.getLogin(), user.getPassword());
+    public int getId() {
+        return id;
     }
 
-    public Nurse() {
-        super("", "", 0, "", "");
+    public String getName() {
+        return name;
     }
 
-    public void setTreatmentToPatient(Patient patient, Appointment appointment, Treatment treatment) {
-        (new PatientDB()).writeTreatment(patient, appointment, treatment);
+    public String getSurname() {
+        return surname;
     }
+
+    public int getAge() {
+        return age;
+    }
+
+    public String getLogin() {
+        return login;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setSurname(String surname) {
+        this.surname = surname;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    public void setLogin(String login) {
+        this.login = login;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    //    public void setTreatmentToPatient(Patient patient, Appointment appointment, Treatment treatment) {
+//        (new PatientDB()).writeTreatment(patient, appointment, treatment);
+//    }
+
     public String showProfile() {
-        return this.getName() + " " +
-                this.getSurname() + '\n' +
-                this.getAge() + " years old\n";
+        return name + " " + surname + ", " + age;
     }
 
     @Override
     public String toString() {
-        return super.toString();
+        return showProfile();
     }
 
-    @Override
-    public Nurse parseString(String str) {
-        return new Nurse(super.parseString(str));
-    }
+//    @Override
+//    public Nurse parseString(String str) {
+//        return new Nurse(super.parseString(str));
+//    }
 }

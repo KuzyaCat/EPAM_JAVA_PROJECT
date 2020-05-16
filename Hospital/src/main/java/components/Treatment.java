@@ -1,61 +1,103 @@
 package main.java.components;
 
-public class Treatment {
-    private String procedures;
-    private String medicines;
-    private String operations;
-    private String diagnoses;
+import org.hibernate.annotations.OptimisticLockType;
 
-    public Treatment(String medicines, String operations, String procedures, String diagnoses){
-        this.medicines = medicines;
-        this.operations = operations;
-        this.procedures = procedures;
-        this.diagnoses = diagnoses;
+import javax.persistence.*;
+import java.io.Serializable;
+
+@Entity
+@org.hibernate.annotations.Entity(optimisticLock = OptimisticLockType.ALL)
+@Table(name = "TREATMENT", uniqueConstraints = {
+        @UniqueConstraint(columnNames = "ID_TREATMENT")
+})
+
+public class Treatment implements Serializable {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ID_TREATMENT", unique = true, nullable = false)
+    private int id;
+
+    @Column(name = "T_PROCEDURE", unique = false, nullable = false, length = 100)
+    private String procedure;
+
+    @Column(name = "MEDICINE", unique = false, nullable = false, length = 100)
+    private String medicine;
+
+    @Column(name = "OPERATION", unique = false, nullable = false, length = 100)
+    private String operation;
+
+    @Column(name = "DIAGNOSE", unique = false, nullable = false, length = 100)
+    private String diagnose;
+
+    @Column(name = "ID_APPOINTMENT", unique = false, nullable = false, length = 100)
+    private int appointmentId;
+
+    public Treatment() {}
+
+    public Treatment(String procedure, String medicine, String operation, String diagnose, int appointmentId) {
+        this.procedure = procedure;
+        this.medicine = medicine;
+        this.operation = operation;
+        this.diagnose = diagnose;
+        this.appointmentId = appointmentId;
     }
 
-    public Treatment() {
-        this("", "", "", "");
+    public int getId() {
+        return id;
     }
 
-    public String getMedicines() {
-        return medicines;
+    public String getProcedure() {
+        return procedure;
     }
 
-    public String getOperations() {
-        return operations;
+    public String getMedicine() {
+        return medicine;
     }
 
-    public String getProcedures() {
-        return procedures;
+    public String getOperation() {
+        return operation;
     }
 
-    public String getDiagnoses() {
-        return diagnoses;
+    public String getDiagnose() {
+        return diagnose;
     }
 
-    public void setMedicines(String medicines) {
-        this.medicines = medicines;
+    public int getAppointmentId() {
+        return appointmentId;
     }
 
-    public void setOperations(String operations) {
-        this.operations = operations;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public void setProcedures(String procedures) {
-        this.procedures = procedures;
+    public void setProcedure(String procedure) {
+        this.procedure = procedure;
     }
 
-    public void setDiagnoses(String diagnoses) {
-        this.diagnoses = diagnoses;
+    public void setMedicine(String medicine) {
+        this.medicine = medicine;
     }
+
+    public void setOperation(String operation) {
+        this.operation = operation;
+    }
+
+    public void setDiagnose(String diagnose) {
+        this.diagnose = diagnose;
+    }
+
+    public void setAppointmentId(int appointmentId) {
+        this.appointmentId = appointmentId;
+    }
+
+//        @Override
+//    public String toString() {
+//        return this.medicines + " " + this.operations + " " + this.procedures + " " + this.diagnoses;
+//    }
 
     @Override
     public String toString() {
-        return this.medicines + " " + this.operations + " " + this.procedures + " " + this.diagnoses;
-    }
-
-    public Treatment parseString(String str) {
-        String[] fields = str.split(" ");
-        return new Treatment(fields[0], fields[1], fields[2], fields[3]);
+        return medicine + " " + operation + " " + procedure + " " + diagnose;
     }
 }
