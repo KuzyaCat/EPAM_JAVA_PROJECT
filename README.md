@@ -8,5 +8,5 @@
 Пациент может быть выписан из Больницы. При этом фиксируется окончательный диагноз.  
 
 1.__Бэклог__ https://trello.com/b/ZrztCTMj/documentation-requirements   
-2.__Макет__ https://balsamiq.cloud/st5x96u/plflvfd/r2278   
+2.__Макет__ https://balsamiq.cloud/sxj2zs6/p1hovds/rEC69   
 3.__Документация__ https://github.com/projectEpamBSU/EPAM_JAVA_PROJECT/wiki/Terms-and-functional-reqirements
