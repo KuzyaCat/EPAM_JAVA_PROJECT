@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="main.java.tasklogs.NurseTaskLog" table="nurse_task_log">
+        <id name="id" column="ID_NURSE_TASK_LOG">
+            <generator class="native"/>
+        </id>
+        <property name="appointmentId" column="ID_APPOINTMENT" type="int"/>
+
+        <many-to-one name="nurse" class="main.java.users.stuff.Nurse">
+            <column name="ID_NURSE" not-null="true"/>
+        </many-to-one>
+
+        <one-to-one name="appointment" class="main.java.components.Appointment"/>
+    </class>
+</hibernate-mapping>

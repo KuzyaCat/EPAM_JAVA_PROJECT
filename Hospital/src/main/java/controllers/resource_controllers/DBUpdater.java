@@ -1,7 +1,7 @@
 package main.java.controllers.resource_controllers;
 
-import main.java.dbconnection.DBConnector;
-
+import main.java.dbconnection.SessionProvider;
+import main.java.tasklogs.NurseTaskLog;
 import main.java.users.Patient;
 import main.java.users.stuff.Doctor;
 import main.java.components.Appointment;
@@ -10,172 +10,162 @@ import main.java.date.GregorianDate;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.hibernate.Criteria;
+import org.hibernate.Query;
+import org.hibernate.Session;
 
 import java.sql.*;
+import java.util.ArrayList;
 
 public class DBUpdater {
-    private DBConnector dbConnector;
-    private DBUtils dbUtils;
+    private SessionProvider sessionProvider = new SessionProvider();
+    private Session session;
     static Logger logger = LogManager.getLogger();
 
-    public DBUpdater(DBConnector dbConnector) {
-        this.dbConnector = dbConnector;
-        if(!this.dbConnector.isConnected()) {
-            this.dbConnector.connectToDataBase();
-        }
-        this.dbUtils = new DBUtils(this.dbConnector);
+    public DBUpdater(Session session) {
+        this.session = session;
     }
 
-    public void deletePatientRow(int patientId) {
-        String query = "DELETE FROM PATIENT WHERE ID_PATIENT = " + patientId;
-        this.dbConnector.executeInsertOrUpdateOrDeleteQuery(query);
+    public DBUpdater() {
+        this.session = this.sessionProvider.getSessionFactory().openSession();
     }
 
-    public void deleteAppointmentRow(int appointmentId) {
-        String query = "DELETE FROM APPOINTMENT WHERE ID_APPOINTMENT = " + appointmentId;
-        this.dbConnector.executeInsertOrUpdateOrDeleteQuery(query);
+//    public void deletePatientRow(int patientId) {
+//        session.beginTransaction();
+//
+//        String deletePatientQuery = "DELETE FROM Patient WHERE id= :patientId";
+//        Query query = session.createQuery(deletePatientQuery);
+//        query.setInteger("patientId", patientId);
+//        query.executeUpdate();
+//
+//        session.getTransaction().commit();
+//    }
+
+    public void deletePatientRow(Patient patient) {
+        session.beginTransaction();
+        session.delete(patient);
+        session.getTransaction().commit();
     }
 
-    public void deleteTreatmentRow(int treatmentId) {
-        String query = "DELETE FROM TREATMENT WHERE ID_TREATMENT = " + treatmentId;
-        this.dbConnector.executeInsertOrUpdateOrDeleteQuery(query);
+//    public void deleteAppointmentRow(int appointmentId) {
+//        session.beginTransaction();
+//
+//        String deleteAppointmentQuery = "DELETE FROM Appointment WHERE id= :appointmentId";
+//        Query query = session.createQuery(deleteAppointmentQuery);
+//        query.setInteger("appointmentId", appointmentId);
+//        query.executeUpdate();
+//
+//        session.getTransaction().commit();
+//    }
+
+    public void deleteAppointmentRow(Appointment appointment) {
+        session.beginTransaction();
+        session.delete(appointment);
+        session.getTransaction().commit();
     }
 
-    public void deletePatient(Patient removedPatient) {
-        String removedPatientLogin = removedPatient.getLogin();
-        try {
-            int removedPatientId = this.dbUtils.getPatientIdByLogin(removedPatientLogin);
-            String selectAppointmentIdsByPatientIdQuery = "SELECT ID_APPOINTMENT FROM APPOINTMENT WHERE ID_PATIENT = " + removedPatientId;
+//    public void deleteTreatmentRow(int treatmentId) {
+//        session.beginTransaction();
+//
+//        String deleteTreatmentQuery = "DELETE FROM Treatment WHERE id= :treatmentId";
+//        Query query = session.createQuery(deleteTreatmentQuery);
+//        query.setInteger("treatmentId", treatmentId);
+//        query.executeUpdate();
+//
+//        session.getTransaction().commit();
+//    }
 
-            ResultSet appointmentIdsSet = this.dbConnector.getQueryResultAsResultSet(selectAppointmentIdsByPatientIdQuery);
-            while(appointmentIdsSet.next()) {
-                int currentAppointmentId = appointmentIdsSet.getInt("ID_APPOINTMENT");
-                int currentTreatmentId = this.dbUtils.getTreatmentIdByAppointmentId(currentAppointmentId);
+    public void deleteTreatmentRow(Treatment treatment) {
+        session.beginTransaction();
+        session.delete(treatment);
+        session.getTransaction().commit();
+    }
 
-                this.deleteTreatmentRow(currentTreatmentId);
-                this.deleteAppointmentRow(currentAppointmentId);
-            }
-            this.deletePatientRow(removedPatientId);
-
-        } catch (SQLException e) {
-            logger.error(e.getMessage());
-        }
+    public void deleteRowFromNurseTaskLog(NurseTaskLog nurseTaskLog) {
+        session.beginTransaction();
+        session.delete(nurseTaskLog);
+        session.getTransaction().commit();
     }
 
     public void addPatient(Patient newPatient) {
-        int patientId = this.dbUtils.getLengthOfTable("PATIENT") + 1;
-        String name = "'" + newPatient.getName() + "'";
-        String surname = "'" + newPatient.getSurname() + "'";
-        int age = newPatient.getAge();
-        String login = "'" + newPatient.getLogin() + "'";
-        String password = "'" + newPatient.getPassword() + "'";
-        boolean recovered = newPatient.isRecovered();
-
-        String insertPatientQuery = "INSERT INTO PATIENT (ID_PATIENT, FIRST_NAME, SECOND_NAME, AGE, LOGIN, PASSWORD, RECOVERED)" +
-                " VALUES(" + patientId +
-                ", " + name +
-                ", " + surname +
-                ", " + age +
-                ", " + login +
-                ", " + password +
-                ", " + recovered + ")";
-        this.dbConnector.executeInsertOrUpdateOrDeleteQuery(insertPatientQuery);
+        session.beginTransaction();
+        session.save(newPatient);
+        session.getTransaction().commit();
     }
 
-    public void addAppointment(Appointment newAppointment, int patientId) {
-        int appointmentId = this.dbUtils.getLengthOfTable("APPOINTMENT") + 1;
-
-        Doctor appointmentDoctor = newAppointment.getDoctor();
-        int doctorId = this.dbUtils.getDoctorIdByNameAndSurname(appointmentDoctor.getName(), appointmentDoctor.getSurname());
-
-        GregorianDate appointmentGregDate = newAppointment.getAppDate();
-        String dateString = "'" + appointmentGregDate.toString().replace("_", "-") + "'";
-
-        String insertAppointmentQuery = "INSERT INTO APPOINTMENT (ID_APPOINTMENT, ID_DOCTOR, ID_PATIENT, APPOINTMENT_DATE)" +
-                " VALUES(" + appointmentId +
-                ", " + doctorId +
-                ", " + patientId +
-                ", " + dateString + ")";
-        this.dbConnector.executeInsertOrUpdateOrDeleteQuery(insertAppointmentQuery);
+    public void addAppointment(Appointment newAppointment) {
+        session.beginTransaction();
+        session.save(newAppointment);
+        session.getTransaction().commit();
     }
 
-    public void addTreatment(Treatment treatment, int appointmentId) {
-        int treatmentId = this.dbUtils.getLengthOfTable("TREATMENT") + 1;
-        String insertTreatmentQuery = "INSERT INTO TREATMENT (ID_TREATMENT, T_PROCEDURE, MEDICINE, OPERATION, DIAGNOSE, ID_APPOINTMENT)" +
-                " VALUES(" + treatmentId +
-                ", '" + treatment.getProcedures() + "'" +
-                ", '" + treatment.getMedicines() + "'" +
-                ", '" + treatment.getOperations() + "'" +
-                ", '" + treatment.getDiagnoses() + "'" +
-                ", " + appointmentId + ")";
-        this.dbConnector.executeInsertOrUpdateOrDeleteQuery(insertTreatmentQuery);
+    public void addTreatment(Treatment treatment) {
+        session.beginTransaction();
+        session.save(treatment);
+        session.getTransaction().commit();
+    }
+
+    public void addRowToNurseTaskLog(NurseTaskLog nurseTaskLog) {
+        session.beginTransaction();
+        session.save(nurseTaskLog);
+        session.getTransaction().commit();
     }
 
     public void updatePatient(Patient updatedPatient) {
-        String name = "'" + updatedPatient.getName() + "'";
-        String surname = "'" + updatedPatient.getSurname() + "'";
-        int age = updatedPatient.getAge();
-        String login = "'" + updatedPatient.getLogin() + "'";
-        String password = "'" + updatedPatient.getPassword() + "'";
-        boolean recovered = updatedPatient.isRecovered();
+        session.beginTransaction();
 
-        int updatedPatientId = this.dbUtils.getPatientIdByLogin(updatedPatient.getLogin());
-        String updatePatientQuery = "UPDATE PATIENT SET " +
-                "FIRST_NAME = " + name +
-                ", SECOND_NAME = " + surname +
-                ", AGE = " + age +
-                ", LOGIN = " + login +
-                ", PASSWORD = " + password +
-                ", RECOVERED = " + recovered +
-                " WHERE ID_PATIENT = " + updatedPatientId;
-        this.dbConnector.executeInsertOrUpdateOrDeleteQuery(updatePatientQuery);
+        String updatePatientQuery = "UPDATE Patient set name= :name," +
+                "surname= :surname," +
+                "age= :age," +
+                "login= :login," +
+                "password= :password," +
+                "recovered= :recovered WHERE id= :patientId";
+        Query query = session.createQuery(updatePatientQuery);
+        query.setString("name", updatedPatient.getName());
+        query.setString("surname", updatedPatient.getSurname());
+        query.setInteger("age", updatedPatient.getAge());
+        query.setString("login", updatedPatient.getLogin());
+        query.setString("password", updatedPatient.getPassword());
+        query.setBoolean("recovered", updatedPatient.isRecovered());
+        query.setInteger("patientId", updatedPatient.getId());
+
+        query.executeUpdate();
+        session.getTransaction().commit();
     }
 
     public void updateDoctor(Doctor updatedDoctor) {
-        String name = "'" + updatedDoctor.getName() + "'";
-        String surname = "'" + updatedDoctor.getSurname() + "'";
-        int age = updatedDoctor.getAge();
-        String login = "'" + updatedDoctor.getLogin() + "'";
-        String password = "'" + updatedDoctor.getPassword() + "'";
-        String department = "'" + updatedDoctor.getDepartment() + "'";
-        boolean isHeadOfDepartment = updatedDoctor.isHeadOfDepartment();
+        session.beginTransaction();
 
-        int updatedDoctorId = this.dbUtils.getDoctorIdByNameAndSurname(name, surname);
-        String updateDoctorQuery = "UPDATE DOCTOR SET " +
-                "FIRST_NAME = " + name +
-                ", SECOND_NAME = " + surname +
-                ", AGE = " + age +
-                ", LOGIN = " + login +
-                ", PASSWORD = " + password +
-                ", DEPARTMENT = " + department +
-                ", IS_HEAD_OF_DEPARTMENT = " + isHeadOfDepartment +
-                " WHERE ID_DOCTOR = " + updatedDoctorId;
-        this.dbConnector.executeInsertOrUpdateOrDeleteQuery(updateDoctorQuery);
+        String updateDoctorQuery = "UPDATE Doctor set name= :name," +
+                "surname= :surname," +
+                "age= :age," +
+                "login= :login," +
+                "password= :password," +
+                "department= :department," +
+                "isHeadOfDepartment= :isHeadOfDepartment WHERE id= :doctorId";
+        Query query = session.createQuery(updateDoctorQuery);
+        query.setString("name", updatedDoctor.getName());
+        query.setString("surname", updatedDoctor.getSurname());
+        query.setInteger("age", updatedDoctor.getAge());
+        query.setString("login", updatedDoctor.getLogin());
+        query.setString("password", updatedDoctor.getPassword());
+        query.setString("department", updatedDoctor.getDepartment());
+        query.setBoolean("isHeadOfDepartment", updatedDoctor.isHeadOfDepartment());
+        query.setInteger("doctorId", updatedDoctor.getId());
+
+        query.executeUpdate();
+        session.getTransaction().commit();
     }
 
-    public void addRowToNurseTaskLog(int appointmentId, int nurseId) {
-        int nurseTaskLogId = this.dbUtils.getLengthOfTable("NURSE_TASK_LOG") + 1;
+    public void changeRecoveredStatusByPatient(Patient patient, boolean isRecovered) {
+        session.beginTransaction();
 
-        String insertNurseTaskLogRowQuery = "INSERT INTO NURSE_TASK_LOG (ID_NURSE_TASK_LOG, ID_NURSE, ID_APPOINTMENT)" +
-                " VALUES(" + nurseTaskLogId +
-                ", " + nurseId +
-                ", " + appointmentId + ")";
-        this.dbConnector.executeInsertOrUpdateOrDeleteQuery(insertNurseTaskLogRowQuery);
-    }
+        String updatePatientQuery = "UPDATE Patient set recovered= :recovered WHERE id= :patientId";
+        Query query = session.createQuery(updatePatientQuery);
+        query.setBoolean("recovered", isRecovered);
+        query.setInteger("patientId", patient.getId());
 
-    public void deleteRowFromNurseTaskLog(int appointmentId, int nurseId) {
-        String deleteNurseTaskLogQuery = "DELETE FROM NURSE_TASK_LOG WHERE ID_NURSE = " + nurseId + " AND ID_APPOINTMENT = " + appointmentId;
-        this.dbConnector.executeInsertOrUpdateOrDeleteQuery(deleteNurseTaskLogQuery);
-    }
-
-    public void changeRecoveredStatusByPatientNameAndSurname(String name, String surname, boolean isRecovered) {
-        try {
-            int patientId = this.dbUtils.getPatientIdByNameAndSurname(name, surname);
-
-            String updatePatientRecoverStatusQuery = "UPDATE PATIENT SET RECOVERED = " + isRecovered + " WHERE ID_PATIENT = " + patientId;
-            this.dbConnector.executeInsertOrUpdateOrDeleteQuery(updatePatientRecoverStatusQuery);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        query.executeUpdate();
+        session.getTransaction().commit();
     }
 }

@@ -2,12 +2,15 @@ package main.java.users.stuff;
 
 import main.java.components.Treatment;
 import main.java.components.Appointment;
+import main.java.tasklogs.NurseTaskLog;
 import main.java.users.Patient;
 import main.java.usersdb.PatientDB;
 import org.hibernate.annotations.OptimisticLockType;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @org.hibernate.annotations.Entity(optimisticLock = OptimisticLockType.ALL)
@@ -36,6 +39,8 @@ public class Nurse implements Serializable {
 
     @Column(name = "PASSWORD", unique = true, nullable = false, length = 100)
     private String password;
+
+    private Set<NurseTaskLog> nurseTaskLogSet;
 
     public Nurse() {}
 
@@ -71,6 +76,10 @@ public class Nurse implements Serializable {
         return password;
     }
 
+    public Set<NurseTaskLog> getNurseTaskLogSet() {
+        return nurseTaskLogSet;
+    }
+
     public void setId(int id) {
         this.id = id;
     }
@@ -95,6 +104,10 @@ public class Nurse implements Serializable {
         this.password = password;
     }
 
+    public void setNurseTaskLogSet(Set<NurseTaskLog> nurseTaskLogSet) {
+        this.nurseTaskLogSet = nurseTaskLogSet;
+    }
+
     //    public void setTreatmentToPatient(Patient patient, Appointment appointment, Treatment treatment) {
 //        (new PatientDB()).writeTreatment(patient, appointment, treatment);
 //    }
@@ -112,4 +125,18 @@ public class Nurse implements Serializable {
 //    public Nurse parseString(String str) {
 //        return new Nurse(super.parseString(str));
 //    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Nurse nurse = (Nurse) o;
+        return getId() == nurse.getId();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId());
+    }
 }

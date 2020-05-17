@@ -11,5 +11,12 @@
         <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
         <property name="show_sql">true</property>
         <property name="hbm2ddl.auto">update</property>
+
+        <mapping resource="../entity_config_files/patient.cfg.xml"/>
+        <mapping resource="../entity_config_files/doctor.cfg.xml"/>
+        <mapping resource="../entity_config_files/nurse.cfg.xml"/>
+        <mapping resource="../entity_config_files/nurse_task_log.cfg.xml"/>
+        <mapping resource="../entity_config_files/appointment.cfg.xml"/>
+        <mapping resource="../entity_config_files/treatment.cfg.xml"/>
     </session-factory>
 </hibernate-configuration>

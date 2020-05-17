@@ -1,136 +1,261 @@
 package main.java.controllers.resource_controllers;
 
-import main.java.dbconnection.DBConnector;
+import main.java.dbconnection.SessionProvider;
+import main.java.tasklogs.NurseTaskLog;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import main.java.users.Patient;
 import main.java.users.stuff.Doctor;
 import main.java.users.stuff.Nurse;
 import main.java.components.Appointment;
 import main.java.components.Treatment;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.hibernate.Criteria;
+import org.hibernate.Session;
+import org.hibernate.criterion.Restrictions;
 
-import java.sql.*;
 import java.util.ArrayList;
-
+import java.util.stream.Collectors;
 
 public class DBReader {
-    private DBConnector dbConnector;
-    private DBUtils dbUtils;
+    private SessionProvider sessionProvider = new SessionProvider();
+    private Session session;
     static Logger logger = LogManager.getLogger();
 
-    public DBReader(DBConnector dbConnector) {
-        this.dbConnector = dbConnector;
-        if(!this.dbConnector.isConnected()) {
-            this.dbConnector.connectToDataBase();
-        }
-        this.dbUtils = new DBUtils(this.dbConnector);
+    public DBReader(Session session) {
+        this.session = session;
     }
 
-    public DBUtils getDbUtils() {
-        return dbUtils;
+    public DBReader() {
+        this.session = this.sessionProvider.getSessionFactory().openSession();
     }
 
     public ArrayList<Patient> getAllPatients() {
-        ArrayList<Patient> allPatients = new ArrayList<Patient>();
-        String query = "SELECT * FROM PATIENT";
-        try {
-            ResultSet resultSet = this.dbConnector.getQueryResultAsResultSet(query);
-            while (resultSet.next()) {
-                int id = resultSet.getInt("ID_PATIENT");
-                String name = resultSet.getString("FIRST_NAME");
-                String surname = resultSet.getString("SECOND_NAME");
-                int age = resultSet.getInt("AGE");
-                String login = resultSet.getString("LOGIN");
-                String password = resultSet.getString("PASSWORD");
+        session.beginTransaction();
 
-                ArrayList<Appointment> appointments = this.dbUtils.getAppointmentsByPatientId(id);
-                ArrayList<Treatment> treatments = this.dbUtils.getTreatmentsByPatientId(id);
+        Criteria criteria = session.createCriteria(Patient.class);
+        ArrayList<Patient> patients = (ArrayList<Patient>) criteria.list();
 
-                boolean recovered = resultSet.getBoolean("RECOVERED");
+        session.getTransaction().commit();
 
-                allPatients.add(new Patient(name, surname, age, login, password, appointments, treatments, recovered));
-            }
-        } catch (SQLException e) {
-            logger.error(e.getMessage());
-        }
-
-        return allPatients;
+        return patients;
     }
 
     public ArrayList<Doctor> getAllDoctors() {
-        ArrayList<Doctor> allDoctors = new ArrayList<Doctor>();
-        String query = "SELECT * FROM DOCTOR";
-        try {
-            ResultSet resultSet = this.dbConnector.getQueryResultAsResultSet(query);
-            while (resultSet.next()) {
-                String name = resultSet.getString("FIRST_NAME");
-                String surname = resultSet.getString("SECOND_NAME");
-                int age = resultSet.getInt("AGE");
-                String login = resultSet.getString("LOGIN");
-                String password = resultSet.getString("PASSWORD");
-                String department = resultSet.getString("DEPARTMENT");
-                boolean isHeadOfDepartment = resultSet.getBoolean("IS_HEAD_OF_DEPARTMENT");
+        session.beginTransaction();
 
-                allDoctors.add(new Doctor(name, surname, age, login, password, department, isHeadOfDepartment));
-            }
-        } catch (SQLException e) {
-            logger.error(e.getMessage());
-        }
+        Criteria criteria = session.createCriteria(Doctor.class);
+        ArrayList<Doctor> doctors = (ArrayList<Doctor>) criteria.list();
 
-        return allDoctors;
+        session.getTransaction().commit();
+
+        return doctors;
     }
 
     public ArrayList<Nurse> getAllNurses() {
-        ArrayList<Nurse> allNurses = new ArrayList<Nurse>();
-        String query = "SELECT * FROM NURSE";
-        try {
-            ResultSet resultSet = this.dbConnector.getQueryResultAsResultSet(query);
-            while (resultSet.next()) {
-                String name = resultSet.getString("FIRST_NAME");
-                String surname = resultSet.getString("SECOND_NAME");
-                int age = resultSet.getInt("AGE");
-                String login = resultSet.getString("LOGIN");
-                String password = resultSet.getString("PASSWORD");
+        session.beginTransaction();
 
-                allNurses.add(new Nurse(name, surname, age, login, password));
-            }
-        } catch (SQLException e) {
-            logger.error(e.getMessage());
-        }
+        Criteria criteria = session.createCriteria(Nurse.class);
+        ArrayList<Nurse> nurses = (ArrayList<Nurse>) criteria.list();
 
-        return allNurses;
+        session.getTransaction().commit();
+
+        return nurses;
     }
 
-    public int getPatientId(Patient patient) {
-        return this.dbUtils.getPatientIdByLogin(patient.getLogin());
+    public ArrayList<NurseTaskLog> getAllNurseTaskLogs() {
+        session.beginTransaction();
+
+        Criteria criteria = session.createCriteria(NurseTaskLog.class);
+        ArrayList<NurseTaskLog> nurseTaskLogs = (ArrayList<NurseTaskLog>) criteria.list();
+
+        session.getTransaction().commit();
+
+        return nurseTaskLogs;
     }
 
-    public int getDoctorId(Doctor doctor) {
-        return this.dbUtils.getDoctorIdByNameAndSurname(doctor.getName(), doctor.getSurname());
+    public ArrayList<Appointment> getAllAppointments() {
+        session.beginTransaction();
+
+        Criteria criteria = session.createCriteria(Appointment.class);
+        ArrayList<Appointment> appointments = (ArrayList<Appointment>) criteria.list();
+
+        session.getTransaction().commit();
+
+        return appointments;
     }
 
-    public Patient getPatientByAppointmentId(int appointmentId) {
-        int patientId = this.dbUtils.getPatientIdByAppointmentId(appointmentId);
-        return this.dbUtils.getPatientById(patientId);
+    public ArrayList<Treatment> getAllTreatments() {
+        session.beginTransaction();
+
+        Criteria criteria = session.createCriteria(Treatment.class);
+        ArrayList<Treatment> treatments = (ArrayList<Treatment>) criteria.list();
+
+        session.getTransaction().commit();
+
+        return treatments;
     }
 
-    public int getAppointmentIdByPatientIdAndAppointment(int patientId, Appointment appointment) {
-        int doctorId = this.getDoctorId(appointment.getDoctor());
-        String dateStr = "'" + appointment.getAppDate().toString().replace("_", "-") + "'";
-        String appointmentIdQuery = "SELECT ID_APPOINTMENT FROM APPOINTMENT WHERE ID_PATIENT = " + patientId +
-                " AND ID_DOCTOR = " + doctorId +
-                " AND APPOINTMENT_DATE = " + dateStr;
-        ResultSet appointmentIdSet = null;
-        try {
-            appointmentIdSet = this.dbConnector.getQueryResultAsResultSet(appointmentIdQuery);
-            appointmentIdSet.next();
+//    public ArrayList<Treatment> getTreatmentsByPatientId(int patientId) {
+//
+//    }
 
-            return appointmentIdSet.getInt("ID_APPOINTMENT");
-        } catch (SQLException e) {
-            logger.error(e.getMessage());
-        }
+    public ArrayList<Treatment> getTreatmentsByPatient(Patient patient) {
+        return patient.getAppointments().stream()
+                .map(Appointment::getTreatment)
+                .collect(Collectors.toCollection(ArrayList::new));
+    }
 
-        return -1;
+//    public ArrayList<Appointment> getAppointmentsByPatientId(int id) {
+//
+//    }
+
+//    public Appointment getAppointmentById(int appointmentId) {
+//
+//    }
+
+//    public Doctor getDoctorById(int doctorId) {
+//
+//    }
+
+//    public int getPatientIdByLogin(String login) {
+//
+//    }
+
+//    public int getTreatmentIdByAppointmentId(int appointmentId) {
+//
+//    }
+
+//    public Patient getPatientById(int patientId) {
+//        return getAllPatients().stream()
+//                .findFirst(patient -> patient.getId() == patient).get();
+//    }
+
+    public Patient getPatientByLogin(String login) {
+        session.beginTransaction();
+
+        Criteria criteria = session.createCriteria(Patient.class);
+        criteria.add(Restrictions.eq("LOGIN", login));
+
+        session.getTransaction().commit();
+
+        return (Patient) criteria.list().get(0);
+    }
+
+    public ArrayList<Doctor> getDoctorsByPatient(Patient patient) {
+        return patient.getAppointments().stream()
+                .map(Appointment::getDoctor)
+                .distinct()
+                .collect(Collectors.toCollection(ArrayList::new));
+    }
+
+    public Patient getPatientByNameAndSurname(String name, String surname) {
+        session.beginTransaction();
+
+        Criteria criteria = session.createCriteria(Patient.class);
+        criteria.add(Restrictions.eq("FIRST_NAME", name));
+        criteria.add(Restrictions.eq("SECOND_NAME", surname));
+
+        session.getTransaction().commit();
+
+        return (Patient) criteria.list().get(0);
+    }
+
+    public Doctor getDoctorByNameAndSurname(String name, String surname) {
+        session.beginTransaction();
+
+        Criteria criteria = session.createCriteria(Doctor.class);
+        criteria.add(Restrictions.eq("FIRST_NAME", name));
+        criteria.add(Restrictions.eq("SECOND_NAME", surname));
+
+        session.getTransaction().commit();
+
+        return (Doctor) criteria.list().get(0);
+    }
+
+    public Nurse getNurseByNameAndSurname(String name, String surname) {
+        session.beginTransaction();
+
+        Criteria criteria = session.createCriteria(Nurse.class);
+        criteria.add(Restrictions.eq("FIRST_NAME", name));
+        criteria.add(Restrictions.eq("SECOND_NAME", surname));
+
+        session.getTransaction().commit();
+
+        return (Nurse) criteria.list().get(0);
+    }
+
+    public int getNurseIdByNameAndSurname(String name, String surname) {
+        return getNurseByNameAndSurname(name, surname).getId();
+    }
+
+    public int getPatientIdByNameAndSurname(String name, String surname) {
+        return this.getPatientByNameAndSurname(name, surname).getId();
+    }
+
+    public int getDoctorIdByNameAndSurname(String name, String surname) {
+        return this.getDoctorByNameAndSurname(name, surname).getId();
+    }
+
+    public ArrayList<Patient> getPatientsByDoctor(Doctor doctor){
+        return doctor.getAppointments().stream()
+                .map(Appointment::getPatient)
+                .distinct()
+                .collect(Collectors.toCollection(ArrayList::new));
+    }
+
+//    public int getLengthOfTable(String table) {
+//
+//    }
+
+    public boolean appointmentIdIsInTreatments(int appointmentId) {
+        return getAllTreatments().stream()
+                .anyMatch(treatment -> treatment.getAppointment().getId() == appointmentId);
+    }
+
+//    public int getPatientIdByAppointmentId(int appointmentId) {
+//
+//    }
+
+    public Patient getPatientByAppointment(Appointment appointment) {
+        return appointment.getPatient();
+    }
+
+//    public ArrayList<Integer> getAppointmentIdsByNurseId(int nurseId) {
+//
+//    }
+
+    public ArrayList<Appointment> getAppointmentsByNurse(Nurse nurse) {
+        return nurse.getNurseTaskLogSet().stream()
+                .map(NurseTaskLog::getAppointment)
+                .collect(Collectors.toCollection(ArrayList::new));
+    }
+
+//    public HashMap<Appointment, Integer> getHashMapWithPlannedAppointmentsByDoctorToAppointmentIds(Doctor doctor) {
+//        HashMap<Appointment, Integer> plannedAppointmentsToAppointmentIds = new HashMap<Appointment, Integer>();
+//        try {
+//            int doctorId = this.getDoctorIdByNameAndSurname(doctor.getName(), doctor.getSurname());
+//
+//            String allDoctorAppointmentsQuery = "SELECT * FROM APPOINTMENT WHERE ID_DOCTOR = " + doctorId;
+//            ResultSet allDoctorAppointmentsSet = this.dbConnector.getQueryResultAsResultSet(allDoctorAppointmentsQuery);
+//            while(allDoctorAppointmentsSet.next()) {
+//                int currentAppointmentId = allDoctorAppointmentsSet.getInt("ID_APPOINTMENT");
+//                if(!this.appointmentIdIsInTreatments(currentAppointmentId)) {
+//                    plannedAppointmentsToAppointmentIds.put(
+//                            this.getAppointmentById(currentAppointmentId),
+//                            currentAppointmentId);
+//                }
+//            }
+//
+//        } catch (SQLException e) {
+//            logger.error(e.getMessage());
+//        }
+//
+//        return plannedAppointmentsToAppointmentIds;
+//    }
+
+    public void shutdown() {
+        this.sessionProvider.shutdown();
     }
 }

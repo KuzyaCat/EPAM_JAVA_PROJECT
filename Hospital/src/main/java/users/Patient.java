@@ -8,6 +8,8 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @org.hibernate.annotations.Entity(optimisticLock = OptimisticLockType.ALL)
@@ -41,6 +43,8 @@ public class Patient implements Serializable {
 
     @Column(name = "RECOVERED", unique = false, nullable = false)
     private boolean recovered;
+
+    private Set<Appointment> appointments;
 
     public Patient() {}
 
@@ -77,7 +81,11 @@ public class Patient implements Serializable {
         return password;
     }
 
-//    public ArrayList<Appointment> getAppointments() {
+    public Set<Appointment> getAppointments() {
+        return appointments;
+    }
+
+    //    public ArrayList<Appointment> getAppointments() {
 //        return appointments;
 //    }
 //
@@ -132,6 +140,10 @@ public class Patient implements Serializable {
         this.recovered = recovered;
     }
 
+    public void setAppointments(Set<Appointment> appointments) {
+        this.appointments = appointments;
+    }
+
     public String showProfile() {
         return name + " " + surname + ", " + age;
     }
@@ -180,4 +192,18 @@ public class Patient implements Serializable {
 //        res += recStr;
 //        return res;
 //    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Patient patient = (Patient) o;
+        return getId() == patient.getId();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId());
+    }
 }

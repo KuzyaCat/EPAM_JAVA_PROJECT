@@ -4,6 +4,7 @@ import org.hibernate.annotations.OptimisticLockType;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Objects;
 
 @Entity
 @org.hibernate.annotations.Entity(optimisticLock = OptimisticLockType.ALL)
@@ -32,6 +33,8 @@ public class Treatment implements Serializable {
 
     @Column(name = "ID_APPOINTMENT", unique = false, nullable = false, length = 100)
     private int appointmentId;
+
+    private Appointment appointment;
 
     public Treatment() {}
 
@@ -67,6 +70,10 @@ public class Treatment implements Serializable {
         return appointmentId;
     }
 
+    public Appointment getAppointment() {
+        return appointment;
+    }
+
     public void setId(int id) {
         this.id = id;
     }
@@ -91,7 +98,11 @@ public class Treatment implements Serializable {
         this.appointmentId = appointmentId;
     }
 
-//        @Override
+    public void setAppointment(Appointment appointment) {
+        this.appointment = appointment;
+    }
+
+    //        @Override
 //    public String toString() {
 //        return this.medicines + " " + this.operations + " " + this.procedures + " " + this.diagnoses;
 //    }
@@ -99,5 +110,18 @@ public class Treatment implements Serializable {
     @Override
     public String toString() {
         return medicine + " " + operation + " " + procedure + " " + diagnose;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Treatment treatment = (Treatment) o;
+        return getId() == treatment.getId();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId());
     }
 }

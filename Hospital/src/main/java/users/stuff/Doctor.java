@@ -9,6 +9,8 @@ import org.hibernate.annotations.OptimisticLockType;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @org.hibernate.annotations.Entity(optimisticLock = OptimisticLockType.ALL)
@@ -44,6 +46,8 @@ public class Doctor implements Serializable {
     @Column(name = "IS_HEAD_OF_DEPARTMENT", unique = false, nullable = false)
     private boolean isHeadOfDepartment;
 
+    private Set<Appointment> appointments;
+
     public Doctor() {}
 
     public Doctor(String name, String surname, int age, String login, String password, String department, boolean isHeadOfDepartment) {
@@ -55,8 +59,6 @@ public class Doctor implements Serializable {
         this.department = department;
         this.isHeadOfDepartment = isHeadOfDepartment;
     }
-
-
 
     public String showProfile() {
         return name + " " + surname + ", " + age;
@@ -94,6 +96,10 @@ public class Doctor implements Serializable {
         return isHeadOfDepartment;
     }
 
+    public Set<Appointment> getAppointments() {
+        return appointments;
+    }
+
     public void setId(int id) {
         this.id = id;
     }
@@ -124,6 +130,10 @@ public class Doctor implements Serializable {
 
     public void setHeadOfDepartment(boolean headOfDepartment) {
         isHeadOfDepartment = headOfDepartment;
+    }
+
+    public void setAppointments(Set<Appointment> appointments) {
+        this.appointments = appointments;
     }
 
     //    public void setTreatmentToPatient(Patient patient, Appointment appointment, Treatment treatment) {
@@ -166,4 +176,18 @@ public class Doctor implements Serializable {
 //
 //        return new Doctor(user, department, isHead);
 //    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Doctor doctor = (Doctor) o;
+        return getId() == doctor.getId();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId());
+    }
 }

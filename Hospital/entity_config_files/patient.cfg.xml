@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="main.java.users.Patient" table="patient">
+        <id name="id" column="ID_PATIENT">
+            <generator class="native"/>
+        </id>
+        <property name="name" column="FIRST_NAME" type="java.lang.String"/>
+        <property name="surname" column="SECOND_NAME" type="java.lang.String"/>
+        <property name="age" column="AGE" type="int"/>
+        <property name="login" column="LOGIN" type="java.lang.String"/>
+        <property name="password" column="PASSWORD" type="java.lang.String"/>
+        <property name="recovered" column="RECOVERED" type="boolean"/>
+
+        <set name="appointments" table="appointment" lazy="true">
+            <key>
+                <column name="ID_PATIENT" not-null="true"/>
+            </key>
+            <one-to-many class="main.java.components.Appointment"/>
+        </set>
+    </class>
+</hibernate-mapping>

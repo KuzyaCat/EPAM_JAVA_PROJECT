@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="main.java.components.Appointment" table="appointment">
+        <id name="id" column="ID_APPOINTMENT">
+            <generator class="native"/>
+        </id>
+        <property name="appDate" column="APPOINTMENT_DATE" type="java.util.Date"/>
+
+        <many-to-one name="patient" class="main.java.users.Patient">
+            <column name="ID_PATIENT" not-null="true"/>
+        </many-to-one>
+        <many-to-one name="doctor" class="main.java.users.stuff.Doctor">
+            <column name="ID_DOCTOR" not-null="true"/>
+        </many-to-one>
+
+        <one-to-one name="treatment" class="main.java.components.Treatment"/>
+        <one-to-one name="nurseTaskLog" class="main.java.tasklogs.NurseTaskLog"/>
+    </class>
+</hibernate-mapping>
