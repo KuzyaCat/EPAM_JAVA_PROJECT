@@ -136,18 +136,18 @@ public class Doctor implements Serializable {
         this.appointments = appointments;
     }
 
-    //    public void setTreatmentToPatient(Patient patient, Appointment appointment, Treatment treatment) {
-//        (new PatientDB()).writeTreatment(patient, appointment, treatment);
-//    }
-//
-//    public void setRecoverToPatient(Patient patient, boolean isRecovered) {
-//        (new PatientDB()).writeIsRecovered(patient, isRecovered);
-//    }
-//
-//    public String getPatientAppointments() {
-//        DoctorDB doctorDB = new DoctorDB();
-//        return doctorDB.getAppointments(this);
-//    }
+    public void setTreatmentToPatient(Patient patient, Appointment appointment, Treatment treatment) {
+        (new PatientDB()).writeTreatment(patient, appointment, treatment);
+    }
+
+    public void setRecoverToPatient(Patient patient, boolean isRecovered) {
+        (new PatientDB()).writeIsRecovered(patient, isRecovered);
+    }
+
+    public String getPatientAppointments() {
+        DoctorDB doctorDB = new DoctorDB();
+        return doctorDB.getAppointments(this);
+    }
 
     @Override
     public String toString() {

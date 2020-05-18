@@ -3,7 +3,7 @@ package main.java.controllers.menus.user_menus;
 import main.java.components.Treatment;
 import main.java.components.searcher.PatientSearcher;
 import main.java.controllers.resource_controllers.DBReader;
-import main.java.dbconnection.DBConnector;
+import main.java.tasklogs.NurseTaskLog;
 import main.java.users.stuff.Doctor;
 import main.java.usersdb.PatientDB;
 import main.java.usersdb.DoctorDB;
@@ -54,33 +54,18 @@ public class DoctorMenu {
         System.out.println("Diagnose: ");
         String diagnose = in.nextLine();
 
-        Treatment treatment = new Treatment(medicine, operation, procedure, diagnose);
+        Treatment treatment = new Treatment(procedure, medicine, operation, diagnose, appointment.getId());
 
         this.doctor.setTreatmentToPatient(patient, appointment, treatment);
         System.out.println("Done");
     }
 
     private void addGoToPlannedAppointmentsMenu() {
-        ArrayList<Appointment> plannedAppointments = new ArrayList<Appointment>();
-        ArrayList<Integer> appointmentIds = new ArrayList<Integer>(0);
         DoctorDB doctorDB = new DoctorDB();
         Scanner in = new Scanner(System.in);
 
-        HashMap<Appointment, Integer> plannedAppointmentsToAppointmentIds =
-                doctorDB.getDbReader().getDbUtils().getHashMapWithPlannedAppointmentsByDoctorToAppointmentIds(this.doctor);
-
-        int optionCounter = 1;
-        for(Map.Entry<Appointment, Integer> entry: plannedAppointmentsToAppointmentIds.entrySet()) {
-            plannedAppointments.add(entry.getKey());
-            appointmentIds.add(entry.getValue());
-
-            Patient currentAppointmentPatient = doctorDB.getDbReader().getPatientByAppointmentId(entry.getValue());
-            System.out.println(optionCounter + ". " +
-                    currentAppointmentPatient.getName() +
-                    " " + currentAppointmentPatient.getSurname() +
-                    ", " + entry.getKey().getAppDate().toString().replace("_", "/") + ";");
-            optionCounter++;
-        }
+        ArrayList<Appointment> plannedAppointments = doctorDB.getDbReader()
+                .getPlannedAppointmentsByDoctor(this.doctor);
 
         if(plannedAppointments.size() == 0) {
             System.out.println("No planned appointments");
@@ -94,17 +79,15 @@ public class DoctorMenu {
             }
             else {
                 Appointment chosenAppointment = plannedAppointments.get(chosenAppointmentNumber - 1);
-                int chosenAppointmentId = appointmentIds.get(chosenAppointmentNumber - 1);
 
                 this.addTreatmentMenu(
                         chosenAppointment,
-                        chosenAppointmentId,
-                        doctorDB.getDbReader().getPatientByAppointmentId(chosenAppointmentId));
+                        doctorDB.getDbReader().getPatientByAppointment(chosenAppointment));
             }
         }
     }
 
-    public void addNurseAppointmentMenu(int appointmentId) {
+    public void addNurseAppointmentMenu(Appointment appointment) {
         Scanner in = new Scanner(System.in);
         NurseDB nurseDB = new NurseDB();
 
@@ -114,14 +97,16 @@ public class DoctorMenu {
         System.out.println("Nurse surname: ");
         String surname = in.nextLine();
 
-        int chosenNurseId = nurseDB.getDbReader().getDbUtils().getNurseIdByNameAndSurname(name, surname);
-        System.out.println(chosenNurseId);
-        nurseDB.getDbUpdater().addRowToNurseTaskLog(appointmentId, chosenNurseId);
+//        int chosenNurseId = nurseDB.getDbReader().getNurseIdByNameAndSurname(name, surname);
+//        System.out.println(chosenNurseId);
+
+        Nurse chosenNurse = nurseDB.getDbReader().getNurseByNameAndSurname(name, surname);
+        nurseDB.getDbUpdater().addRowToNurseTaskLog(new NurseTaskLog(appointment, chosenNurse));
 
         System.out.println("Nurse is appointed");
     }
 
-    public void addTreatmentMenu(Appointment chosenAppointment, int chosenAppointmentId, Patient patient) {
+    public void addTreatmentMenu(Appointment chosenAppointment, Patient patient) {
         Scanner in = new Scanner(System.in);
         System.out.println("Type 1 or 2");
         System.out.println("1. Do treatment");
@@ -133,7 +118,7 @@ public class DoctorMenu {
                 this.addTreatmentMenu(patient, chosenAppointment);
                 break;
             case 2:
-                this.addNurseAppointmentMenu(chosenAppointmentId);
+                this.addNurseAppointmentMenu(chosenAppointment);
                 break;
             default:
                 System.out.println("Wrong input");
@@ -180,7 +165,7 @@ public class DoctorMenu {
     }
 
     private void initSearchPatientsMenu() {
-        DBReader dbReader = new DBReader(new DBConnector());
+        DBReader dbReader = new DBReader();
         List<Patient> allPatients = dbReader.getAllPatients();
         PatientSearcher myPatientSearcher = new PatientSearcher(allPatients);
         List<Patient> myPatients = myPatientSearcher.findPatientsByDoctor(this.doctor);

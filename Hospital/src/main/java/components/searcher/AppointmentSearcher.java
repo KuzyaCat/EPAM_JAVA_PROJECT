@@ -19,8 +19,8 @@ public class AppointmentSearcher {
         Stream<Appointment> appointmentStream = this.appointmentList.stream();
 
         return appointmentStream
-                .filter(a -> a.getAppDate().getYear() == year && a.getAppDate().getMonth() == month && a.getAppDate().getDayOfMonth() == day)
-                .sorted(Comparator.comparingInt(a -> a.getAppDate().getYear()))
+                .filter(a -> a.getGregorianAppDate().getYear() == year && a.getGregorianAppDate().getMonth() == month && a.getGregorianAppDate().getDayOfMonth() == day)
+                .sorted(Comparator.comparingInt(a -> a.getGregorianAppDate().getYear()))
                 .collect(Collectors.toList());
     }
 
@@ -29,7 +29,7 @@ public class AppointmentSearcher {
 
         return appointmentStream
                 .filter(a -> a.getDoctor().getName().equals(doctor.getName()) && a.getDoctor().getSurname().equals(doctor.getSurname()))
-                .sorted(Comparator.comparingInt(a -> a.getAppDate().getYear()))
+                .sorted(Comparator.comparingInt(a -> a.getGregorianAppDate().getYear()))
                 .collect(Collectors.toList());
     }
 }

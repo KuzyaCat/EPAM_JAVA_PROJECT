@@ -1,6 +1,5 @@
 package main.java.components.searcher;
 
-import main.java.users.User;
 import main.java.users.stuff.Doctor;
 
 import java.util.Comparator;

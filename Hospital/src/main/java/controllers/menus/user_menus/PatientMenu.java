@@ -6,7 +6,6 @@ import main.java.components.searcher.AppointmentSearcher;
 import main.java.components.searcher.DoctorSearcher;
 import main.java.controllers.resource_controllers.DBReader;
 import main.java.date.GregorianDate;
-import main.java.dbconnection.DBConnector;
 import main.java.users.Patient;
 import main.java.users.stuff.Doctor;
 import main.java.usersdb.DoctorDB;
@@ -16,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 public class PatientMenu {
     private Patient patient;
@@ -58,8 +58,8 @@ public class PatientMenu {
     public void initSearchDoctorsMenu() {
         int variant = 0;
 
-        DBReader dbReader = new DBReader(new DBConnector());
-        List<Doctor> allDoctors = dbReader.getAllDoctors();
+        DBReader dbReader = new DBReader();
+        ArrayList<Doctor> allDoctors = dbReader.getAllDoctors();
         DoctorSearcher doctorSearcher = new DoctorSearcher(allDoctors);
 
         do {
@@ -132,9 +132,9 @@ public class PatientMenu {
     }
 
     public void initSearchAppointmentsMenu() {
-        DBReader dbReader = new DBReader(new DBConnector());
+        DBReader dbReader = new DBReader();
         List<Doctor> allDoctors = dbReader.getAllDoctors();
-        AppointmentSearcher appointmentSearcher = new AppointmentSearcher(this.patient.getAppointments());
+        AppointmentSearcher appointmentSearcher = new AppointmentSearcher((List<Appointment>) this.patient.getAppointments());
 
         int variant = 0;
 
@@ -185,13 +185,16 @@ public class PatientMenu {
                     this.appointMenu();
                     break;
                 case 3:
-                    ArrayList<Appointment> appointments = this.patient.getAppointments();
+                    ArrayList<Appointment> appointments = (ArrayList<Appointment>) this.patient.getAppointments();
                     System.out.println("My appointments:");
                     System.out.println("Overall: " + appointments.size());
                     System.out.println(Arrays.toString(appointments.toArray()));
                     break;
                 case 4:
-                    ArrayList<Treatment> treatments = this.patient.getTreatments();
+                    ArrayList<Treatment> treatments = this.patient.getAppointments().stream()
+                            .map(Appointment::getTreatment)
+                            .collect(Collectors.toCollection(ArrayList::new));
+
                     System.out.println("My treatments:");
                     System.out.println("Overall: " + treatments.size());
                     System.out.println(Arrays.toString(treatments.toArray()));
@@ -225,7 +228,7 @@ public class PatientMenu {
             int month = in.nextInt();
             System.out.println("Write a day of the appointment");
             int day = in.nextInt();
-            Appointment appointment = new Appointment(doctor, doctor.getDepartment(), new GregorianDate(year, month, day));
+            Appointment appointment = new Appointment(this.patient, doctor);
             PatientDB patientDB = new PatientDB();
             patientDB.writeAppointment(this.patient, appointment);
             System.out.println("Done");

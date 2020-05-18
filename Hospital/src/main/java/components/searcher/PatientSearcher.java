@@ -1,5 +1,6 @@
 package main.java.components.searcher;
 
+import main.java.components.Appointment;
 import main.java.users.Patient;
 import main.java.users.stuff.Doctor;
 
@@ -50,17 +51,11 @@ public class PatientSearcher {
                 .thenComparing(Patient::getName);
 
         return patientStream
-                .filter(p -> {
-                    AtomicBoolean contains = new AtomicBoolean(false);
-                    p.getTreatments().forEach(t -> {
-                        if (t.getProcedures().contains(procedure)) {
-                            contains.set(true);
-                        } else {
-                            contains.set(false);
-                        }
-                    });
-                    return contains.get();
-                })
+                .filter(
+                        patient -> patient.getAppointments().stream()
+                                .map(Appointment::getTreatment)
+                                .anyMatch(treatment -> treatment.getProcedure().equals(procedure))
+                )
                 .sorted(compareByName)
                 .collect(Collectors.toList());
     }
@@ -73,17 +68,11 @@ public class PatientSearcher {
                 .thenComparing(Patient::getName);
 
         return patientStream
-                .filter(p -> {
-                    AtomicBoolean contains = new AtomicBoolean(false);
-                    p.getTreatments().forEach(t -> {
-                        if (t.getDiagnoses().contains(diagnose)) {
-                            contains.set(true);
-                        } else {
-                            contains.set(false);
-                        }
-                    });
-                    return contains.get();
-                })
+                .filter(
+                        patient -> patient.getAppointments().stream()
+                                .map(Appointment::getTreatment)
+                                .anyMatch(treatment -> treatment.getDiagnose().equals(diagnose))
+                )
                 .sorted(compareByName)
                 .collect(Collectors.toList());
     }
@@ -96,15 +85,11 @@ public class PatientSearcher {
                 .thenComparing(Patient::getName);
 
         return patientStream
-                .filter(p -> {
-                    AtomicBoolean contains = new AtomicBoolean(false);
-                    p.getTreatments().forEach(t -> {
-                        if (t.getMedicines().contains(medicine)) {
-                            contains.set(true);
-                        }
-                    });
-                    return contains.get();
-                })
+                .filter(
+                        patient -> patient.getAppointments().stream()
+                                .map(Appointment::getTreatment)
+                                .anyMatch(treatment -> treatment.getMedicine().equals(medicine))
+                )
                 .sorted(compareByName)
                 .collect(Collectors.toList());
     }
@@ -117,17 +102,11 @@ public class PatientSearcher {
                 .thenComparing(Patient::getName);
 
         return patientStream
-                .filter(p -> {
-                    AtomicBoolean contains = new AtomicBoolean(false);
-                    p.getTreatments().forEach(t -> {
-                        if (t.getOperations().contains(operation)) {
-                            contains.set(true);
-                        } else {
-                            contains.set(false);
-                        }
-                    });
-                    return contains.get();
-                })
+                .filter(
+                        patient -> patient.getAppointments().stream()
+                                .map(Appointment::getTreatment)
+                                .anyMatch(treatment -> treatment.getOperation().equals(operation))
+                )
                 .sorted(compareByName)
                 .collect(Collectors.toList());
     }

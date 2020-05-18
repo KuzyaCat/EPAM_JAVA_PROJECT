@@ -47,6 +47,11 @@ public class Appointment implements Serializable {
         this.appDate = appDate;
     }
 
+    public Appointment(Patient patient, Doctor doctor) {
+        this.patient = patient;
+        this.doctor = doctor;
+    }
+
     public String getDepartment() {
         return department;
     }
@@ -65,6 +70,10 @@ public class Appointment implements Serializable {
 
     public Date getAppDate() {
         return appDate;
+    }
+
+    public GregorianDate getGregorianAppDate() {
+        return new GregorianDate(appDate);
     }
 
     public Patient getPatient() {

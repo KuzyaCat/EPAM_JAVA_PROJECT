@@ -1,7 +1,7 @@
 package main.java.controllers.menus.user_menus;
 
-import main.java.controllers.resource_controllers.DBUtils;
 import main.java.components.Treatment;
+import main.java.tasklogs.NurseTaskLog;
 import main.java.users.stuff.Nurse;
 import main.java.users.Patient;
 import main.java.components.Appointment;
@@ -31,7 +31,7 @@ public class NurseMenu {
         );
     }
 
-    private void addTreatmentMenu(Patient patient, Appointment appointment, int appointmentId) {
+    private void addTreatmentMenu(Patient patient, Appointment appointment) {
         Scanner in = new Scanner(System.in);
         NurseDB nurseDB = new NurseDB();
 
@@ -47,11 +47,10 @@ public class NurseMenu {
         System.out.println("Diagnose: ");
         String diagnose = in.nextLine();
 
-        Treatment treatment = new Treatment(medicine, operation, procedure, diagnose);
+        Treatment treatment = new Treatment(procedure, medicine, operation, diagnose, appointment.getId());
 
         this.nurse.setTreatmentToPatient(patient, appointment, treatment);
-        int nurseId = nurseDB.getDbReader().getDbUtils().getNurseIdByNameAndSurname(this.nurse.getName(), this.nurse.getSurname());
-        nurseDB.getDbUpdater().deleteRowFromNurseTaskLog(appointmentId, nurseId);
+        nurseDB.getDbUpdater().deleteRowFromNurseTaskLog(new NurseTaskLog(appointment, this.nurse));
 
         System.out.println("Done");
     }
@@ -67,10 +66,9 @@ public class NurseMenu {
                     break;
                 case 2:
                     NurseDB nurseDB = new NurseDB();
-                    DBUtils dbUtils = nurseDB.getDbReader().getDbUtils();
-                    int nurseId = dbUtils.getNurseIdByNameAndSurname(this.nurse.getName(), this.nurse.getSurname());
+                    ArrayList<Appointment> appointments = 
 
-                    ArrayList<Integer> appointmentIds = dbUtils.getAppointmentIdsByNurseId(nurseId);
+//                    ArrayList<Integer> appointmentIds = dbUtils.getAppointmentIdsByNurseId(nurseId);
                     ArrayList<Appointment> appointments = new ArrayList<Appointment>();
                     ArrayList<Patient> patients = new ArrayList<Patient>();
 

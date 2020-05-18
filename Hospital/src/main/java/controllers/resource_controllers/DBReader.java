@@ -232,28 +232,11 @@ public class DBReader {
                 .collect(Collectors.toCollection(ArrayList::new));
     }
 
-//    public HashMap<Appointment, Integer> getHashMapWithPlannedAppointmentsByDoctorToAppointmentIds(Doctor doctor) {
-//        HashMap<Appointment, Integer> plannedAppointmentsToAppointmentIds = new HashMap<Appointment, Integer>();
-//        try {
-//            int doctorId = this.getDoctorIdByNameAndSurname(doctor.getName(), doctor.getSurname());
-//
-//            String allDoctorAppointmentsQuery = "SELECT * FROM APPOINTMENT WHERE ID_DOCTOR = " + doctorId;
-//            ResultSet allDoctorAppointmentsSet = this.dbConnector.getQueryResultAsResultSet(allDoctorAppointmentsQuery);
-//            while(allDoctorAppointmentsSet.next()) {
-//                int currentAppointmentId = allDoctorAppointmentsSet.getInt("ID_APPOINTMENT");
-//                if(!this.appointmentIdIsInTreatments(currentAppointmentId)) {
-//                    plannedAppointmentsToAppointmentIds.put(
-//                            this.getAppointmentById(currentAppointmentId),
-//                            currentAppointmentId);
-//                }
-//            }
-//
-//        } catch (SQLException e) {
-//            logger.error(e.getMessage());
-//        }
-//
-//        return plannedAppointmentsToAppointmentIds;
-//    }
+    public ArrayList<Appointment> getPlannedAppointmentsByDoctor(Doctor doctor) {
+        return doctor.getAppointments().stream()
+                .filter(appointment -> !this.appointmentIdIsInTreatments(appointment.getId()))
+                .collect(Collectors.toCollection(ArrayList::new));
+    }
 
     public void shutdown() {
         this.sessionProvider.shutdown();

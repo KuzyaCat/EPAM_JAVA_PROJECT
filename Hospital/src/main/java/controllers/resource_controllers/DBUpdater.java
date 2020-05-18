@@ -168,4 +168,8 @@ public class DBUpdater {
         query.executeUpdate();
         session.getTransaction().commit();
     }
+
+    public void shutdown() {
+        this.sessionProvider.shutdown();
+    }
 }

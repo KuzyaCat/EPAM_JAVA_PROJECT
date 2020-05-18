@@ -37,6 +37,12 @@ public class NurseTaskLog implements Serializable {
         this.appointmentId = appointmentId;
     }
 
+    public NurseTaskLog(Appointment appointment, Nurse nurse) {
+        this.appointment = appointment;
+        this.nurse = nurse;
+        this.appointmentId = appointment.getId();
+    }
+
     public int getId() {
         return id;
     }

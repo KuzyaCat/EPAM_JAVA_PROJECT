@@ -2,8 +2,6 @@ package main.java.controllers.resource_controllers;
 
 import main.java.controllers.resource_controllers.DBReader;
 import main.java.controllers.resource_controllers.DBUpdater;
-import main.java.dbconnection.DBConnector;
-import main.java.users.User;
 import main.java.users.Patient;
 import main.java.users.stuff.Doctor;
 import main.java.users.stuff.Nurse;
@@ -15,18 +13,18 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Authorizer {
-    private DBConnector dbConnector;
+
     private DBReader dbReader;
     private DBUpdater dbUpdater;
+
     private ArrayList<Patient> patients;
     private ArrayList<Doctor> doctors;
     private ArrayList<Nurse> nurses;
     private Scanner scanner;
 
-    public Authorizer(DBConnector existingDBConnector) {
-        this.dbConnector = existingDBConnector;
-        this.dbReader = new DBReader(this.dbConnector);
-        this.dbUpdater = new DBUpdater(this.dbConnector);
+    public Authorizer() {
+        this.dbReader = new DBReader();
+        this.dbUpdater = new DBUpdater();
 
         this.patients = this.dbReader.getAllPatients();
         this.doctors = this.dbReader.getAllDoctors();
@@ -35,11 +33,7 @@ public class Authorizer {
         this.scanner = new Scanner(System.in);
     }
 
-    public Authorizer() {
-        this(new DBConnector());
-    }
-
-    public User findUserByLoginAndPassword(String login, String password) {
+    public Object findUserByLoginAndPassword(String login, String password) {
         for(Patient patient: this.patients) {
             if(login.equals(patient.getLogin()) && password.equals(patient.getPassword())) {
                 return patient;
@@ -58,10 +52,10 @@ public class Authorizer {
             }
         }
 
-        return new User();
+        return new Object();
     }
 
-    public User logIn() throws Exception {
+    public Object logIn() throws Exception {
         final int LOG_IN_ATTEMPTS = 3;
         String login, password;
         for(int i = 0; i < LOG_IN_ATTEMPTS; i ++) {
@@ -70,8 +64,8 @@ public class Authorizer {
             System.out.println("password: ");
             password = this.scanner.nextLine();
 
-            User foundUser = this.findUserByLoginAndPassword(login, password);
-            if(!(foundUser.equals(new User()))) {
+            Object foundUser = this.findUserByLoginAndPassword(login, password);
+            if(!(foundUser.equals(new Object()))) {
                 return foundUser;
             }
             else {
@@ -99,9 +93,7 @@ public class Authorizer {
         System.out.println("Your password: ");
         String password = this.scanner.nextLine();
 
-        User newUser = new User(name, surname, age, login, password);
-
-        Patient newPatient = new Patient(newUser, new ArrayList<Appointment>(), new ArrayList<Treatment>(), true);
+        Patient newPatient = new Patient(name, surname, age, login, password, true);
         this.dbUpdater.addPatient(newPatient);
 
         return newPatient;
