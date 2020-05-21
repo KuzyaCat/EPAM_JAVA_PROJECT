@@ -13,7 +13,7 @@ public class SessionProvider
     {
         try {
             return new AnnotationConfiguration().configure(
-                    new File("hibernate.cgf.xml")).buildSessionFactory();
+                    new File("src/hibernate.cfg.xml")).buildSessionFactory();
 
         } catch (Throwable ex) {
             System.err.println("Initial SessionFactory creation failed." + ex);

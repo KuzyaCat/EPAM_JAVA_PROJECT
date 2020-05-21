@@ -4,14 +4,13 @@
         "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
     <class name="main.java.components.Treatment" table="treatment">
-        <id name="id" column="ID_TREATMENT">
+        <id name="id" column="ID_APPOINTMENT">
             <generator class="native"/>
         </id>
         <property name="procedure" column="T_PROCEDURE" type="java.lang.String"/>
         <property name="medicine" column="MEDICINE" type="java.lang.String"/>
         <property name="operation" column="OPERATION" type="java.lang.String"/>
         <property name="diagnose" column="DIAGNOSE" type="java.lang.String"/>
-        <property name="appointmentId" column="ID_APPOINTMENT" type="int"/>
 
         <one-to-one name="appointment" class="main.java.components.Appointment"/>
     </class>

@@ -212,29 +212,30 @@ public class PatientMenu {
     }
 
     private void appointMenu() {
-        Scanner in = new Scanner(System.in);
-        System.out.println("Write doctor name");
-        String name = in.nextLine();
-        System.out.println("Write doctor surname");
-        String surname = in.nextLine();
-        DoctorDB doctorDB = new DoctorDB();
-
-        Doctor doctor = doctorDB.getDoctor(name, surname);
-
-        if(doctor != null) {
-            System.out.println("Write a year of the appointment");
-            int year = in.nextInt();
-            System.out.println("Write a month of the appointment");
-            int month = in.nextInt();
-            System.out.println("Write a day of the appointment");
-            int day = in.nextInt();
-            Appointment appointment = new Appointment(this.patient, doctor);
-            PatientDB patientDB = new PatientDB();
-            patientDB.writeAppointment(this.patient, appointment);
-            System.out.println("Done");
-        }
-        else {
-            System.out.println("Can't find a doctor with these name and surname");
-        }
+        // uncomment in the future!
+//        Scanner in = new Scanner(System.in);
+//        System.out.println("Write doctor name");
+//        String name = in.nextLine();
+//        System.out.println("Write doctor surname");
+//        String surname = in.nextLine();
+//        DoctorDB doctorDB = new DoctorDB();
+//
+//        Doctor doctor = doctorDB.getDoctor(name, surname);
+//
+//        if(doctor != null) {
+//            System.out.println("Write a year of the appointment");
+//            int year = in.nextInt();
+//            System.out.println("Write a month of the appointment");
+//            int month = in.nextInt();
+//            System.out.println("Write a day of the appointment");
+//            int day = in.nextInt();
+//            Appointment appointment = new Appointment(this.patient, doctor);
+//            PatientDB patientDB = new PatientDB();
+//            patientDB.writeAppointment(this.patient, appointment);
+//            System.out.println("Done");
+//        }
+//        else {
+//            System.out.println("Can't find a doctor with these name and surname");
+//        }
     }
 }

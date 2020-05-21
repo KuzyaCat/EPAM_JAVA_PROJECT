@@ -12,40 +12,16 @@ import java.io.Serializable;
 import java.util.Objects;
 import java.util.Set;
 
-@Entity
-@org.hibernate.annotations.Entity(optimisticLock = OptimisticLockType.ALL)
-@Table(name = "DOCTOR", uniqueConstraints = {
-        @UniqueConstraint(columnNames = "LOGIN")
-})
-
 public class Doctor implements Serializable {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID_DOCTOR", unique = true, nullable = false)
     private int id;
-
-    @Column(name = "FIRST_NAME", unique = false, nullable = false, length = 100)
     private String name;
-
-    @Column(name = "SECOND_NAME", unique = false, nullable = false, length = 100)
     private String surname;
-
-    @Column(name = "AGE", unique = false, nullable = false)
     private int age;
-
-    @Column(name = "LOGIN", unique = true, nullable = false, length = 100)
     private String login;
-
-    @Column(name = "PASSWORD", unique = true, nullable = false, length = 100)
     private String password;
-
-    @Column(name = "DEPARTMENT", unique = false, nullable = false, length = 100)
     private String department;
-
-    @Column(name = "IS_HEAD_OF_DEPARTMENT", unique = false, nullable = false)
     private boolean isHeadOfDepartment;
-
     private Set<Appointment> appointments;
 
     public Doctor() {}
@@ -92,7 +68,7 @@ public class Doctor implements Serializable {
         return department;
     }
 
-    public boolean isHeadOfDepartment() {
+    public boolean getIsHeadOfDepartment() {
         return isHeadOfDepartment;
     }
 
@@ -128,7 +104,7 @@ public class Doctor implements Serializable {
         this.department = department;
     }
 
-    public void setHeadOfDepartment(boolean headOfDepartment) {
+    public void setIsHeadOfDepartment(boolean headOfDepartment) {
         isHeadOfDepartment = headOfDepartment;
     }
 
@@ -136,18 +112,18 @@ public class Doctor implements Serializable {
         this.appointments = appointments;
     }
 
-    public void setTreatmentToPatient(Patient patient, Appointment appointment, Treatment treatment) {
-        (new PatientDB()).writeTreatment(patient, appointment, treatment);
-    }
-
-    public void setRecoverToPatient(Patient patient, boolean isRecovered) {
-        (new PatientDB()).writeIsRecovered(patient, isRecovered);
-    }
-
-    public String getPatientAppointments() {
-        DoctorDB doctorDB = new DoctorDB();
-        return doctorDB.getAppointments(this);
-    }
+//    public void setTreatmentToPatient(Patient patient, Appointment appointment, Treatment treatment) {
+//        (new PatientDB()).writeTreatment(patient, appointment, treatment);
+//    }
+//
+//    public void setRecoverToPatient(Patient patient, boolean isRecovered) {
+//        (new PatientDB()).writeIsRecovered(patient, isRecovered);
+//    }
+//
+//    public String getPatientAppointments() {
+//        DoctorDB doctorDB = new DoctorDB();
+//        return doctorDB.getAppointments(this);
+//    }
 
     @Override
     public String toString() {

@@ -7,12 +7,13 @@
         <id name="id" column="ID_NURSE_TASK_LOG">
             <generator class="native"/>
         </id>
-        <property name="appointmentId" column="ID_APPOINTMENT" type="int"/>
+        <property name="nurseIsAppointed" column="NURSE_IS_APPOINTED" type="boolean"/>
 
         <many-to-one name="nurse" class="main.java.users.stuff.Nurse">
             <column name="ID_NURSE" not-null="true"/>
         </many-to-one>
-
-        <one-to-one name="appointment" class="main.java.components.Appointment"/>
+        <many-to-one name="appointment" class="main.java.components.Appointment">
+            <column name="ID_APPOINTMENT" not-null="true"/>
+        </many-to-one>
     </class>
 </hibernate-mapping>

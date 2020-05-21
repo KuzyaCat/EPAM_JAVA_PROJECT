@@ -6,44 +6,25 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;
 
-@Entity
-@org.hibernate.annotations.Entity(optimisticLock = OptimisticLockType.ALL)
-@Table(name = "TREATMENT", uniqueConstraints = {
-        @UniqueConstraint(columnNames = "ID_TREATMENT")
-})
-
 public class Treatment implements Serializable {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID_TREATMENT", unique = true, nullable = false)
-    private int id;
-
-    @Column(name = "T_PROCEDURE", unique = false, nullable = false, length = 100)
+    private int id; //appointmentId
     private String procedure;
-
-    @Column(name = "MEDICINE", unique = false, nullable = false, length = 100)
     private String medicine;
-
-    @Column(name = "OPERATION", unique = false, nullable = false, length = 100)
     private String operation;
-
-    @Column(name = "DIAGNOSE", unique = false, nullable = false, length = 100)
     private String diagnose;
-
-    @Column(name = "ID_APPOINTMENT", unique = false, nullable = false, length = 100)
-    private int appointmentId;
 
     private Appointment appointment;
 
     public Treatment() {}
 
-    public Treatment(String procedure, String medicine, String operation, String diagnose, int appointmentId) {
+    public Treatment(Appointment appointment, String procedure, String medicine, String operation, String diagnose) {
         this.procedure = procedure;
         this.medicine = medicine;
         this.operation = operation;
         this.diagnose = diagnose;
-        this.appointmentId = appointmentId;
+
+        this.id = appointment.getId();
     }
 
     public int getId() {
@@ -64,10 +45,6 @@ public class Treatment implements Serializable {
 
     public String getDiagnose() {
         return diagnose;
-    }
-
-    public int getAppointmentId() {
-        return appointmentId;
     }
 
     public Appointment getAppointment() {
@@ -94,10 +71,6 @@ public class Treatment implements Serializable {
         this.diagnose = diagnose;
     }
 
-    public void setAppointmentId(int appointmentId) {
-        this.appointmentId = appointmentId;
-    }
-
     public void setAppointment(Appointment appointment) {
         this.appointment = appointment;
     }
@@ -106,6 +79,10 @@ public class Treatment implements Serializable {
 //    public String toString() {
 //        return this.medicines + " " + this.operations + " " + this.procedures + " " + this.diagnoses;
 //    }
+
+    public boolean isEmpty() {
+        return procedure.equals("") && medicine.equals("") && operation.equals("") && diagnose.equals("");
+    }
 
     @Override
     public String toString() {

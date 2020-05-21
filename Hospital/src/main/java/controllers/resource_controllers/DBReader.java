@@ -16,6 +16,7 @@ import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.stream.Collectors;
 
 public class DBReader {
@@ -40,6 +41,14 @@ public class DBReader {
         session.getTransaction().commit();
 
         return patients;
+    }
+
+    public Patient getPersistentPatientById(int id) {
+        session.beginTransaction();
+        Patient patient = (Patient) session.load(Patient.class, id);
+        session.getTransaction().commit();
+
+        return patient;
     }
 
     public ArrayList<Doctor> getAllDoctors() {
@@ -97,46 +106,18 @@ public class DBReader {
         return treatments;
     }
 
-//    public ArrayList<Treatment> getTreatmentsByPatientId(int patientId) {
-//
-//    }
-
     public ArrayList<Treatment> getTreatmentsByPatient(Patient patient) {
         return patient.getAppointments().stream()
+                .peek(appointment -> System.out.println(appointment.toString()))
                 .map(Appointment::getTreatment)
                 .collect(Collectors.toCollection(ArrayList::new));
     }
-
-//    public ArrayList<Appointment> getAppointmentsByPatientId(int id) {
-//
-//    }
-
-//    public Appointment getAppointmentById(int appointmentId) {
-//
-//    }
-
-//    public Doctor getDoctorById(int doctorId) {
-//
-//    }
-
-//    public int getPatientIdByLogin(String login) {
-//
-//    }
-
-//    public int getTreatmentIdByAppointmentId(int appointmentId) {
-//
-//    }
-
-//    public Patient getPatientById(int patientId) {
-//        return getAllPatients().stream()
-//                .findFirst(patient -> patient.getId() == patient).get();
-//    }
 
     public Patient getPatientByLogin(String login) {
         session.beginTransaction();
 
         Criteria criteria = session.createCriteria(Patient.class);
-        criteria.add(Restrictions.eq("LOGIN", login));
+        criteria.add(Restrictions.eq("login", login));
 
         session.getTransaction().commit();
 
@@ -154,8 +135,8 @@ public class DBReader {
         session.beginTransaction();
 
         Criteria criteria = session.createCriteria(Patient.class);
-        criteria.add(Restrictions.eq("FIRST_NAME", name));
-        criteria.add(Restrictions.eq("SECOND_NAME", surname));
+        criteria.add(Restrictions.eq("name", name));
+        criteria.add(Restrictions.eq("surname", surname));
 
         session.getTransaction().commit();
 
@@ -166,8 +147,8 @@ public class DBReader {
         session.beginTransaction();
 
         Criteria criteria = session.createCriteria(Doctor.class);
-        criteria.add(Restrictions.eq("FIRST_NAME", name));
-        criteria.add(Restrictions.eq("SECOND_NAME", surname));
+        criteria.add(Restrictions.eq("name", name));
+        criteria.add(Restrictions.eq("surname", surname));
 
         session.getTransaction().commit();
 
@@ -178,8 +159,8 @@ public class DBReader {
         session.beginTransaction();
 
         Criteria criteria = session.createCriteria(Nurse.class);
-        criteria.add(Restrictions.eq("FIRST_NAME", name));
-        criteria.add(Restrictions.eq("SECOND_NAME", surname));
+        criteria.add(Restrictions.eq("name", name));
+        criteria.add(Restrictions.eq("surname", surname));
 
         session.getTransaction().commit();
 
@@ -205,26 +186,17 @@ public class DBReader {
                 .collect(Collectors.toCollection(ArrayList::new));
     }
 
-//    public int getLengthOfTable(String table) {
-//
-//    }
-
     public boolean appointmentIdIsInTreatments(int appointmentId) {
-        return getAllTreatments().stream()
-                .anyMatch(treatment -> treatment.getAppointment().getId() == appointmentId);
-    }
+        Treatment treatment = getAllTreatments().stream()
+                .filter(t -> t.getId() == appointmentId)
+                .collect(Collectors.toCollection(ArrayList::new)).get(0);
 
-//    public int getPatientIdByAppointmentId(int appointmentId) {
-//
-//    }
+        return !treatment.isEmpty();
+    }
 
     public Patient getPatientByAppointment(Appointment appointment) {
         return appointment.getPatient();
     }
-
-//    public ArrayList<Integer> getAppointmentIdsByNurseId(int nurseId) {
-//
-//    }
 
     public ArrayList<Appointment> getAppointmentsByNurse(Nurse nurse) {
         return nurse.getNurseTaskLogSet().stream()

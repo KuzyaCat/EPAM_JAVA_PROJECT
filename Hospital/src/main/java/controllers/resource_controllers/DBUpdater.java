@@ -8,6 +8,7 @@ import main.java.components.Appointment;
 import main.java.components.Treatment;
 import main.java.date.GregorianDate;
 
+import main.java.users.stuff.Nurse;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Criteria;
@@ -30,60 +31,12 @@ public class DBUpdater {
         this.session = this.sessionProvider.getSessionFactory().openSession();
     }
 
-//    public void deletePatientRow(int patientId) {
-//        session.beginTransaction();
-//
-//        String deletePatientQuery = "DELETE FROM Patient WHERE id= :patientId";
-//        Query query = session.createQuery(deletePatientQuery);
-//        query.setInteger("patientId", patientId);
-//        query.executeUpdate();
-//
-//        session.getTransaction().commit();
-//    }
-
-    public void deletePatientRow(Patient patient) {
+    public void deleteNurseTaskLogRowById(int id) {
         session.beginTransaction();
-        session.delete(patient);
-        session.getTransaction().commit();
-    }
 
-//    public void deleteAppointmentRow(int appointmentId) {
-//        session.beginTransaction();
-//
-//        String deleteAppointmentQuery = "DELETE FROM Appointment WHERE id= :appointmentId";
-//        Query query = session.createQuery(deleteAppointmentQuery);
-//        query.setInteger("appointmentId", appointmentId);
-//        query.executeUpdate();
-//
-//        session.getTransaction().commit();
-//    }
+        NurseTaskLog deletedNurseTaskLog = (NurseTaskLog) session.load(NurseTaskLog.class, id);
+        session.delete(deletedNurseTaskLog);
 
-    public void deleteAppointmentRow(Appointment appointment) {
-        session.beginTransaction();
-        session.delete(appointment);
-        session.getTransaction().commit();
-    }
-
-//    public void deleteTreatmentRow(int treatmentId) {
-//        session.beginTransaction();
-//
-//        String deleteTreatmentQuery = "DELETE FROM Treatment WHERE id= :treatmentId";
-//        Query query = session.createQuery(deleteTreatmentQuery);
-//        query.setInteger("treatmentId", treatmentId);
-//        query.executeUpdate();
-//
-//        session.getTransaction().commit();
-//    }
-
-    public void deleteTreatmentRow(Treatment treatment) {
-        session.beginTransaction();
-        session.delete(treatment);
-        session.getTransaction().commit();
-    }
-
-    public void deleteRowFromNurseTaskLog(NurseTaskLog nurseTaskLog) {
-        session.beginTransaction();
-        session.delete(nurseTaskLog);
         session.getTransaction().commit();
     }
 
@@ -95,15 +48,18 @@ public class DBUpdater {
 
     public void addAppointment(Appointment newAppointment) {
         session.beginTransaction();
+
         session.save(newAppointment);
+        session.save(new Treatment(newAppointment, "", "", "", ""));
+
         session.getTransaction().commit();
     }
 
-    public void addTreatment(Treatment treatment) {
-        session.beginTransaction();
-        session.save(treatment);
-        session.getTransaction().commit();
-    }
+//    public void addTreatment(Treatment treatment) {
+//        session.beginTransaction();
+//        session.save(treatment);
+//        session.getTransaction().commit();
+//    }
 
     public void addRowToNurseTaskLog(NurseTaskLog nurseTaskLog) {
         session.beginTransaction();
@@ -150,8 +106,26 @@ public class DBUpdater {
         query.setString("login", updatedDoctor.getLogin());
         query.setString("password", updatedDoctor.getPassword());
         query.setString("department", updatedDoctor.getDepartment());
-        query.setBoolean("isHeadOfDepartment", updatedDoctor.isHeadOfDepartment());
+        query.setBoolean("isHeadOfDepartment", updatedDoctor.getIsHeadOfDepartment());
         query.setInteger("doctorId", updatedDoctor.getId());
+
+        query.executeUpdate();
+        session.getTransaction().commit();
+    }
+
+    public void updateTreatment(Treatment updatedTreatment) {
+        session.beginTransaction();
+
+        String updateTreatmentQuery = "UPDATE Treatment set procedure= :procedure," +
+                "medicine= :medicine," +
+                "operation= :operation," +
+                "diagnose= :diagnose WHERE id= :id";
+        Query query = session.createQuery(updateTreatmentQuery);
+        query.setString("procedure", updatedTreatment.getProcedure());
+        query.setString("medicine", updatedTreatment.getMedicine());
+        query.setString("operation", updatedTreatment.getOperation());
+        query.setString("diagnose", updatedTreatment.getDiagnose());
+        query.setInteger("id", updatedTreatment.getId());
 
         query.executeUpdate();
         session.getTransaction().commit();

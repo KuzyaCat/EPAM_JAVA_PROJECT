@@ -12,34 +12,14 @@ import java.io.Serializable;
 import java.util.Objects;
 import java.util.Set;
 
-@Entity
-@org.hibernate.annotations.Entity(optimisticLock = OptimisticLockType.ALL)
-@Table(name = "NURSE", uniqueConstraints = {
-        @UniqueConstraint(columnNames = "LOGIN")
-})
-
 public class Nurse implements Serializable {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID_NURSE", unique = true, nullable = false)
     private int id;
-
-    @Column(name = "FIRST_NAME", unique = false, nullable = false, length = 100)
     private String name;
-
-    @Column(name = "SECOND_NAME", unique = false, nullable = false, length = 100)
     private String surname;
-
-    @Column(name = "AGE", unique = false, nullable = false)
     private int age;
-
-    @Column(name = "LOGIN", unique = true, nullable = false, length = 100)
     private String login;
-
-    @Column(name = "PASSWORD", unique = true, nullable = false, length = 100)
     private String password;
-
     private Set<NurseTaskLog> nurseTaskLogSet;
 
     public Nurse() {}
@@ -50,6 +30,11 @@ public class Nurse implements Serializable {
         this.age = age;
         this.login = login;
         this.password = password;
+    }
+
+    public Nurse(String name, String surname, int age, String login, String password, int id) {
+        this(name, surname, age, login, password);
+        this.setId(id);
     }
 
     public int getId() {
@@ -108,9 +93,9 @@ public class Nurse implements Serializable {
         this.nurseTaskLogSet = nurseTaskLogSet;
     }
 
-    public void setTreatmentToPatient(Patient patient, Appointment appointment, Treatment treatment) {
-        (new PatientDB()).writeTreatment(patient, appointment, treatment);
-    }
+//    public void setTreatmentToPatient(Patient patient, Appointment appointment, Treatment treatment) {
+//        (new PatientDB()).writeTreatment(patient, appointment, treatment);
+//    }
 
     public String showProfile() {
         return name + " " + surname + ", " + age;

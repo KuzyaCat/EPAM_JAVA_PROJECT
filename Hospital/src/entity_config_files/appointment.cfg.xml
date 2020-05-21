@@ -17,6 +17,12 @@
         </many-to-one>
 
         <one-to-one name="treatment" class="main.java.components.Treatment"/>
-        <one-to-one name="nurseTaskLog" class="main.java.tasklogs.NurseTaskLog"/>
+
+        <set name="nurseTaskLogs" table="nurse_task_log" lazy="true">
+            <key>
+                <column name="ID_APPOINTMENT" not-null="true"/>
+            </key>
+            <one-to-many class="main.java.tasklogs.NurseTaskLog"/>
+        </set>
     </class>
 </hibernate-mapping>

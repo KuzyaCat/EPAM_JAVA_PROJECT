@@ -10,39 +10,30 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
-
-@Entity
-@org.hibernate.annotations.Entity(optimisticLock = OptimisticLockType.ALL)
-@Table(name = "APPOINTMENT", uniqueConstraints = {
-        @UniqueConstraint(columnNames = "ID_APPOINTMENT")
-})
+import java.util.Set;
 
 public class Appointment implements Serializable {
     private String department;
+    private int id; //appointmentId
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID_APPOINTMENT", unique = true, nullable = false)
-    private int id;
-
-//    @Column(name = "ID_DOCTOR", unique = false, nullable = false)
-//    private int doctorId;
-//
-//    @Column(name = "ID_PATIENT", unique = false, nullable = false)
-//    private int patientId;
-
-    @Column(name = "APPOINTMENT_DATE", unique = false, nullable = false)
     private Date appDate;
 
     private Patient patient;
     private Doctor doctor;
 
     private Treatment treatment;
-    private NurseTaskLog nurseTaskLog;
+    private Set<NurseTaskLog> nurseTaskLogs;
 
     public Appointment() {}
 
     public Appointment(String department, Date appDate) {
+        this.department = department;
+        this.appDate = appDate;
+    }
+
+    public Appointment(Patient patient, Doctor doctor, String department, Date appDate) {
+        this.patient = patient;
+        this.doctor = doctor;
         this.department = department;
         this.appDate = appDate;
     }
@@ -59,14 +50,6 @@ public class Appointment implements Serializable {
     public int getId() {
         return id;
     }
-
-//    public int getDoctorId() {
-//        return doctorId;
-//    }
-//
-//    public int getPatientId() {
-//        return patientId;
-//    }
 
     public Date getAppDate() {
         return appDate;
@@ -88,8 +71,8 @@ public class Appointment implements Serializable {
         return treatment;
     }
 
-    public NurseTaskLog getNurseTaskLog() {
-        return nurseTaskLog;
+    public Set<NurseTaskLog> getNurseTaskLogs() {
+        return nurseTaskLogs;
     }
 
     public void setDepartment(String department) {
@@ -124,8 +107,8 @@ public class Appointment implements Serializable {
         this.treatment = treatment;
     }
 
-    public void setNurseTaskLog(NurseTaskLog nurseTaskLog) {
-        this.nurseTaskLog = nurseTaskLog;
+    public void setNurseTaskLogs(Set<NurseTaskLog> nurseTaskLogs) {
+        this.nurseTaskLogs = nurseTaskLogs;
     }
 
     @Override
