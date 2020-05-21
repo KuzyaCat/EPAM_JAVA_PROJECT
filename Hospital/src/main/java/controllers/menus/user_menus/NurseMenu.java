@@ -49,9 +49,8 @@ public class NurseMenu {
 
         Treatment treatment = new Treatment(appointment, procedure, medicine, operation, diagnose);
 
-        // uncomment in the future!
-//        this.nurse.setTreatmentToPatient(patient, appointment, treatment);
-//        nurseDB.getDbUpdater().deleteRowFromNurseTaskLog(new NurseTaskLog(appointment, this.nurse));
+        this.nurse.setTreatmentToPatient(treatment);
+        nurseDB.getDbUpdater().deleteRowFromNurseTaskLog(new NurseTaskLog(appointment, this.nurse));
 
         System.out.println("Done");
     }
@@ -66,45 +65,44 @@ public class NurseMenu {
                     System.out.println(this.nurse.showProfile());
                     break;
                 case 2:
-//                    NurseDB nurseDB = new NurseDB();
-//                    ArrayList<Appointment> appointments =
-//
-//                    ArrayList<Integer> appointmentIds = dbUtils.getAppointmentIdsByNurseId(nurseId);
-//                    ArrayList<Appointment> appointments = new ArrayList<Appointment>();
-//                    ArrayList<Patient> patients = new ArrayList<Patient>();
-//
-//                    int appointmentOption = 1;
-//                    for(int currentAppointmentId: appointmentIds) {
-//                        Appointment currentAppointment = dbUtils.getAppointmentById(currentAppointmentId);
-//                        appointments.add(currentAppointment);
-//
-//                        Patient currentAppointmentPatient = dbUtils.getPatientById(dbUtils.getPatientIdByAppointmentId(currentAppointmentId));
-//                        patients.add(currentAppointmentPatient);
-//
-//                        System.out.println(appointmentOption + ". " +
-//                                currentAppointmentPatient.getName() + " " +
-//                                currentAppointmentPatient.getSurname() + ", " +
-//                                currentAppointment.getAppDate().toString().replace("_", "/") + ";");
-//                        appointmentOption++;
-//                    }
-//
-//                    if(appointmentIds.size() == 0) {
-//                        System.out.println("No planned appointments");
-//                    }
-//                    else {
-//                        System.out.println("Print the number of an appointment:");
-//                        int chosenAppointmentNumber = (new Scanner(System.in)).nextInt();
-//
-//                        if(chosenAppointmentNumber < 1 || chosenAppointmentNumber >= appointmentOption) {
-//                            System.out.println("Incorrect appointment number");
-//                        }
-//                        else {
-//                            this.addTreatmentMenu(
-//                                    patients.get(chosenAppointmentNumber - 1),
-//                                    appointments.get(chosenAppointmentNumber - 1),
-//                                    appointmentIds.get(chosenAppointmentNumber - 1));
-//                        }
-//                    }
+                    NurseDB nurseDB = new NurseDB();
+
+                    ArrayList<Integer> appointmentIds = dbUtils.getAppointmentIdsByNurseId(nurseId);
+                    ArrayList<Appointment> appointments = new ArrayList<Appointment>();
+                    ArrayList<Patient> patients = new ArrayList<Patient>();
+
+                    int appointmentOption = 1;
+                    for(int currentAppointmentId: appointmentIds) {
+                        Appointment currentAppointment = dbUtils.getAppointmentById(currentAppointmentId);
+                        appointments.add(currentAppointment);
+
+                        Patient currentAppointmentPatient = dbUtils.getPatientById(dbUtils.getPatientIdByAppointmentId(currentAppointmentId));
+                        patients.add(currentAppointmentPatient);
+
+                        System.out.println(appointmentOption + ". " +
+                                currentAppointmentPatient.getName() + " " +
+                                currentAppointmentPatient.getSurname() + ", " +
+                                currentAppointment.getAppDate().toString().replace("_", "/") + ";");
+                        appointmentOption++;
+                    }
+
+                    if(appointmentIds.size() == 0) {
+                        System.out.println("No planned appointments");
+                    }
+                    else {
+                        System.out.println("Print the number of an appointment:");
+                        int chosenAppointmentNumber = (new Scanner(System.in)).nextInt();
+
+                        if(chosenAppointmentNumber < 1 || chosenAppointmentNumber >= appointmentOption) {
+                            System.out.println("Incorrect appointment number");
+                        }
+                        else {
+                            this.addTreatmentMenu(
+                                    patients.get(chosenAppointmentNumber - 1),
+                                    appointments.get(chosenAppointmentNumber - 1),
+                                    appointmentIds.get(chosenAppointmentNumber - 1));
+                        }
+                    }
                     System.out.println("this case is not implemented yet");
 
                     break;

@@ -75,18 +75,13 @@ public class Treatment implements Serializable {
         this.appointment = appointment;
     }
 
-    //        @Override
-//    public String toString() {
-//        return this.medicines + " " + this.operations + " " + this.procedures + " " + this.diagnoses;
-//    }
+    @Override
+    public String toString() {
+        return this.medicine + " " + this.operation + " " + this.procedure + " " + this.diagnose;
+    }
 
     public boolean isEmpty() {
         return procedure.equals("") && medicine.equals("") && operation.equals("") && diagnose.equals("");
-    }
-
-    @Override
-    public String toString() {
-        return medicine + " " + operation + " " + procedure + " " + diagnose;
     }
 
     @Override

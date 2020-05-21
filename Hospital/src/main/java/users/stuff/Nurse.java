@@ -93,9 +93,9 @@ public class Nurse implements Serializable {
         this.nurseTaskLogSet = nurseTaskLogSet;
     }
 
-//    public void setTreatmentToPatient(Patient patient, Appointment appointment, Treatment treatment) {
-//        (new PatientDB()).writeTreatment(patient, appointment, treatment);
-//    }
+    public void setTreatmentToPatient(Treatment treatment) {
+        (new PatientDB()).writeTreatment(treatment);
+    }
 
     public String showProfile() {
         return name + " " + surname + ", " + age;
