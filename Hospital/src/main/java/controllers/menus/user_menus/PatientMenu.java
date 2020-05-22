@@ -229,7 +229,12 @@ public class PatientMenu {
         String surname = in.nextLine();
         DoctorDB doctorDB = new DoctorDB();
 
-        Doctor doctor = doctorDB.getDoctor(name, surname);
+        Doctor doctor = null;
+        try {
+            doctor = doctorDB.getDoctor(name, surname);
+        } catch (Exception e) {
+            System.out.println("Can't find a doctor with these name and surname");
+        }
 
         if(doctor != null) {
             System.out.println("Write a year of the appointment");
@@ -251,9 +256,6 @@ public class PatientMenu {
             System.out.println("Done");
 
             patientDB.shutdown();
-        }
-        else {
-            System.out.println("Can't find a doctor with these name and surname");
         }
 
         doctorDB.shutdown();

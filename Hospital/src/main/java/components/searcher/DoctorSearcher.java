@@ -57,7 +57,7 @@ public class DoctorSearcher {
                 .thenComparing(Doctor::getName);
 
         return doctorStream
-                .filter(d -> d.getName().equals(surname))
+                .filter(d -> d.getSurname().equals(surname))
                 .sorted(compareByName)
                 .collect(Collectors.toList());
     }

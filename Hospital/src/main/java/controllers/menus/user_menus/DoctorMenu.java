@@ -144,8 +144,19 @@ public class DoctorMenu {
             newIsRecovered = true;
         }
 
-        this.doctor.setRecoverToPatient(patientDB.getPatient(name, surname), newIsRecovered);
-        System.out.println("Done");
+        Patient patient = null;
+        try {
+            patient = patientDB.getPatient(name, surname);
+        } catch (Exception e) {
+            System.out.println("Couldn't find a patient with these name and surname");
+        }
+
+        if(patient != null) {
+            this.doctor.setRecoverToPatient(patient, newIsRecovered);
+            System.out.println("Done");
+        }
+
+        patientDB.shutdown();
     }
 
     private void printSearchPatientsMenu() {

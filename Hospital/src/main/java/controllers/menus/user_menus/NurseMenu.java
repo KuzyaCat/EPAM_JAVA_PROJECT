@@ -69,7 +69,7 @@ public class NurseMenu {
 
                     int counter = 1;
                     for(Appointment appointment: plannedAppointments) {
-                        System.out.println(counter + ", " + appointment.toString());
+                        System.out.println(counter + ". " + appointment.toString());
                         counter++;
                     }
 
@@ -87,7 +87,6 @@ public class NurseMenu {
                             this.addTreatmentMenu(plannedAppointments.get(chosenAppointmentNumber - 1));
                         }
                     }
-                    System.out.println("this case is not implemented yet");
 
                     break;
                 default:
