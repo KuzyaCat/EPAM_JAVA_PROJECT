@@ -12,8 +12,8 @@
 
     <Loggers>
         <!-- Root Logger -->
-        <Logger name="main.java.controllers.resource_controllers.DataBaseIO" level="debug" additivity="false">
-            <AppenderRef ref="Console" level="debug"/>
+        <Logger name="org.hibernate.cfg.annotations.Version" level="warn" additivity="false">
+            <AppenderRef ref="Console" level="warn"/>
         </Logger>
         <Root level="all">
             <AppenderRef ref="Console"/>

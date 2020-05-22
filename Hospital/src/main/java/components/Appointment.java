@@ -103,7 +103,7 @@ public class Appointment implements Serializable {
 
     @Override
     public String toString() {
-        return "[" + this.doctor.toString() + "] " + this.department + " " + this.appDate.toString();
+        return "[" + this.doctor.toString() + "] " + this.appDate.toString();
     }
 
     @Override
