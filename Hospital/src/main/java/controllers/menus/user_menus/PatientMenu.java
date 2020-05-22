@@ -5,16 +5,12 @@ import main.java.components.Treatment;
 import main.java.components.searcher.AppointmentSearcher;
 import main.java.components.searcher.DoctorSearcher;
 import main.java.controllers.resource_controllers.DBReader;
-import main.java.date.GregorianDate;
 import main.java.users.Patient;
 import main.java.users.stuff.Doctor;
 import main.java.usersdb.DoctorDB;
 import main.java.usersdb.PatientDB;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class PatientMenu {
@@ -120,6 +116,8 @@ public class PatientMenu {
                     break;
             }
         } while (variant != 7);
+
+        dbReader.shutdown();
     }
 
     private void printSearchAppointmentsMenu() {
@@ -131,10 +129,17 @@ public class PatientMenu {
         );
     }
 
+    public ArrayList<Appointment> convertAppointmentSetToArraylist(Set<Appointment> appointmentSet) {
+        ArrayList<Appointment> appointmentArrayList = new ArrayList<>();
+        appointmentArrayList.addAll(appointmentSet);
+        return appointmentArrayList;
+    }
+
     public void initSearchAppointmentsMenu() {
         DBReader dbReader = new DBReader();
         List<Doctor> allDoctors = dbReader.getAllDoctors();
-        AppointmentSearcher appointmentSearcher = new AppointmentSearcher((List<Appointment>) this.patient.getAppointments());
+        AppointmentSearcher appointmentSearcher = new AppointmentSearcher(
+                this.convertAppointmentSetToArraylist(this.patient.getAppointments()));
 
         int variant = 0;
 
@@ -170,6 +175,8 @@ public class PatientMenu {
                     break;
             }
         } while (variant != 3);
+
+        dbReader.shutdown();
     }
 
     public void initMenu() {
@@ -185,19 +192,22 @@ public class PatientMenu {
                     this.appointMenu();
                     break;
                 case 3:
-                    ArrayList<Appointment> appointments = (ArrayList<Appointment>) this.patient.getAppointments();
+                    Set<Appointment> appointments = this.patient.getAppointments();
                     System.out.println("My appointments:");
                     System.out.println("Overall: " + appointments.size());
-                    System.out.println(Arrays.toString(appointments.toArray()));
+                    for(Appointment appointment: appointments) {
+                        System.out.println(appointment.toString());
+                    }
                     break;
                 case 4:
-                    ArrayList<Treatment> treatments = this.patient.getAppointments().stream()
-                            .map(Appointment::getTreatment)
-                            .collect(Collectors.toCollection(ArrayList::new));
+                    PatientDB patientDB = new PatientDB();
+                    ArrayList<Treatment> treatments = patientDB.getTreatmentsByPatient(this.patient);
 
                     System.out.println("My treatments:");
                     System.out.println("Overall: " + treatments.size());
                     System.out.println(Arrays.toString(treatments.toArray()));
+
+                    patientDB.shutdown();
                     break;
                 case 5:
                     initSearchDoctorsMenu();
@@ -228,13 +238,24 @@ public class PatientMenu {
             int month = in.nextInt();
             System.out.println("Write a day of the appointment");
             int day = in.nextInt();
-            Appointment appointment = new Appointment(this.patient, doctor);
+
+            Calendar cal = Calendar.getInstance();
+            cal.set(Calendar.YEAR, year);
+            cal.set(Calendar.MONTH, month - 1);
+            cal.set(Calendar.DAY_OF_MONTH, day + 1);
+            Date appDate = cal.getTime();
+
+            Appointment appointment = new Appointment(this.patient, doctor, doctor.getDepartment(), appDate);
             PatientDB patientDB = new PatientDB();
             patientDB.writeAppointment(appointment);
             System.out.println("Done");
+
+            patientDB.shutdown();
         }
         else {
             System.out.println("Can't find a doctor with these name and surname");
         }
+
+        doctorDB.shutdown();
     }
 }

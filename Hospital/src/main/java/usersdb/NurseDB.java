@@ -26,4 +26,9 @@ public class NurseDB {
     public ArrayList<Nurse> getAllNurses() {
         return this.dbReader.getAllNurses();
     }
+
+    public void shutdown() {
+        this.dbReader.shutdown();
+        this.dbUpdater.shutdown();
+    }
 }

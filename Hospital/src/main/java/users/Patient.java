@@ -58,15 +58,6 @@ public class Patient implements Serializable {
 
     public boolean isRecovered() { return recovered; }
 
-//    public String showProfile() {
-//        return this.getName() + " " +
-//                this.getSurname() + '\n' +
-//                this.getAge() + " years old\n" +
-//                "Appointments: " + Arrays.toString(this.appointments.toArray()) + '\n' +
-//                "Treatments: " + Arrays.toString(this.treatments.toArray()) + '\n';
-//    }
-
-
     public void setId(int id) {
         this.id = id;
     }

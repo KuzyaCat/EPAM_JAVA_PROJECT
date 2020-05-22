@@ -1,8 +1,5 @@
 package main.java.components;
 
-import org.hibernate.annotations.OptimisticLockType;
-
-import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;
 

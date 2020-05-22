@@ -1,9 +1,7 @@
 package main.java.controllers.menus.user_menus;
 
 import main.java.components.Treatment;
-import main.java.tasklogs.NurseTaskLog;
 import main.java.users.stuff.Nurse;
-import main.java.users.Patient;
 import main.java.components.Appointment;
 import main.java.usersdb.NurseDB;
 
@@ -31,7 +29,7 @@ public class NurseMenu {
         );
     }
 
-    private void addTreatmentMenu(Patient patient, Appointment appointment) {
+    private void addTreatmentMenu(Appointment appointment) {
         Scanner in = new Scanner(System.in);
         NurseDB nurseDB = new NurseDB();
 
@@ -50,7 +48,7 @@ public class NurseMenu {
         Treatment treatment = new Treatment(appointment, procedure, medicine, operation, diagnose);
 
         this.nurse.setTreatmentToPatient(treatment);
-        nurseDB.getDbUpdater().deleteRowFromNurseTaskLog(new NurseTaskLog(appointment, this.nurse));
+        nurseDB.getDbUpdater().deleteNurseTaskLogByAppointmentAndNurse(appointment, this.nurse);
 
         System.out.println("Done");
     }
@@ -67,40 +65,26 @@ public class NurseMenu {
                 case 2:
                     NurseDB nurseDB = new NurseDB();
 
-                    ArrayList<Integer> appointmentIds = dbUtils.getAppointmentIdsByNurseId(nurseId);
-                    ArrayList<Appointment> appointments = new ArrayList<Appointment>();
-                    ArrayList<Patient> patients = new ArrayList<Patient>();
+                    ArrayList<Appointment> plannedAppointments = nurseDB.getDbReader().getAppointmentsByNurse(this.nurse);
 
-                    int appointmentOption = 1;
-                    for(int currentAppointmentId: appointmentIds) {
-                        Appointment currentAppointment = dbUtils.getAppointmentById(currentAppointmentId);
-                        appointments.add(currentAppointment);
-
-                        Patient currentAppointmentPatient = dbUtils.getPatientById(dbUtils.getPatientIdByAppointmentId(currentAppointmentId));
-                        patients.add(currentAppointmentPatient);
-
-                        System.out.println(appointmentOption + ". " +
-                                currentAppointmentPatient.getName() + " " +
-                                currentAppointmentPatient.getSurname() + ", " +
-                                currentAppointment.getAppDate().toString().replace("_", "/") + ";");
-                        appointmentOption++;
+                    int counter = 1;
+                    for(Appointment appointment: plannedAppointments) {
+                        System.out.println(counter + ", " + appointment.toString());
+                        counter++;
                     }
 
-                    if(appointmentIds.size() == 0) {
+                    if(plannedAppointments.size() == 0) {
                         System.out.println("No planned appointments");
                     }
                     else {
                         System.out.println("Print the number of an appointment:");
                         int chosenAppointmentNumber = (new Scanner(System.in)).nextInt();
 
-                        if(chosenAppointmentNumber < 1 || chosenAppointmentNumber >= appointmentOption) {
+                        if(chosenAppointmentNumber < 1 || chosenAppointmentNumber >= counter) {
                             System.out.println("Incorrect appointment number");
                         }
                         else {
-                            this.addTreatmentMenu(
-                                    patients.get(chosenAppointmentNumber - 1),
-                                    appointments.get(chosenAppointmentNumber - 1),
-                                    appointmentIds.get(chosenAppointmentNumber - 1));
+                            this.addTreatmentMenu(plannedAppointments.get(chosenAppointmentNumber - 1));
                         }
                     }
                     System.out.println("this case is not implemented yet");

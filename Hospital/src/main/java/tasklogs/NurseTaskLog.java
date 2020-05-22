@@ -11,16 +11,11 @@ import java.util.Objects;
 public class NurseTaskLog implements Serializable {
 
     private int id; //NurseTaskLogId
-    private boolean nurseIsAppointed;
 
     private Appointment appointment;
     private Nurse nurse;
 
     public NurseTaskLog() {}
-
-    public NurseTaskLog(Nurse nurse) {
-        this.nurse = nurse;
-    }
 
     public NurseTaskLog(Appointment appointment, Nurse nurse) {
         this.appointment = appointment;
@@ -29,10 +24,6 @@ public class NurseTaskLog implements Serializable {
 
     public int getId() {
         return id;
-    }
-
-    public boolean isNurseIsAppointed() {
-        return nurseIsAppointed;
     }
 
     public Appointment getAppointment() {
@@ -45,10 +36,6 @@ public class NurseTaskLog implements Serializable {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public void setNurseIsAppointed(boolean nurseIsAppointed) {
-        this.nurseIsAppointed = nurseIsAppointed;
     }
 
     public void setAppointment(Appointment appointment) {

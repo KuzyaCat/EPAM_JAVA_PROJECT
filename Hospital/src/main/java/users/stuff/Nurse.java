@@ -1,13 +1,9 @@
 package main.java.users.stuff;
 
 import main.java.components.Treatment;
-import main.java.components.Appointment;
 import main.java.tasklogs.NurseTaskLog;
-import main.java.users.Patient;
 import main.java.usersdb.PatientDB;
-import org.hibernate.annotations.OptimisticLockType;
 
-import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;
 import java.util.Set;
@@ -105,12 +101,6 @@ public class Nurse implements Serializable {
     public String toString() {
         return showProfile();
     }
-
-//    @Override
-//    public Nurse parseString(String str) {
-//        return new Nurse(super.parseString(str));
-//    }
-
 
     @Override
     public boolean equals(Object o) {

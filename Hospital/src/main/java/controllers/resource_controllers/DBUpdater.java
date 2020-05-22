@@ -6,7 +6,6 @@ import main.java.users.Patient;
 import main.java.users.stuff.Doctor;
 import main.java.components.Appointment;
 import main.java.components.Treatment;
-import main.java.date.GregorianDate;
 
 import main.java.users.stuff.Nurse;
 import org.apache.logging.log4j.LogManager;
@@ -14,9 +13,7 @@ import org.apache.logging.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
-
-import java.sql.*;
-import java.util.ArrayList;
+import org.hibernate.criterion.Restrictions;
 
 public class DBUpdater {
     private SessionProvider sessionProvider = new SessionProvider();
@@ -40,6 +37,18 @@ public class DBUpdater {
         session.getTransaction().commit();
     }
 
+    public void deleteNurseTaskLogByAppointmentAndNurse(Appointment appointment, Nurse nurse) {
+        session.beginTransaction();
+
+        Criteria criteria = session.createCriteria(NurseTaskLog.class);
+        criteria.add(Restrictions.eq("appointment", appointment));
+        criteria.add(Restrictions.eq("nurse", nurse));
+
+        session.getTransaction().commit();
+
+        this.deleteNurseTaskLogRowById(((NurseTaskLog) criteria.list().get(0)).getId());
+    }
+
     public void addPatient(Patient newPatient) {
         session.beginTransaction();
         session.save(newPatient);
@@ -54,12 +63,6 @@ public class DBUpdater {
 
         session.getTransaction().commit();
     }
-
-//    public void addTreatment(Treatment treatment) {
-//        session.beginTransaction();
-//        session.save(treatment);
-//        session.getTransaction().commit();
-//    }
 
     public void addRowToNurseTaskLog(NurseTaskLog nurseTaskLog) {
         session.beginTransaction();

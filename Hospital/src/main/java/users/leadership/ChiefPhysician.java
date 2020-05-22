@@ -19,8 +19,9 @@ public class ChiefPhysician {
         this.password = password;
     }
 
-//    public void appointDepHead(Doctor doctor){
-//        DoctorDB doctorDB = new DoctorDB();
-//        doctorDB.writeIsDepartmentHead(doctor);
-//    }
+    public void appointDepHead(Doctor doctor){
+        DoctorDB doctorDB = new DoctorDB();
+        doctorDB.writeIsDepartmentHead(doctor);
+        doctorDB.shutdown();
+    }
 }

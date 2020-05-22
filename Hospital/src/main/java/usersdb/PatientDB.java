@@ -33,6 +33,10 @@ public class PatientDB {
         this.dbUpdater.addAppointment(appointment);
     }
 
+    public ArrayList<Treatment> getTreatmentsByPatient(Patient patient) {
+        return this.dbReader.getTreatmentsByPatient(patient);
+    }
+
     public void writeTreatment(Treatment treatment) {
         this.dbUpdater.updateTreatment(treatment);
     }
@@ -40,5 +44,10 @@ public class PatientDB {
     public void writeIsRecovered(Patient patient, boolean isRecovered) {
         patient.setRecovered(isRecovered);
         this.editPatient(patient);
+    }
+
+    public void shutdown() {
+        this.dbReader.shutdown();
+        this.dbUpdater.shutdown();
     }
 }

@@ -16,7 +16,6 @@ import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.stream.Collectors;
 
 public class DBReader {
@@ -108,8 +107,8 @@ public class DBReader {
 
     public ArrayList<Treatment> getTreatmentsByPatient(Patient patient) {
         return patient.getAppointments().stream()
-                .peek(appointment -> System.out.println(appointment.toString()))
                 .map(Appointment::getTreatment)
+                .filter(treatment -> !treatment.isEmpty())
                 .collect(Collectors.toCollection(ArrayList::new));
     }
 

@@ -5,9 +5,7 @@ import main.java.components.Treatment;
 import main.java.users.Patient;
 import main.java.usersdb.DoctorDB;
 import main.java.usersdb.PatientDB;
-import org.hibernate.annotations.OptimisticLockType;
 
-import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;
 import java.util.Set;
@@ -129,30 +127,6 @@ public class Doctor implements Serializable {
     public String toString() {
         return "[" + showProfile() + "]" + " " + department + " " + isHeadOfDepartment;
     }
-
-//    @Override
-//    public Doctor parseString(String str) {
-//        int openingBrIndex = 0;
-//        int closingBrIndex = str.indexOf(']');
-//
-//        String userString = "";
-//        for(int i = openingBrIndex + 1; i < closingBrIndex; i ++) {
-//            userString += str.charAt(i);
-//        }
-//
-//        User user = (new User()).parseString(userString);
-//
-//        String cutString = str.substring(closingBrIndex + 2);
-//        String[] cutStringArr = cutString.split(" ");
-//
-//        String department = cutStringArr[0];
-//        String isHeadOfDepartment = cutStringArr[1];
-//
-//        boolean isHead = (isHeadOfDepartment.equals("true"));
-//
-//        return new Doctor(user, department, isHead);
-//    }
-
 
     @Override
     public boolean equals(Object o) {

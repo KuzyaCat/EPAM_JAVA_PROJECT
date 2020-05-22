@@ -4,7 +4,6 @@ import main.java.controllers.resource_controllers.DBReader;
 import main.java.controllers.resource_controllers.DBUpdater;
 import main.java.users.Patient;
 import main.java.users.stuff.Doctor;
-import main.java.components.Appointment;
 
 import java.util.ArrayList;
 
@@ -53,7 +52,6 @@ public class DoctorDB {
     }
 
     public String getAppointments(Doctor doctor) {
-//        возвращает строку, а не объекты!!!
         String allPatientsOfDoctorStr = "";
         ArrayList<Patient> allPatientsOfDoctor = this.dbReader.getPatientsByDoctor(doctor);
         for(Patient patient: allPatientsOfDoctor) {
@@ -61,5 +59,10 @@ public class DoctorDB {
         }
 
         return allPatientsOfDoctorStr;
+    }
+
+    public void shutdown() {
+        this.dbReader.shutdown();
+        this.dbUpdater.shutdown();
     }
 }

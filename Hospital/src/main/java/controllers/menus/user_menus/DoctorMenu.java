@@ -71,6 +71,10 @@ public class DoctorMenu {
             System.out.println("No planned appointments");
         }
         else {
+            for(int i = 0; i < plannedAppointments.size(); i++) {
+                System.out.println((i + 1) + ". " + plannedAppointments.get(i).toString());
+            }
+
             System.out.println("Print the number of an appointment:");
             int chosenAppointmentNumber = in.nextInt();
 
@@ -96,9 +100,6 @@ public class DoctorMenu {
 
         System.out.println("Nurse surname: ");
         String surname = in.nextLine();
-
-//        int chosenNurseId = nurseDB.getDbReader().getNurseIdByNameAndSurname(name, surname);
-//        System.out.println(chosenNurseId);
 
         Nurse chosenNurse = nurseDB.getDbReader().getNurseByNameAndSurname(name, surname);
         nurseDB.getDbUpdater().addRowToNurseTaskLog(new NurseTaskLog(appointment, chosenNurse));

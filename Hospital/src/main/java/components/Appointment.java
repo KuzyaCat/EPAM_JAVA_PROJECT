@@ -4,9 +4,7 @@ import main.java.tasklogs.NurseTaskLog;
 import main.java.users.Patient;
 import main.java.users.stuff.Doctor;
 import main.java.date.GregorianDate;
-import org.hibernate.annotations.OptimisticLockType;
 
-import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
@@ -83,14 +81,6 @@ public class Appointment implements Serializable {
         this.id = id;
     }
 
-//    public void setDoctorId(int doctorId) {
-//        this.doctorId = doctorId;
-//    }
-//
-//    public void setPatientId(int patientId) {
-//        this.patientId = patientId;
-//    }
-
     public void setAppDate(Date appDate) {
         this.appDate = appDate;
     }
@@ -115,12 +105,6 @@ public class Appointment implements Serializable {
     public String toString() {
         return "[" + this.doctor.toString() + "] " + this.department + " " + this.appDate.toString();
     }
-
-//    @Override
-//    public String toString() {
-//        return "[" + this.doctorId + "] " + this.department + " " + this.appDate.toString();
-//    }
-
 
     @Override
     public boolean equals(Object o) {
