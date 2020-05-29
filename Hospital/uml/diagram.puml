@@ -5,9 +5,6 @@ actor Doctor
 actor Nurse
 actor ChiefPhysician
 
-Guest --[#black]> (Регистрация)
-Guest -[#black]> (Авторизация в приложение)
-
 Patient ---[#red]> (Посмотреть записи на прием)
 Patient --[#red]> (Посмотреть лечения)
 Patient --[#red]> (Посмотреть диагнозы)
