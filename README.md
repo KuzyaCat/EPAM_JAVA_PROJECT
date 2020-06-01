@@ -5,4 +5,4 @@
 1.__Бэклог__ https://trello.com/b/ZrztCTMj/documentation-requirements   
 2.__Макет__ https://balsamiq.cloud/st5x96u/plflvfd/r2278   
 3.__Описание use-case__ https://github.com/projectEpamBSU/EPAM_JAVA_PROJECT/wiki/Use-Cases-description
-
+4.__UML-диаграмма__ https://github.com/projectEpamBSU/EPAM_JAVA_PROJECT/tree/docs-diagrams/documentation/uml-diagram.png
